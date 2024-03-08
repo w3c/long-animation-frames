@@ -1,1 +1,1 @@
-# long-animation-frame
+Long Animation Frames API repository
