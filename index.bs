@@ -2,7 +2,7 @@
 Title: Long Animation Frames API
 Group: webperf
 Status: ED
-Shortname: long-animation-frames
+Shortname: long-animation
 Level: 1
 URL: https://w3c.github.io/long-animation-frames/
 Editor: Noam Rosenthal, Google https://google.com, nrosenthal@google.com, w3cid 121539
