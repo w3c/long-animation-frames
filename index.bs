@@ -9,7 +9,7 @@ Editor: Noam Rosenthal, Google https://google.com, nrosenthal@google.com, w3cid 
 Repository: w3c/long-animation-frames
 Test Suite: https://wpt.fyi/results/long-animation-frames
 Abstract: This document defines an API that web page authors can use to detect presence of "long animation frames" that monopolize the UI thread for extended periods of time and block other critical tasks from being executed - e.g. reacting to user input.
-Status Text: If you wish to make comments regarding this document, please create an issue in the <a href="">https://github.com/w3c/long-animation-frames>Long Animation Frames</a> repository.
+Status Text: If you wish to make comments regarding this document, please create an issue in the <a href="https://github.com/w3c/long-animation-frames">Long Animation Frames</a> repository.
 Default Highlight: js
 </pre>
 
@@ -115,7 +115,7 @@ Usage Example {#example}
 Long Animation Frames vs. Long Tasks {#loaf-vs-longtasks}
 ---------------------------------------------------------
 
-While both long tasks and long animation frames measure congestion and jank, long animation frames
+While both [=long tasks=] and long animation frames measure congestion and jank, long animation frames
 provide information that has a better correlation with how user preceive this type of congestion.
 That's because long animation frames measure a sequence that begins when the main thread is idle,
 and end when the frame either renders or the user agents decides there is nothing to render.
@@ -127,8 +127,6 @@ thread congestion/jank.
 Because long animation frames are guaranteed to have a maximum of one rendering phase, we can also
 use them to expose additional information about the rendering phase itself, such as
 {{PerformanceLongAnimationFrameTiming/renderStart}} and {{PerformanceLongAnimationFrameTiming/styleAndLayoutStart}}.
-
-For a detailed explanation about long animation frames, see the <a href="https://github.com/w3c/longtasks/blob/main/loaf-explainer.md">explainer</a>.
 
 Long Animation Frame Timing {#sec-loaf-timing}
 =======================================
