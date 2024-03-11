@@ -1,6 +1,6 @@
-# Long Animation Frames API
+# Long Animation Frame API
 
-For the editor's draft, see https://w3c.github.io/long-animation-frames/
+For the editor's draft, see https://w3c.github.io/long-animation-frame/
 
 See also the [developer facing article](https://developer.chrome.com/docs/web-platform/long-animation-frames).
 
