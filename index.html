@@ -752,7 +752,7 @@ var[data-var-color="6"] { background-color: #FFBCF2; box-shadow: 0 0 0 2px #FFBC
    <p><a href="https://github.com/w3c/long-animation-frames/issues">GitHub Issues</a> are preferred for discussion of this specification. </p>
    <p>This document is governed by the <a href="https://www.w3.org/2023/Process-20231103/" id="w3c_process_revision">03 November 2023 W3C Process Document</a>. </p>
    <p></p>
-   <p>If you wish to make comments regarding this document, please create an issue in the <a href>https://github.com/w3c/long-animation-frames>Long Animation Frames</a> repository.</p>
+   <p>If you wish to make comments regarding this document, please create an issue in the <a href="https://github.com/w3c/long-animation-frames">Long Animation Frames</a> repository.</p>
   </div>
   <div data-fill-with="at-risk"></div>
   <nav data-fill-with="table-of-contents" id="toc">
@@ -856,7 +856,7 @@ observer<c- p>.</c->observe<c- p>({</c->type<c- o>:</c-> <c- u>"long-animation-f
 observer<c- p>.</c->observe<c- p>({</c->type<c- o>:</c-> <c- u>"long-animation-frame"</c-><c- p>,</c-> buffered<c- o>:</c-> <c- kc>true</c-><c- p>});</c->
 </pre>
    <h3 class="heading settled" data-level="1.2" id="loaf-vs-longtasks"><span class="secno">1.2. </span><span class="content">Long Animation Frames vs. Long Tasks</span><a class="self-link" href="#loaf-vs-longtasks"></a></h3>
-   <p>While both long tasks and long animation frames measure congestion and jank, long animation frames
+   <p>While both <a data-link-type="dfn" href="https://w3c.github.io/longtasks/#long-task" id="ref-for-long-task">long tasks</a> and long animation frames measure congestion and jank, long animation frames
 provide information that has a better correlation with how user preceive this type of congestion.
 That’s because long animation frames measure a sequence that begins when the main thread is idle,
 and end when the frame either renders or the user agents decides there is nothing to render.</p>
@@ -865,7 +865,6 @@ attempts to remedy that by introducing a more user-centric metric of the same ph
 thread congestion/jank.</p>
    <p>Because long animation frames are guaranteed to have a maximum of one rendering phase, we can also
 use them to expose additional information about the rendering phase itself, such as <code class="idl"><a data-link-type="idl" href="#dom-performancelonganimationframetiming-renderstart" id="ref-for-dom-performancelonganimationframetiming-renderstart">renderStart</a></code> and <code class="idl"><a data-link-type="idl" href="#dom-performancelonganimationframetiming-styleandlayoutstart" id="ref-for-dom-performancelonganimationframetiming-styleandlayoutstart">styleAndLayoutStart</a></code>.</p>
-   <p>For a detailed explanation about long animation frames, see the <a href="https://github.com/w3c/longtasks/blob/main/loaf-explainer.md">explainer</a>.</p>
    <h2 class="heading settled" data-level="2" id="sec-loaf-timing"><span class="secno">2. </span><span class="content">Long Animation Frame Timing</span><a class="self-link" href="#sec-loaf-timing"></a></h2>
    <p>A <dfn class="dfn-paneled" data-dfn-type="dfn" data-export id="long-animation-frame">long animation frame</dfn> refers to any of the following occurrences whose duration exceeds 50ms:</p>
    <ul>
@@ -1832,6 +1831,11 @@ To do that, we use the existing <a data-link-type="dfn" href="https://html.spec.
      <li><span class="dfn-paneled" id="984221ca">struct</span>
     </ul>
    <li>
+    <a data-link-type="biblio">[LONGTASKS-1]</a> defines the following terms:
+    <ul>
+     <li><span class="dfn-paneled" id="b254feb4">long task</span>
+    </ul>
+   <li>
     <a data-link-type="biblio">[PAINT-TIMING]</a> defines the following terms:
     <ul>
      <li><span class="dfn-paneled" id="77a05ba3">mark paint timing</span>
@@ -1893,6 +1897,8 @@ To do that, we use the existing <a data-link-type="dfn" href="https://html.spec.
    <dd>Anne van Kesteren; et al. <a href="https://html.spec.whatwg.org/multipage/"><cite>HTML Standard</cite></a>. Living Standard. URL: <a href="https://html.spec.whatwg.org/multipage/">https://html.spec.whatwg.org/multipage/</a>
    <dt id="biblio-infra">[INFRA]
    <dd>Anne van Kesteren; Domenic Denicola. <a href="https://infra.spec.whatwg.org/"><cite>Infra Standard</cite></a>. Living Standard. URL: <a href="https://infra.spec.whatwg.org/">https://infra.spec.whatwg.org/</a>
+   <dt id="biblio-longtasks-1">[LONGTASKS-1]
+   <dd>Noam Rosenthal. <a href="https://w3c.github.io/longtasks/"><cite>Long Tasks API</cite></a>. URL: <a href="https://w3c.github.io/longtasks/">https://w3c.github.io/longtasks/</a>
    <dt id="biblio-paint-timing">[PAINT-TIMING]
    <dd>Ian Clelland; Noam Rosenthal. <a href="https://w3c.github.io/paint-timing/"><cite>Paint Timing</cite></a>. URL: <a href="https://w3c.github.io/paint-timing/">https://w3c.github.io/paint-timing/</a>
    <dt id="biblio-performance-timeline">[PERFORMANCE-TIMELINE]
@@ -2227,6 +2233,7 @@ let dfnPanelData = {
 "ae8def21": {"dfnID":"ae8def21","dfnText":"contain","external":true,"refSections":[{"refs":[{"id":"ref-for-list-contain"},{"id":"ref-for-list-contain\u2460"}],"title":"2.1. PerformanceLongAnimationFrameTiming interface"}],"url":"https://infra.spec.whatwg.org/#list-contain"},
 "apply-source-location": {"dfnID":"apply-source-location","dfnText":"apply source location","external":false,"refSections":[{"refs":[{"id":"ref-for-apply-source-location"},{"id":"ref-for-apply-source-location\u2460"},{"id":"ref-for-apply-source-location\u2461"}],"title":"3.2.2. Long Script Monitoring"}],"url":"#apply-source-location"},
 "b203675a": {"dfnID":"b203675a","dfnText":"getComputedStyle(elt)","external":true,"refSections":[{"refs":[{"id":"ref-for-dom-window-getcomputedstyle"}],"title":"2.2. PerformanceScriptTiming interface"}],"url":"https://drafts.csswg.org/cssom-1/#dom-window-getcomputedstyle"},
+"b254feb4": {"dfnID":"b254feb4","dfnText":"long task","external":true,"refSections":[{"refs":[{"id":"ref-for-long-task"}],"title":"1.2. Long Animation Frames vs. Long Tasks"}],"url":"https://w3c.github.io/longtasks/#long-task"},
 "bdbd19d1": {"dfnID":"bdbd19d1","dfnText":"Promise","external":true,"refSections":[{"refs":[{"id":"ref-for-idl-promise"}],"title":"3.2.2. Long Script Monitoring"},{"refs":[{"id":"ref-for-idl-promise\u2460"},{"id":"ref-for-idl-promise\u2461"},{"id":"ref-for-idl-promise\u2462"},{"id":"ref-for-idl-promise\u2463"},{"id":"ref-for-idl-promise\u2464"},{"id":"ref-for-idl-promise\u2465"},{"id":"ref-for-idl-promise\u2466"}],"title":"4.1. Monkey-patches to the WebIDL standard"}],"url":"https://webidl.spec.whatwg.org/#idl-promise"},
 "bf77e69a": {"dfnID":"bf77e69a","dfnText":"WeakRef","external":true,"refSections":[{"refs":[{"id":"ref-for-sec-weak-ref-objects"}],"title":"3.1. Frame Timing Info"}],"url":"https://tc39.es/ecma262/multipage/managing-memory.html#sec-weak-ref-objects"},
 "c4c1ea2a": {"dfnID":"c4c1ea2a","dfnText":"event","external":true,"refSections":[{"refs":[{"id":"ref-for-dom-window-event"}],"title":"4.2. Monkey-patches to the DOM standard"}],"url":"https://dom.spec.whatwg.org/#dom-window-event"},
@@ -2868,6 +2875,7 @@ let refsData = {
 "https://w3c.github.io/hr-time/#dfn-unsafe-shared-current-time": {"export":true,"for_":[],"level":"3","normative":true,"shortname":"hr-time","spec":"hr-time-3","status":"current","text":"unsafe shared current time","type":"dfn","url":"https://w3c.github.io/hr-time/#dfn-unsafe-shared-current-time"},
 "https://w3c.github.io/hr-time/#idl-def-domhighrestimestamp": {"export":true,"for_":[],"level":"2","normative":true,"shortname":"hr-time","spec":"hr-time-2","status":"anchor-block","text":"DOMHighResTimeStamp","type":"typedef","url":"https://w3c.github.io/hr-time/#idl-def-domhighrestimestamp"},
 "https://w3c.github.io/hr-time/#monotonic-clock-unsafe-current-time": {"export":true,"for_":["monotonic clock"],"level":"3","normative":true,"shortname":"hr-time","spec":"hr-time-3","status":"current","text":"unsafe current time","type":"dfn","url":"https://w3c.github.io/hr-time/#monotonic-clock-unsafe-current-time"},
+"https://w3c.github.io/longtasks/#long-task": {"export":true,"for_":[],"level":"1","normative":true,"shortname":"longtasks","spec":"longtasks-1","status":"current","text":"long task","type":"dfn","url":"https://w3c.github.io/longtasks/#long-task"},
 "https://w3c.github.io/paint-timing/#mark-paint-timing": {"export":true,"for_":[],"level":"1","normative":true,"shortname":"paint-timing","spec":"paint-timing","status":"current","text":"mark paint timing","type":"dfn","url":"https://w3c.github.io/paint-timing/#mark-paint-timing"},
 "https://w3c.github.io/performance-timeline/#dfn-queue-a-performanceentry": {"export":true,"for_":[],"level":"1","normative":true,"shortname":"performance-timeline","spec":"performance-timeline","status":"current","text":"queue a performanceentry","type":"dfn","url":"https://w3c.github.io/performance-timeline/#dfn-queue-a-performanceentry"},
 "https://w3c.github.io/performance-timeline/#dom-performanceentry-starttime": {"export":true,"for_":["PerformanceEntry"],"level":"2","normative":true,"shortname":"performance-timeline","spec":"performance-timeline-2","status":"anchor-block","text":"startTime","type":"attribute","url":"https://w3c.github.io/performance-timeline/#dom-performanceentry-starttime"},
