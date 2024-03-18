@@ -521,13 +521,14 @@ Report Long Animation Frames {#loaf-processing-model}
 </div>
 
 <div algorithm="Set source URL for script block">
-    To <dfn>set source url for script block</dfn> given a [=script timing info=] |scriptTimingInfo|, a [=/script=] |script|, and a [=/URL=] |url|:
+    To <dfn>set source url for script block</dfn> given a [=script timing info=] |scriptTimingInfo|, a [=/script=] |script|, and a [=/URL=]-or-null |url|:
+        1. If |url| is null, then return.
         1. If |url|'s [=url/scheme=] is "`http`" or "`https`", then set |scriptTimingInfo|'s [=script timing info/source url=] to |script|'s [=script/base URL=].
         1. Otherwise, if |url|'s [=url/scheme=] is "`blob`" or "`data`" then set |scriptTimingInfo|'s [=script timing info/source url=] to the [=concatenate|concatenation=] of  « |url|'s [=url/scheme=], ":"" ».
 </div>
 
 <div algorithm="Report classic script execution">
-    To <dfn>report classic script creation</dfn> given a [=/script=] |script| and a [=/URL=] |originalSourceURL|:
+    To <dfn>report classic script creation</dfn> given a [=/script=] |script| and a [=/URL=]-or-null |originalSourceURL|:
         1. [=Create script entry point=] with |script|'s [=script/settings object=], "`classic-script`",
             and the following step given a [=script timing info=] |scriptTimingInfo|:
             [=Set source url for script block=] given |scriptTimingInfo|, |script|, and |originalSourceURL|.
