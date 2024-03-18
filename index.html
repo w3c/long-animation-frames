@@ -720,7 +720,7 @@ var[data-var-color="6"] { background-color: #FFBCF2; box-shadow: 0 0 0 2px #FFBC
   <div class="head">
    <p data-fill-with="logo"><a class="logo" href="https://www.w3.org/"> <img alt="W3C" height="48" src="https://www.w3.org/StyleSheets/TR/2021/logos/W3C" width="72"> </a> </p>
    <h1 class="p-name no-ref" id="title">Long Animation Frames API</h1>
-   <p id="w3c-state"><a href="https://www.w3.org/standards/types#ED">Editor’s Draft</a>, <time class="dt-updated" datetime="2024-03-12">12 March 2024</time></p>
+   <p id="w3c-state"><a href="https://www.w3.org/standards/types#ED">Editor’s Draft</a>, <time class="dt-updated" datetime="2024-03-18">18 March 2024</time></p>
    <details open>
     <summary>More details about this document</summary>
     <div data-fill-with="spec-metadata">
@@ -1276,8 +1276,10 @@ and the following steps given a <a data-link-type="dfn" href="#script-timing-inf
     </ol>
    </div>
    <div class="algorithm" data-algorithm="Set source URL for script block">
-     To <dfn class="dfn-paneled" data-dfn-type="dfn" data-noexport id="set-source-url-for-script-block">set source url for script block</dfn> given a <a data-link-type="dfn" href="#script-timing-info" id="ref-for-script-timing-info⑦">script timing info</a> <var>scriptTimingInfo</var>, a <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/webappapis.html#concept-script" id="ref-for-concept-script">script</a> <var>script</var>, and a <a data-link-type="dfn" href="https://url.spec.whatwg.org/#concept-url" id="ref-for-concept-url">URL</a> <var>url</var>: 
+     To <dfn class="dfn-paneled" data-dfn-type="dfn" data-noexport id="set-source-url-for-script-block">set source url for script block</dfn> given a <a data-link-type="dfn" href="#script-timing-info" id="ref-for-script-timing-info⑦">script timing info</a> <var>scriptTimingInfo</var>, a <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/webappapis.html#concept-script" id="ref-for-concept-script">script</a> <var>script</var>, and a <a data-link-type="dfn" href="https://url.spec.whatwg.org/#concept-url" id="ref-for-concept-url">URL</a>-or-null <var>url</var>: 
     <ol>
+     <li data-md>
+      <p>If <var>url</var> is null, then return.</p>
      <li data-md>
       <p>If <var>url</var>’s <a data-link-type="dfn" href="https://url.spec.whatwg.org/#concept-url-scheme" id="ref-for-concept-url-scheme">scheme</a> is "`http`" or "`https`", then set <var>scriptTimingInfo</var>’s <a data-link-type="dfn" href="#script-timing-info-source-url" id="ref-for-script-timing-info-source-url③">source url</a> to <var>script</var>’s <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/webappapis.html#concept-script-base-url" id="ref-for-concept-script-base-url">base URL</a>.</p>
      <li data-md>
@@ -1285,7 +1287,7 @@ and the following steps given a <a data-link-type="dfn" href="#script-timing-inf
     </ol>
    </div>
    <div class="algorithm" data-algorithm="Report classic script execution">
-     To <dfn class="dfn-paneled" data-dfn-type="dfn" data-noexport id="report-classic-script-creation">report classic script creation</dfn> given a <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/webappapis.html#concept-script" id="ref-for-concept-script①">script</a> <var>script</var> and a <a data-link-type="dfn" href="https://url.spec.whatwg.org/#concept-url" id="ref-for-concept-url①">URL</a> <var>originalSourceURL</var>: 
+     To <dfn class="dfn-paneled" data-dfn-type="dfn" data-noexport id="report-classic-script-creation">report classic script creation</dfn> given a <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/webappapis.html#concept-script" id="ref-for-concept-script①">script</a> <var>script</var> and a <a data-link-type="dfn" href="https://url.spec.whatwg.org/#concept-url" id="ref-for-concept-url①">URL</a>-or-null <var>originalSourceURL</var>: 
     <ol>
      <li data-md>
       <p><a data-link-type="dfn" href="#create-script-entry-point" id="ref-for-create-script-entry-point④">Create script entry point</a> with <var>script</var>’s <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/webappapis.html#settings-object" id="ref-for-settings-object">settings object</a>, "`classic-script`",
