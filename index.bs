@@ -616,9 +616,6 @@ Report Long Animation Frames {#loaf-processing-model}
 Additions to existing standards {#other-standards}
 ==================================================
 
-Issue: these should be upstreamed since receiving formal signal from
-<a href="https://github.com/mozilla/standards-positions/issues/929">Gecko</a>.
-
 Monkey-patches to the WebIDL standard {#webidl-monkey-patches}
 ----------------------------------------------------------
 <div algorithm="Monkey patches to promise handling">
@@ -655,74 +652,6 @@ Monkey-patches to the DOM standard {#dom-monkey-patches}
     Insert the following step to the <a href="https://dom.spec.whatwg.org/#concept-event-listener-inner-invoke">inner invoke</a> steps,
     after determining that |global| is a {{Window}} (after step 8.2), assuming an [=event listener=] |listener|:
         [=Record timing info for event handler=] given |global|'s {{Window/event}} and |listener|.
-</div>
-
-
-Monkey-patches to the HTML standard {#html-monkey-patches}
-----------------------------------------------------------
-<div algorithm="Monkey patch to record task start">
-    Insert step after step 2.3 of the <a href="https://html.spec.whatwg.org/multipage/webappapis.html#event-loop-processing-model">event loop processing model</a>,
-    after setting |taskStartTime| and |oldestTask|:
-
-    1. [=Record task start time=] given |taskStartTime| and |oldestTask|'s [=task/document=].
-</div>
-
-<div algorithm="Monkey patch to record rendering end">
-    Insert a step before [update the rendering](https://html.spec.whatwg.org/multipage/webappapis.html#update-the-rendering) step 6.14,
-    right before the loop that calculates style and layout for each {{Document}}:
-
-    1. Let |unsafeStyleAndLayoutStartTime| be the [=unsafe shared current time=].
-
-    Insert the following steps after [update the rendering](https://html.spec.whatwg.org/multipage/webappapis.html#update-the-rendering) step 6.18,
-    right after calling [=mark paint timing=], using the existing |docs| variable:
-
-    1. Let |unsafeRenderingEndTime| be the [=unsafe shared current time=].
-    1. [=Record rendering time=] for each [=fully active=] {{Document}} object in |docs| given |unsafeRenderingEndTime| |unsafeStyleAndLayoutStartTime|.
-</div>
-
-<div algorithm="Monkey patch to timers">
-    Insert a step to the <a href="https://html.spec.whatwg.org/multipage/timers-and-user-prompts.html#timer-initialisation-steps">timer initialisation steps</a>,
-        after asserting that the timer ID exists in the map of active timers (After step 8.1),
-        assuming a {{Function}} or string |handler|, a {{WindowOrWorkerGlobalScope}} |global|, and a boolean |repeat|:
-
-        1. [=Record timing info for timer handler=] given |handler|, |global|'s [=relevant settings object=], and |repeat|.
-
-    1. Let |unsafeStyleAndLayoutStartTime| be the [=unsafe shared current time=].
-
-    Insert the following steps after [update the rendering](https://html.spec.whatwg.org/multipage/webappapis.html#update-the-rendering) step 6.18,
-    right after calling [=mark paint timing=], using the existing |docs| variable:
-
-    1. Let |unsafeRenderingEndTime| be the [=unsafe shared current time=].
-    1. [=Record rendering time=] for each [=fully active=] {{Document}} object in |docs| given |unsafeRenderingEndTime| |unsafeStyleAndLayoutStartTime|.
-</div>
-
-<div algorithm="Monkey patches to script execution">
-    The [=classic script=] [=struct=] has an additional item:
-
-    Insert a step to the <a href="https://html.spec.whatwg.org/multipage/webappapis.html#creating-a-classic-script">create a classic script</a> steps,
-        before parsing the script, assuming the |script| variable is populated, assuming a |url| variable:
-        [=Record classic script creation time=] given |script| and |url|.
-
-    Insert a step to the <a href="https://html.spec.whatwg.org/multipage/webappapis.html#run-a-classic-script">run a classic script</a> steps,
-        before preparing to run a script (between steps 2 and 3):
-        [=Record classic script execution start time=] given |script|.
-
-    Insert a step to the <a href="https://html.spec.whatwg.org/multipage/webappapis.html#run-a-module-script">run a module script</a> steps,
-        before preparing to run a script (between steps 2 and 3):
-        [=Record module script execution start time=] given |script|.
-</div>
-
-<div algorithm="Monkey patch to microtrask checkpoint">
-    Append the following step to <a href="https://html.spec.whatwg.org/multipage/webappapis.html#perform-a-microtask-checkpoint">perform a microtask checkpoint</a>:
-        [=Record timing info for microtask checkpoint=].
-</div>
-
-<div algorithm="Monkey patch to pausing">
-    Add the following steps to <a href="https://html.spec.whatwg.org/multipage/webappapis.html#pause">pause</a>:
-
-        Prepend the following step: Let |timeBeforePause| be the [=monotonic clock/unsafe current time=].
-
-        Append the following step: [=Record pause duration=] given the [=duration=] between |timeBeforePause| and the [=monotonic clock/unsafe current time=].
 </div>
 
 Security & privacy considerations {#priv-sec}
