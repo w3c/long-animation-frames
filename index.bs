@@ -493,8 +493,8 @@ Report Long Animation Frames {#loaf-processing-model}
             1. If |handler| is a {{Function}}, then [=apply source location=] for |scriptTimingInfo| given |handler|.
 </div>
 
-<div algorithm="Report event handler">
-    To <dfn export>record timing info for event handler</dfn> given an {{Event}} |event| and an {{EventListener}} |listener|:
+<div algorithm="Report event listener">
+    To <dfn export>record timing info for event listener</dfn> given an {{Event}} |event| and an {{EventListener}} |listener|:
         [=Create script entry point=] given |listener|'s [=relevant settings object=], "`event-listener`",
         and the following steps given a [=script timing info=] |scriptTimingInfo| and a [=frame timing info=] |frameTimingInfo|:
 
