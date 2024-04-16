@@ -646,14 +646,6 @@ Insert the following steps to <a href="https://webidl.spec.whatwg.org/#invoke-a-
 </div>
 
 
-Monkey-patches to the DOM standard {#dom-monkey-patches}
-----------------------------------------------------------
-<div algorithm="Monkey patch to event handling">
-    Insert the following step to the <a href="https://dom.spec.whatwg.org/#concept-event-listener-inner-invoke">inner invoke</a> steps,
-    after determining that |global| is a {{Window}} (after step 8.2), assuming an [=event listener=] |listener|:
-        [=Record timing info for event handler=] given |global|'s {{Window/event}} and |listener|.
-</div>
-
 Security & privacy considerations {#priv-sec}
 ===============================================
 
