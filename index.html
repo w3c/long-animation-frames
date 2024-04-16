@@ -720,7 +720,7 @@ var[data-var-color="6"] { background-color: #FFBCF2; box-shadow: 0 0 0 2px #FFBC
   <div class="head">
    <p data-fill-with="logo"><a class="logo" href="https://www.w3.org/"> <img alt="W3C" height="48" src="https://www.w3.org/StyleSheets/TR/2021/logos/W3C" width="72"> </a> </p>
    <h1 class="p-name no-ref" id="title">Long Animation Frames API</h1>
-   <p id="w3c-state"><a href="https://www.w3.org/standards/types#ED">Editor’s Draft</a>, <time class="dt-updated" datetime="2024-04-09">9 April 2024</time></p>
+   <p id="w3c-state"><a href="https://www.w3.org/standards/types#ED">Editor’s Draft</a>, <time class="dt-updated" datetime="2024-04-16">16 April 2024</time></p>
    <details open>
     <summary>More details about this document</summary>
     <div data-fill-with="spec-metadata">
@@ -787,7 +787,6 @@ var[data-var-color="6"] { background-color: #FFBCF2; box-shadow: 0 0 0 2px #FFBC
      <a href="#other-standards"><span class="secno">4</span> <span class="content">Additions to existing standards</span></a>
      <ol class="toc">
       <li><a href="#webidl-monkey-patches"><span class="secno">4.1</span> <span class="content">Monkey-patches to the WebIDL standard</span></a>
-      <li><a href="#dom-monkey-patches"><span class="secno">4.2</span> <span class="content">Monkey-patches to the DOM standard</span></a>
      </ol>
     <li>
      <a href="#priv-sec"><span class="secno">5</span> <span class="content">Security &amp; privacy considerations</span></a>
@@ -1445,9 +1444,6 @@ that can be improved, or if the source location for promise handlers would remai
    </div>
    <div class="algorithm" data-algorithm="Monkey patch to callback invocation"> Insert the following steps to <a href="https://webidl.spec.whatwg.org/#invoke-a-callback-function">invoke a callback function</a>,
     once we have an <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/webappapis.html#environment-settings-object" id="ref-for-environment-settings-object③">environment settings object</a> <var>relevant settings</var> and a <a data-link-type="dfn" href="https://webidl.spec.whatwg.org/#dfn-callback-function" id="ref-for-dfn-callback-function②">callback function</a> <var>F</var>: <a data-link-type="dfn" href="#record-timing-info-for-user-callback" id="ref-for-record-timing-info-for-user-callback">Record timing info for user callback</a> given <var>F</var> and <var>relevant settings</var>. </div>
-   <h3 class="heading settled" data-level="4.2" id="dom-monkey-patches"><span class="secno">4.2. </span><span class="content">Monkey-patches to the DOM standard</span><a class="self-link" href="#dom-monkey-patches"></a></h3>
-   <div class="algorithm" data-algorithm="Monkey patch to event handling"> Insert the following step to the <a href="https://dom.spec.whatwg.org/#concept-event-listener-inner-invoke">inner invoke</a> steps,
-    after determining that <var>global</var> is a <code class="idl"><a data-link-type="idl" href="https://html.spec.whatwg.org/multipage/nav-history-apis.html#window" id="ref-for-window⑥">Window</a></code> (after step 8.2), assuming an <a data-link-type="dfn" href="https://dom.spec.whatwg.org/#concept-event-listener" id="ref-for-concept-event-listener">event listener</a> <var>listener</var>: <a data-link-type="dfn" href="https://w3c.github.io/long-animation-frames/#record-timing-info-for-event-handler" id="ref-for-record-timing-info-for-event-handler">Record timing info for event handler</a> given <var>global</var>’s <code class="idl"><a data-link-type="idl" href="https://dom.spec.whatwg.org/#dom-window-event" id="ref-for-dom-window-event">event</a></code> and <var>listener</var>. </div>
    <h2 class="heading settled" data-level="5" id="priv-sec"><span class="secno">5. </span><span class="content">Security &amp; privacy considerations</span><a class="self-link" href="#priv-sec"></a></h2>
    <p>The Long Animation Frames API adheres to the same-origin policy by including origin-safe attribution information about
 the source of the long task. There is a 50ms threshold for long tasks. Durations are only provided in 1 ms
@@ -1699,8 +1695,6 @@ To do that, we use the existing <a data-link-type="dfn" href="https://html.spec.
      <li><span class="dfn-paneled" id="96c16e60">Node</span>
      <li><span class="dfn-paneled" id="622d9f0e">callback</span>
      <li><span class="dfn-paneled" id="5ca8693f">currentTarget</span>
-     <li><span class="dfn-paneled" id="c4c1ea2a">event</span>
-     <li><span class="dfn-paneled" id="06950d36">event listener</span>
      <li><span class="dfn-paneled" id="3b5b61f7">get an attribute by name</span>
      <li><span class="dfn-paneled" id="6ea37aa1">id</span>
      <li><span class="dfn-paneled" id="87aba61f">nodeName</span>
@@ -1769,11 +1763,6 @@ To do that, we use the existing <a data-link-type="dfn" href="https://html.spec.
      <li><span class="dfn-paneled" id="984221ca">struct</span>
     </ul>
    <li>
-    <a data-link-type="biblio">[LONG-ANIMATION-FRAMES]</a> defines the following terms:
-    <ul>
-     <li><span class="dfn-paneled" id="012e0419">record timing info for event handler</span>
-    </ul>
-   <li>
     <a data-link-type="biblio">[LONGTASKS-1]</a> defines the following terms:
     <ul>
      <li><span class="dfn-paneled" id="b254feb4">long task</span>
@@ -1835,8 +1824,6 @@ To do that, we use the existing <a data-link-type="dfn" href="https://html.spec.
    <dd>Anne van Kesteren; et al. <a href="https://html.spec.whatwg.org/multipage/"><cite>HTML Standard</cite></a>. Living Standard. URL: <a href="https://html.spec.whatwg.org/multipage/">https://html.spec.whatwg.org/multipage/</a>
    <dt id="biblio-infra">[INFRA]
    <dd>Anne van Kesteren; Domenic Denicola. <a href="https://infra.spec.whatwg.org/"><cite>Infra Standard</cite></a>. Living Standard. URL: <a href="https://infra.spec.whatwg.org/">https://infra.spec.whatwg.org/</a>
-   <dt id="biblio-long-animation-frames">[LONG-ANIMATION-FRAMES]
-   <dd><a href="https://w3c.github.io/long-animation-frames/"><cite>Long Animation Frames API</cite></a>. Editor's Draft. URL: <a href="https://w3c.github.io/long-animation-frames/">https://w3c.github.io/long-animation-frames/</a>
    <dt id="biblio-longtasks-1">[LONGTASKS-1]
    <dd>Noam Rosenthal. <a href="https://w3c.github.io/longtasks/"><cite>Long Tasks API</cite></a>. URL: <a href="https://w3c.github.io/longtasks/">https://w3c.github.io/longtasks/</a>
    <dt id="biblio-performance-timeline">[PERFORMANCE-TIMELINE]
@@ -2110,10 +2097,8 @@ function parseHTML(markup) {
 {
 let dfnPanelData = {
 "0075d3fa": {"dfnID":"0075d3fa","dfnText":"running script","external":true,"refSections":[{"refs":[{"id":"ref-for-running-script"},{"id":"ref-for-running-script\u2460"}],"title":"3.2.2. Long Script Monitoring"},{"refs":[{"id":"ref-for-running-script\u2461"}],"title":"4.1. Monkey-patches to the WebIDL standard"}],"url":"https://html.spec.whatwg.org/multipage/#running-script"},
-"012e0419": {"dfnID":"012e0419","dfnText":"record timing info for event handler","external":true,"refSections":[{"refs":[{"id":"ref-for-record-timing-info-for-event-handler"}],"title":"4.2. Monkey-patches to the DOM standard"}],"url":"https://w3c.github.io/long-animation-frames/#record-timing-info-for-event-handler"},
 "04e0443f": {"dfnID":"04e0443f","dfnText":"document","external":true,"refSections":[{"refs":[{"id":"ref-for-dom-document-2"},{"id":"ref-for-dom-document-2\u2460"},{"id":"ref-for-dom-document-2\u2461"},{"id":"ref-for-dom-document-2\u2462"}],"title":"3.2.2. Long Script Monitoring"}],"url":"https://html.spec.whatwg.org/multipage/nav-history-apis.html#dom-document-2"},
 "061031fb": {"dfnID":"061031fb","dfnText":"hidden","external":true,"refSections":[{"refs":[{"id":"ref-for-dom-document-hidden"},{"id":"ref-for-dom-document-hidden\u2460"},{"id":"ref-for-dom-document-hidden\u2461"}],"title":"3.2.2. Long Script Monitoring"}],"url":"https://html.spec.whatwg.org/multipage/interaction.html#dom-document-hidden"},
-"06950d36": {"dfnID":"06950d36","dfnText":"event listener","external":true,"refSections":[{"refs":[{"id":"ref-for-concept-event-listener"}],"title":"4.2. Monkey-patches to the DOM standard"}],"url":"https://dom.spec.whatwg.org/#concept-event-listener"},
 "0e3ba9f8": {"dfnID":"0e3ba9f8","dfnText":"fully active","external":true,"refSections":[{"refs":[{"id":"ref-for-fully-active"},{"id":"ref-for-fully-active\u2460"},{"id":"ref-for-fully-active\u2461"}],"title":"3.2.2. Long Script Monitoring"}],"url":"https://html.spec.whatwg.org/multipage/document-sequences.html#fully-active"},
 "129bdae8": {"dfnID":"129bdae8","dfnText":"Event","external":true,"refSections":[{"refs":[{"id":"ref-for-event"}],"title":"3.2.2. Long Script Monitoring"}],"url":"https://dom.spec.whatwg.org/#event"},
 "13dd6cae": {"dfnID":"13dd6cae","dfnText":"node navigable","external":true,"refSections":[{"refs":[{"id":"ref-for-node-navigable"},{"id":"ref-for-node-navigable\u2460"},{"id":"ref-for-node-navigable\u2461"},{"id":"ref-for-node-navigable\u2462"},{"id":"ref-for-node-navigable\u2463"},{"id":"ref-for-node-navigable\u2464"}],"title":"2.1. PerformanceLongAnimationFrameTiming interface"},{"refs":[{"id":"ref-for-node-navigable\u2465"}],"title":"3.2.1. Long Animation Frame Monitoring {#loaf-monitoring}"}],"url":"https://html.spec.whatwg.org/multipage/document-sequences.html#node-navigable"},
@@ -2138,7 +2123,7 @@ let dfnPanelData = {
 "5991ccfb": {"dfnID":"5991ccfb","dfnText":"relevant realm","external":true,"refSections":[{"refs":[{"id":"ref-for-concept-relevant-realm"}],"title":"2.1. PerformanceLongAnimationFrameTiming interface"},{"refs":[{"id":"ref-for-concept-relevant-realm\u2460"}],"title":"3.2.1. Long Animation Frame Monitoring {#loaf-monitoring}"},{"refs":[{"id":"ref-for-concept-relevant-realm\u2461"}],"title":"3.2.2. Long Script Monitoring"}],"url":"https://html.spec.whatwg.org/multipage/webappapis.html#concept-relevant-realm"},
 "5bf9ea61": {"dfnID":"5bf9ea61","dfnText":"attribute","external":true,"refSections":[{"refs":[{"id":"ref-for-dfn-attribute"}],"title":"4.1. Monkey-patches to the WebIDL standard"}],"url":"https://webidl.spec.whatwg.org/#dfn-attribute"},
 "5ca8693f": {"dfnID":"5ca8693f","dfnText":"currentTarget","external":true,"refSections":[{"refs":[{"id":"ref-for-dom-event-currenttarget"}],"title":"3.2.2. Long Script Monitoring"}],"url":"https://dom.spec.whatwg.org/#dom-event-currenttarget"},
-"5d7209e9": {"dfnID":"5d7209e9","dfnText":"Window","external":true,"refSections":[{"refs":[{"id":"ref-for-window"}],"title":"2.2. PerformanceScriptTiming interface"},{"refs":[{"id":"ref-for-window\u2460"}],"title":"3. Processing model"},{"refs":[{"id":"ref-for-window\u2461"}],"title":"3.1. Frame Timing Info"},{"refs":[{"id":"ref-for-window\u2462"},{"id":"ref-for-window\u2463"},{"id":"ref-for-window\u2464"}],"title":"3.2.2. Long Script Monitoring"},{"refs":[{"id":"ref-for-window\u2465"}],"title":"4.2. Monkey-patches to the DOM standard"}],"url":"https://html.spec.whatwg.org/multipage/nav-history-apis.html#window"},
+"5d7209e9": {"dfnID":"5d7209e9","dfnText":"Window","external":true,"refSections":[{"refs":[{"id":"ref-for-window"}],"title":"2.2. PerformanceScriptTiming interface"},{"refs":[{"id":"ref-for-window\u2460"}],"title":"3. Processing model"},{"refs":[{"id":"ref-for-window\u2461"}],"title":"3.1. Frame Timing Info"},{"refs":[{"id":"ref-for-window\u2462"},{"id":"ref-for-window\u2463"},{"id":"ref-for-window\u2464"}],"title":"3.2.2. Long Script Monitoring"}],"url":"https://html.spec.whatwg.org/multipage/nav-history-apis.html#window"},
 "622d9f0e": {"dfnID":"622d9f0e","dfnText":"callback","external":true,"refSections":[{"refs":[{"id":"ref-for-event-listener-callback"}],"title":"3.2.2. Long Script Monitoring"}],"url":"https://dom.spec.whatwg.org/#event-listener-callback"},
 "649608b9": {"dfnID":"649608b9","dfnText":"list","external":true,"refSections":[{"refs":[{"id":"ref-for-list"}],"title":"2.1. PerformanceLongAnimationFrameTiming interface"},{"refs":[{"id":"ref-for-list\u2460"},{"id":"ref-for-list\u2461"}],"title":"3.1. Frame Timing Info"}],"url":"https://infra.spec.whatwg.org/#list"},
 "69ea869d": {"dfnID":"69ea869d","dfnText":"relative high resolution time","external":true,"refSections":[{"refs":[{"id":"ref-for-dfn-relative-high-resolution-time"},{"id":"ref-for-dfn-relative-high-resolution-time\u2460"},{"id":"ref-for-dfn-relative-high-resolution-time\u2461"},{"id":"ref-for-dfn-relative-high-resolution-time\u2462"},{"id":"ref-for-dfn-relative-high-resolution-time\u2463"},{"id":"ref-for-dfn-relative-high-resolution-time\u2464"}],"title":"2.1. PerformanceLongAnimationFrameTiming interface"},{"refs":[{"id":"ref-for-dfn-relative-high-resolution-time\u2465"},{"id":"ref-for-dfn-relative-high-resolution-time\u2466"},{"id":"ref-for-dfn-relative-high-resolution-time\u2467"}],"title":"2.2. PerformanceScriptTiming interface"},{"refs":[{"id":"ref-for-dfn-relative-high-resolution-time\u2468"},{"id":"ref-for-dfn-relative-high-resolution-time\u2460\u24ea"},{"id":"ref-for-dfn-relative-high-resolution-time\u2460\u2460"},{"id":"ref-for-dfn-relative-high-resolution-time\u2460\u2461"}],"title":"3.2.1. Long Animation Frame Monitoring {#loaf-monitoring}"}],"url":"https://w3c.github.io/hr-time/#dfn-relative-high-resolution-time"},
@@ -2170,7 +2155,6 @@ let dfnPanelData = {
 "b254feb4": {"dfnID":"b254feb4","dfnText":"long task","external":true,"refSections":[{"refs":[{"id":"ref-for-long-task"}],"title":"1.2. Long Animation Frames vs. Long Tasks"}],"url":"https://w3c.github.io/longtasks/#long-task"},
 "bdbd19d1": {"dfnID":"bdbd19d1","dfnText":"Promise","external":true,"refSections":[{"refs":[{"id":"ref-for-idl-promise"}],"title":"3.2.2. Long Script Monitoring"},{"refs":[{"id":"ref-for-idl-promise\u2460"},{"id":"ref-for-idl-promise\u2461"},{"id":"ref-for-idl-promise\u2462"},{"id":"ref-for-idl-promise\u2463"},{"id":"ref-for-idl-promise\u2464"},{"id":"ref-for-idl-promise\u2465"},{"id":"ref-for-idl-promise\u2466"}],"title":"4.1. Monkey-patches to the WebIDL standard"}],"url":"https://webidl.spec.whatwg.org/#idl-promise"},
 "bf77e69a": {"dfnID":"bf77e69a","dfnText":"WeakRef","external":true,"refSections":[{"refs":[{"id":"ref-for-sec-weak-ref-objects"}],"title":"3.1. Frame Timing Info"}],"url":"https://tc39.es/ecma262/multipage/managing-memory.html#sec-weak-ref-objects"},
-"c4c1ea2a": {"dfnID":"c4c1ea2a","dfnText":"event","external":true,"refSections":[{"refs":[{"id":"ref-for-dom-window-event"}],"title":"4.2. Monkey-patches to the DOM standard"}],"url":"https://dom.spec.whatwg.org/#dom-window-event"},
 "c62cd7cf": {"dfnID":"c62cd7cf","dfnText":"origin","external":true,"refSections":[{"refs":[{"id":"ref-for-concept-document-origin"},{"id":"ref-for-concept-document-origin\u2460"}],"title":"3.2.1. Long Animation Frame Monitoring {#loaf-monitoring}"}],"url":"https://dom.spec.whatwg.org/#concept-document-origin"},
 "c88f3887": {"dfnID":"c88f3887","dfnText":"item","external":true,"refSections":[{"refs":[{"id":"ref-for-struct-item"},{"id":"ref-for-struct-item\u2460"}],"title":"3.1. Frame Timing Info"}],"url":"https://infra.spec.whatwg.org/#struct-item"},
 "caa8344c": {"dfnID":"caa8344c","dfnText":"classic script","external":true,"refSections":[{"refs":[{"id":"ref-for-classic-script"},{"id":"ref-for-classic-script\u2460"}],"title":"3.2.2. Long Script Monitoring"}],"url":"https://html.spec.whatwg.org/multipage/webappapis.html#classic-script"},
@@ -2741,14 +2725,12 @@ let refsData = {
 "https://dom.spec.whatwg.org/#callbackdef-eventlistener": {"export":true,"for_":[],"level":"1","normative":true,"shortname":"dom","spec":"dom","status":"current","text":"EventListener","type":"callback","url":"https://dom.spec.whatwg.org/#callbackdef-eventlistener"},
 "https://dom.spec.whatwg.org/#concept-document-origin": {"export":true,"for_":["Document"],"level":"1","normative":true,"shortname":"dom","spec":"dom","status":"current","text":"origin","type":"dfn","url":"https://dom.spec.whatwg.org/#concept-document-origin"},
 "https://dom.spec.whatwg.org/#concept-element-attributes-get-by-name": {"export":true,"for_":[],"level":"1","normative":true,"shortname":"dom","spec":"dom","status":"current","text":"get an attribute by name","type":"dfn","url":"https://dom.spec.whatwg.org/#concept-element-attributes-get-by-name"},
-"https://dom.spec.whatwg.org/#concept-event-listener": {"export":true,"for_":[],"level":"1","normative":true,"shortname":"dom","spec":"dom","status":"current","text":"event listener","type":"dfn","url":"https://dom.spec.whatwg.org/#concept-event-listener"},
 "https://dom.spec.whatwg.org/#concept-id": {"export":true,"for_":["Element"],"level":"1","normative":true,"shortname":"dom","spec":"dom","status":"current","text":"id","type":"dfn","url":"https://dom.spec.whatwg.org/#concept-id"},
 "https://dom.spec.whatwg.org/#document": {"export":true,"for_":[],"level":"1","normative":true,"shortname":"dom","spec":"dom","status":"current","text":"Document","type":"interface","url":"https://dom.spec.whatwg.org/#document"},
 "https://dom.spec.whatwg.org/#dom-event-currenttarget": {"export":true,"for_":["Event"],"level":"1","normative":true,"shortname":"dom","spec":"dom","status":"current","text":"currentTarget","type":"attribute","url":"https://dom.spec.whatwg.org/#dom-event-currenttarget"},
 "https://dom.spec.whatwg.org/#dom-event-timestamp": {"export":true,"for_":["Event"],"level":"1","normative":true,"shortname":"dom","spec":"dom","status":"current","text":"timeStamp","type":"attribute","url":"https://dom.spec.whatwg.org/#dom-event-timestamp"},
 "https://dom.spec.whatwg.org/#dom-event-type": {"export":true,"for_":["Event"],"level":"1","normative":true,"shortname":"dom","spec":"dom","status":"current","text":"type","type":"attribute","url":"https://dom.spec.whatwg.org/#dom-event-type"},
 "https://dom.spec.whatwg.org/#dom-node-nodename": {"export":true,"for_":["Node"],"level":"1","normative":true,"shortname":"dom","spec":"dom","status":"current","text":"nodeName","type":"attribute","url":"https://dom.spec.whatwg.org/#dom-node-nodename"},
-"https://dom.spec.whatwg.org/#dom-window-event": {"export":true,"for_":["Window"],"level":"1","normative":true,"shortname":"dom","spec":"dom","status":"current","text":"event","type":"attribute","url":"https://dom.spec.whatwg.org/#dom-window-event"},
 "https://dom.spec.whatwg.org/#element": {"export":true,"for_":[],"level":"1","normative":true,"shortname":"dom","spec":"dom","status":"current","text":"Element","type":"interface","url":"https://dom.spec.whatwg.org/#element"},
 "https://dom.spec.whatwg.org/#event": {"export":true,"for_":[],"level":"1","normative":true,"shortname":"dom","spec":"dom","status":"current","text":"Event","type":"interface","url":"https://dom.spec.whatwg.org/#event"},
 "https://dom.spec.whatwg.org/#event-listener-callback": {"export":true,"for_":["event listener"],"level":"1","normative":true,"shortname":"dom","spec":"dom","status":"current","text":"callback","type":"dfn","url":"https://dom.spec.whatwg.org/#event-listener-callback"},
@@ -2797,7 +2779,6 @@ let refsData = {
 "https://w3c.github.io/hr-time/#dfn-relative-high-resolution-time": {"export":true,"for_":[],"level":"3","normative":true,"shortname":"hr-time","spec":"hr-time-3","status":"current","text":"relative high resolution time","type":"dfn","url":"https://w3c.github.io/hr-time/#dfn-relative-high-resolution-time"},
 "https://w3c.github.io/hr-time/#dfn-unsafe-shared-current-time": {"export":true,"for_":[],"level":"3","normative":true,"shortname":"hr-time","spec":"hr-time-3","status":"current","text":"unsafe shared current time","type":"dfn","url":"https://w3c.github.io/hr-time/#dfn-unsafe-shared-current-time"},
 "https://w3c.github.io/hr-time/#idl-def-domhighrestimestamp": {"export":true,"for_":[],"level":"2","normative":true,"shortname":"hr-time","spec":"hr-time-2","status":"anchor-block","text":"DOMHighResTimeStamp","type":"typedef","url":"https://w3c.github.io/hr-time/#idl-def-domhighrestimestamp"},
-"https://w3c.github.io/long-animation-frames/#record-timing-info-for-event-handler": {"export":true,"for_":[],"level":"1","normative":true,"shortname":"long-animation-frames","spec":"long-animation-frames","status":"current","text":"record timing info for event handler","type":"dfn","url":"https://w3c.github.io/long-animation-frames/#record-timing-info-for-event-handler"},
 "https://w3c.github.io/longtasks/#long-task": {"export":true,"for_":[],"level":"1","normative":true,"shortname":"longtasks","spec":"longtasks-1","status":"current","text":"long task","type":"dfn","url":"https://w3c.github.io/longtasks/#long-task"},
 "https://w3c.github.io/performance-timeline/#dfn-queue-a-performanceentry": {"export":true,"for_":[],"level":"1","normative":true,"shortname":"performance-timeline","spec":"performance-timeline","status":"current","text":"queue a performanceentry","type":"dfn","url":"https://w3c.github.io/performance-timeline/#dfn-queue-a-performanceentry"},
 "https://w3c.github.io/performance-timeline/#dom-performanceentry-starttime": {"export":true,"for_":["PerformanceEntry"],"level":"2","normative":true,"shortname":"performance-timeline","spec":"performance-timeline-2","status":"anchor-block","text":"startTime","type":"attribute","url":"https://w3c.github.io/performance-timeline/#dom-performanceentry-starttime"},
