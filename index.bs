@@ -116,7 +116,7 @@ Long Animation Frames vs. Long Tasks {#loaf-vs-longtasks}
 ---------------------------------------------------------
 
 While both [=long tasks=] and long animation frames measure congestion and jank, long animation frames
-provide information that has a better correlation with how user preceive this type of congestion.
+provide information that has a better correlation with how users perceive this type of congestion.
 That's because long animation frames measure a sequence that begins when the main thread is idle,
 and end when the frame either renders or the user agents decides there is nothing to render.
 
