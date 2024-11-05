@@ -46,10 +46,10 @@ async function app_callback() {
   await Promise.resolve();
   do_an_app_thing();
 }
-const app_calllback_wrapper = performance.bind(app_callback);
+const app_callback_wrapper = performance.bind(app_callback);
 setTimeout(function timeout_wrapper() => {
   Promise.resolve().then(() => { do_a_wrapper_thing(); }
-  app_calllback_wrapper();
+  app_callback_wrapper();
 }, 1000);
 ```
 
