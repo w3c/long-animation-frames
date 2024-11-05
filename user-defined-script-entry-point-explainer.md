@@ -12,6 +12,8 @@ While this is useful in many situations, and has acceptable overhead for a field
 For example, a framework or error reporting library can wrap all the event listeners for a web page, appearing as the "entry point" in the timeline, and the true culprit for the bottleneck would be obfuscated.
 
 ## Introducing user-defined entry points
+
+### Declaring a user-defined entry point
 To enable more granular insight without incurring the overhead of a sampling profiler, proposing to introduce a way for a caller of a function to declare that that function is an "entry point" for the purpose of performance monitoring.
 
 ```js
@@ -30,7 +32,50 @@ element.addEventListener("click", e => outer_function(e));
 ```
 
 During the execution of a performance-bound function, the time spent would be counted as part of the execution of that function, as if it was a script entry point.
+
+### How it would appear in the performance timeline
+When present, user-defined entry points would appear in the `scripts` array of a `PerformanceLongAnimationFrameTiming` entry, alongside other long scripts (>5ms).
+Since now entries can overlap an attribute would be added to the script entry, `selfDuration`, which would sum the duration of the entry, with nested entry durations subtracted:
+
+```js
+new PerformanceObserver(entries => {
+  const entry = entries.getEntries()[0];
+  const [outer_script, inner_script] = entry.scripts;
+
+  // "event-listener"
+  outer_script.invokerType;
+
+  // "outer_function"
+  entry.scripts[0].sourceFunctionName;
+
+  // when `outer_function` was called
+  entry.scripts[0].startTime;
+
+  // The duration from `startTime` up until the moment the microtask queue was empty.
+  entry.scripts[0].duration;
+
+  // The amount of time spent in `outer_function` and its microtasks, not including bound functions.
+  entry.scripts[0].selfDuration;
+
+  // "user-bound" (*bikesheddable)
+  outer_script.invokerType;
+
+  // "inner_function"
+  entry.scripts[1].sourceFunctionName;
+
+  // when `inner_function` was called
+  entry.scripts[1].startTime;
+
+` // the duration between `startTime` and the time `inner_function` returned.
+  entry.scripts[1].duration;
+
+  // The total duration of `inner_function` including microtasks.
+  entry.scripts[1].selfDuration;
+}).observe({type: "long-animation-frame"});
+
+```
 It would appear in the [`scripts`](https://w3c.github.io/long-animation-frames/#dom-performancelonganimationframetiming-scripts) array of a `long-animation-frame` performance entry.
+
 
 ## Some details
 ### Overlaps
@@ -55,6 +100,9 @@ setTimeout(function timeout_wrapper() => {
 
 In the above example, both the wrapper and the app would queue microtasks, which might contribute to main-thread bottlenecks.
 With `performance.bind()` it is guaranteed in this case that the time spent in `do_a_wrapper_thing` would be attributed to `timeout_wrapper`, and the time spent in `do_an_app_thing` would be attributed to both `app_callback` and `timeout_wrapper`.
+
+Note that `duration` has a different meaning for actual entry points and for user-defined entry points: for actual entry points, the duration includes the time including all the microtasks. For user-defined entry points, the duration is the time before the microtask checkpoint.
+That's because the time spent in the inner function might not be contiguous. Generally speaking, `duration` can help us draw the script entry on the timeline, and `selfDuration` matters more in terms of attribution.
 
 ## Alternative considered
 
