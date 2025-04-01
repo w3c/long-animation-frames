@@ -257,6 +257,8 @@ The {{PerformanceLongAnimationFrameTiming/scripts}} attribute's getter steps are
         readonly attribute DOMString sourceURL;
         readonly attribute DOMString sourceFunctionName;
         readonly attribute long long sourceCharPosition;
+        readonly attribute long long sourceLine;
+        readonly attribute long long sourceColumn;
         readonly attribute DOMHighResTimeStamp pauseDuration;
         readonly attribute DOMHighResTimeStamp forcedStyleAndLayoutDuration;
         readonly attribute Window? window;
@@ -321,6 +323,8 @@ The {{PerformanceScriptTiming/pauseDuration}} attribute's getter step is to retu
 The {{PerformanceScriptTiming/sourceURL}} attribute's getter step is to return [=this=]'s [=PerformanceScriptTiming/timing info=]'s [=script timing info/source url=].
 The {{PerformanceScriptTiming/sourceFunctionName}} attribute's getter step is to return [=this=]'s [=PerformanceScriptTiming/timing info=]'s [=script timing info/source function name=].
 The {{PerformanceScriptTiming/sourceCharPosition}} attribute's getter step is to return [=this=]'s [=PerformanceScriptTiming/timing info=]'s [=script timing info/source character position=].
+The {{PerformanceScriptTiming/sourceLine}} attribute's getter step is to return [=this=]'s [=PerformanceScriptTiming/timing info=]'s [=script timing info/source line number=].
+The {{PerformanceScriptTiming/sourceColumn}} attribute's getter step is to return [=this=]'s [=PerformanceScriptTiming/timing info=]'s [=script timing info/source column number=].
 
 The {{PerformanceScriptTiming/window}} attribute's getter steps are:
     1. Let |window| be the result of calling [=weakrefderef|deref=] on [=this=]'s [=PerformanceScriptTiming/timing info=]'s [=script timing info/window=].
@@ -383,6 +387,12 @@ It has the following [=struct/items=]:
     :: A string, initially the empty string.
 
     : <dfn>source character position</dfn>
+    :: A number, initially -1.
+
+    : <dfn>source line number</dfn>
+    :: A number, initially -1.
+
+    : <dfn>source column number</dfn>
     :: A number, initially -1.
 
     : <dfn>window</dfn>
@@ -591,6 +601,8 @@ Report Long Animation Frames {#loaf-processing-model}
     1. If |script| is a [=classic script=] whose [=classic script/muted errors=] is true, then:
         1. set |scriptTimingInfo|'s [=script timing info/source url=] to the empty string.
         1. set |scriptTimingInfo|'s [=script timing info/source character position=] to -1.
+        1. set |scriptTimingInfo|'s [=script timing info/source line number=] to -1.
+        1. set |scriptTimingInfo|'s [=script timing info/source column number=] to -1.
         1. set |scriptTimingInfo|'s [=script timing info/source function name=] to the empty string.
     1. If the [=duration=] between |scriptTimingInfo|'s [=script timing info/start time=] and |scriptTimingInfo|'s [=script timing info/end time=] is greater than 5 milliseconds, then
         [=list/append=] |scriptTimingInfo| to |frameTimingInfo|'s [=frame timing info/scripts=].
@@ -601,6 +613,8 @@ Report Long Animation Frames {#loaf-processing-model}
     1. The user agent may set |scriptTimingInfo|'s [=script timing info/source url=] to the source URL of the script where |callback| was defined.
     1. The user agent may set |scriptTimingInfo|'s [=script timing info/source function name=] to the function name of |callback|.
     1. The user agent may set |scriptTimingInfo|'s [=script timing info/source character position=] to the character position where |callback| was defined.
+    1. The user agent may set |scriptTimingInfo|'s [=script timing info/source line number=] to the line number where |callback| was defined.
+    1. The user agent may set |scriptTimingInfo|'s [=script timing info/source column number=] to the column number where |callback| was defined
 </div>
 
 <div algorithm="Report pause duration">
