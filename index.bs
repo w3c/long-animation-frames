@@ -70,6 +70,7 @@ urlPrefix: https://tc39.es/ecma262/multipage/managing-memory.html
 
 <pre class=link-defaults>
 spec:html; type:dfn; for:/; text:browsing context
+spec:hr-time-3; type:dfn; text:duration
 </pre>
 
 Introduction {#intro}
@@ -158,6 +159,8 @@ Long Animation Frame timing involves the following new interfaces:
 
         readonly attribute DOMHighResTimeStamp renderStart;
         readonly attribute DOMHighResTimeStamp styleAndLayoutStart;
+        readonly attribute DOMHighResTimeStamp styleDuration;
+        readonly attribute DOMHighResTimeStamp layoutDuration;
         readonly attribute DOMHighResTimeStamp blockingDuration;
         readonly attribute DOMHighResTimeStamp firstUIEventTimestamp;
         [SameObject] readonly attribute FrozenArray&lt;PerformanceScriptTiming&gt; scripts;
@@ -180,6 +183,10 @@ The {{PerformanceLongAnimationFrameTiming/duration}} attribute's getter step is 
 The {{PerformanceLongAnimationFrameTiming/renderStart}} attribute's getter step is to return the [=relative high resolution time=] given [=this=]'s [=PerformanceLongAnimationFrameTiming/timing info=]'s [=frame timing info/update the rendering start time=] and [=this=]'s [=relevant global object=].
 
 The {{PerformanceLongAnimationFrameTiming/styleAndLayoutStart}} attribute's getter step is to return the [=relative high resolution time=] given [=this=]'s [=PerformanceLongAnimationFrameTiming/timing info=]'s [=frame timing info/style and layout start time=] and [=this=]'s [=relevant global object=].
+
+The {{PerformanceLongAnimationFrameTiming/styleDuration}} attribute's getter step is to return [=this=]'s [=PerformanceLongAnimationFrameTiming/timing info=]'s [=frame timing info/style duration=].
+
+The {{PerformanceLongAnimationFrameTiming/layoutDuration}} attribute's getter step is to return [=this=]'s [=PerformanceLongAnimationFrameTiming/timing info=]'s [=frame timing info/layout duration=].
 
 The {{PerformanceLongAnimationFrameTiming/firstUIEventTimestamp}} attribute's getter step is to return the [=relative high resolution time=] given [=this=]'s [=PerformanceLongAnimationFrameTiming/timing info=]'s [=frame timing info/first ui event timestamp=] and [=this=]'s [=relevant global object=].
 
@@ -259,6 +266,8 @@ The {{PerformanceLongAnimationFrameTiming/scripts}} attribute's getter steps are
         readonly attribute long long sourceCharPosition;
         readonly attribute DOMHighResTimeStamp pauseDuration;
         readonly attribute DOMHighResTimeStamp forcedStyleAndLayoutDuration;
+        readonly attribute DOMHighResTimeStamp forcedStyleDuration;
+        readonly attribute DOMHighResTimeStamp forcedLayoutDuration;
         readonly attribute Window? window;
         readonly attribute ScriptWindowAttribution windowAttribution;
         [Default] object toJSON();
@@ -288,7 +297,7 @@ The {{PerformanceScriptTiming/invoker}} attribute's getter steps are:
             1. If |this|'s [=PerformanceScriptTiming/timing info=]'s [=script timing info/event target element id=] is not the empty string, then:
                 Set |targetName| to the [=concatenate|concatenation=] of « |targetName|, "#", |this|'s [=PerformanceScriptTiming/timing info=]'s [=script timing info/event target element id=] ».
             1. Otherwise, If |this|'s [=PerformanceScriptTiming/timing info=]'s [=script timing info/event target element src attribute=] is not the empty string, then:
-                Set |targetName| to the [=concatenate|concatenation=] of « |targetName|, '[src=', |this|'s [=PerformanceScriptTiming/timing info=]'s [=script timing info/event target element src attribute=], ']' ».
+                Set |targetName| to the [=concatenate|concatenation=] of « |targetName|, "[src=", |this|'s [=PerformanceScriptTiming/timing info=]'s [=script timing info/event target element src attribute=], "]" ».
             1. Return the [=concatenate|concatenation=] of « |targetName|, ".on", [=this=]'s [=PerformanceScriptTiming/timing info=]'s [=script timing info/event type=] ».
 
             Issue: this feels a bit custom, need to discuss name generation.
@@ -315,6 +324,14 @@ The {{PerformanceScriptTiming/executionStart}} attribute's getter step is to ret
 The {{PerformanceScriptTiming/forcedStyleAndLayoutDuration}} attribute's getter step is to return an [=implementation-defined=] value that represents time spent performing style and layout synchronously, e.g. by calling {{Window/getComputedStyle()}} or {{Element/getBoundingClientRect()}}.
 
     Issue: Find a way to make this interoperable/normative. Perhaps mark those functions in WebIDL as requiring synchronous style/layout? Also move to [=PerformanceScriptTiming/timing info=] once that's resolved.
+
+The {{PerformanceScriptTiming/forcedStyleDuration}} attribute's getter step is to return an [=implementation-defined=] value that represents time spent performing style recalculation synchronously (without layout), e.g. by calling {{Window/getComputedStyle()}}.
+
+    Issue: Find a way to make this interoperable/normative.
+
+The {{PerformanceScriptTiming/forcedLayoutDuration}} attribute's getter step is to return an [=implementation-defined=] value that represents time spent performing layout synchronously (without style recalculation), e.g. by calling {{Element/getBoundingClientRect()}} after the layout is already invalidated.
+
+    Issue: Find a way to make this interoperable/normative.
 
 The {{PerformanceScriptTiming/pauseDuration}} attribute's getter step is to return [=this=]'s [=PerformanceScriptTiming/timing info=]'s [=script timing info/pause duration=].
 
@@ -347,8 +364,14 @@ It has the following [=struct/items=]:
     : <dfn>first ui event timestamp</dfn>
     : <dfn>end time</dfn>
     :: A {{DOMHighResTimeStamp}}, initially 0.
-        Note: all the above are [=monotonic clock/unsafe current time=|unsafe=],
+        Note: all the above are [=unsafe shared current time|unsafe=],
         and should be [=coarsen time|coarsened=] when exposed via an API.
+
+    : <dfn>style duration</dfn>
+    :: A {{DOMHighResTimeStamp}} representing a number of milliseconds, initially 0.
+
+    : <dfn>layout duration</dfn>
+    :: A {{DOMHighResTimeStamp}} representing a number of milliseconds, initially 0.
 
     : <dfn>task durations</dfn>
     :: A [=/list=] of {{DOMHighResTimeStamp}}, initially empty.
