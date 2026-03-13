@@ -14,7 +14,7 @@ Default Highlight: js
 </pre>
 
 <pre class=link-defaults>
-spec:hr-time-3; type:dfn; text:duration
+spec:hr-time; type:dfn; text:duration
 </pre>
 
 <style>
