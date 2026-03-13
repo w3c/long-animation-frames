@@ -13,6 +13,10 @@ Status Text: If you wish to make comments regarding this document, please create
 Default Highlight: js
 </pre>
 
+<pre class=link-defaults>
+spec:hr-time; type:dfn; text:duration
+</pre>
+
 <style>
 dl {
     margin-left: 2em;
@@ -288,7 +292,7 @@ The {{PerformanceScriptTiming/invoker}} attribute's getter steps are:
             1. If |this|'s [=PerformanceScriptTiming/timing info=]'s [=script timing info/event target element id=] is not the empty string, then:
                 Set |targetName| to the [=concatenate|concatenation=] of « |targetName|, "#", |this|'s [=PerformanceScriptTiming/timing info=]'s [=script timing info/event target element id=] ».
             1. Otherwise, If |this|'s [=PerformanceScriptTiming/timing info=]'s [=script timing info/event target element src attribute=] is not the empty string, then:
-                Set |targetName| to the [=concatenate|concatenation=] of « |targetName|, '[src=', |this|'s [=PerformanceScriptTiming/timing info=]'s [=script timing info/event target element src attribute=], ']' ».
+                Set |targetName| to the [=concatenate|concatenation=] of « |targetName|, "[src=", |this|'s [=PerformanceScriptTiming/timing info=]'s [=script timing info/event target element src attribute=], "]" ».
             1. Return the [=concatenate|concatenation=] of « |targetName|, ".on", [=this=]'s [=PerformanceScriptTiming/timing info=]'s [=script timing info/event type=] ».
 
             Issue: this feels a bit custom, need to discuss name generation.
@@ -347,7 +351,7 @@ It has the following [=struct/items=]:
     : <dfn>first ui event timestamp</dfn>
     : <dfn>end time</dfn>
     :: A {{DOMHighResTimeStamp}}, initially 0.
-        Note: all the above are [=monotonic clock/unsafe current time=|unsafe=],
+        Note: all the above are [=monotonic clock/unsafe current time|unsafe=],
         and should be [=coarsen time|coarsened=] when exposed via an API.
 
     : <dfn>task durations</dfn>
