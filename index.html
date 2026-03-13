@@ -5,8 +5,9 @@
   <title>Long Animation Frames API</title>
   <meta content="ED" name="w3c-status">
   <link href="https://www.w3.org/StyleSheets/TR/2021/W3C-ED" rel="stylesheet">
-  <meta content="Bikeshed version 742f3d674, updated Mon Nov 4 14:56:54 2024 -0800" name="generator">
+  <meta content="Bikeshed version 0ef803fdf, updated Tue Jan 6 11:59:39 2026 -0800" name="generator">
   <link href="https://w3c.github.io/long-animation-frames/" rel="canonical">
+  <meta content="03ba5897b99822550ca3fc961cc513753d1a0917" name="revision">
   <meta content="dark light" name="color-scheme">
   <link href="https://www.w3.org/StyleSheets/TR/2021/dark.css" media="(prefers-color-scheme: dark)" rel="stylesheet" type="text/css">
 <style>
@@ -324,7 +325,7 @@ body {
 }
 .invalid.example:not(.no-marker)::before,
 .illegal.example:not(.no-marker)::before {
-    content: "Invalid Example" counter(example);
+    content: "Invalid Example " counter(example);
 }
 
 figcaption {
@@ -740,9 +741,13 @@ var[data-var-color="6"] { --var-vg: #FFBCF2; }
 </style>
  <body class="h-entry">
   <div class="head">
-   <p data-fill-with="logo"><a class="logo" href="https://www.w3.org/"> <img alt="W3C" height="48" src="https://www.w3.org/StyleSheets/TR/2021/logos/W3C" width="72"> </a> </p>
-   <h1 class="p-name no-ref" id="title">Long Animation Frames API</h1>
-   <p id="w3c-state"><a href="https://www.w3.org/standards/types/#ED">Editor’s Draft</a>, <time class="dt-updated" datetime="2024-11-26">26 November 2024</time></p>
+   <p data-fill-with="logo"><a class="logo" href="https://www.w3.org/">
+    <img alt="W3C" height="48" src="https://www.w3.org/StyleSheets/TR/2021/logos/W3C" width="72">
+</a>
+</p>
+   <h1 class="no-ref p-name" id="title">Long Animation Frames API</h1>
+   <p id="w3c-state"><a href="https://www.w3.org/standards/types/#ED">Editor’s Draft</a>,
+    <time class="dt-updated" datetime="2026-03-13">13 March 2026</time></p>
    <details open>
     <summary>More details about this document</summary>
     <div data-fill-with="spec-metadata">
@@ -755,33 +760,41 @@ var[data-var-color="6"] { --var-vg: #FFBCF2; }
       <dd><a href="https://github.com/w3c/long-animation-frames/issues/">GitHub</a>
       <dd><a href="#issues-index">Inline In Spec</a>
       <dt class="editor">Editor:
-      <dd class="editor p-author h-card vcard" data-editor-id="121539"><a class="p-name fn u-email email" href="mailto:nrosenthal@google.com">Noam Rosenthal</a> (<a class="p-org org" href="https://google.com">Google</a>)
+      <dd class="editor h-card p-author vcard" data-editor-id="121539"><a class="email fn p-name u-email" href="mailto:nrosenthal@google.com">Noam Rosenthal</a> (<a class="org p-org" href="https://google.com">Google</a>)
      </dl>
     </div>
    </details>
    <div data-fill-with="warning"></div>
-   <p class="copyright" data-fill-with="copyright"><a href="https://www.w3.org/policies/#copyright">Copyright</a> © 2024 <a href="https://www.w3.org/">World Wide Web Consortium</a>. <abbr title="World Wide Web Consortium">W3C</abbr><sup>®</sup> <a href="https://www.w3.org/policies/#Legal_Disclaimer">liability</a>, <a href="https://www.w3.org/policies/#W3C_Trademarks">trademark</a> and <a href="https://www.w3.org/copyright/software-license/" rel="license" title="W3C Software and Document License">permissive document license</a> rules apply. </p>
+   <p class="copyright" data-fill-with="copyright"><a href="https://www.w3.org/policies/#copyright">Copyright</a> © 2026 <a href="https://www.w3.org/">World Wide Web Consortium</a>. <abbr title="World Wide Web Consortium">W3C</abbr><sup>®</sup> <a href="https://www.w3.org/policies/#Legal_Disclaimer">liability</a>, <a href="https://www.w3.org/policies/#W3C_Trademarks">trademark</a> and <a href="https://www.w3.org/copyright/software-license/" rel="license" title="W3C Software and Document License">permissive document license</a> rules apply.
+</p>
    <hr title="Separator for header">
   </div>
   <div class="p-summary" data-fill-with="abstract">
-   <h2 class="no-num no-toc no-ref heading settled" id="abstract"><span class="content">Abstract</span></h2>
+   <h2 class="heading no-num no-ref no-toc settled" id="abstract"><span class="content">Abstract</span></h2>
    <p>This document defines an API that web page authors can use to detect presence of "long animation frames" that monopolize the UI thread for extended periods of time and block other critical tasks from being executed - e.g. reacting to user input.</p>
   </div>
-  <h2 class="no-num no-toc no-ref heading settled" id="sotd"><span class="content">Status of this document</span></h2>
+  <h2 class="heading no-num no-ref no-toc settled" id="sotd"><span class="content">Status of this document</span></h2>
   <div data-fill-with="status">
-   <p> This is a public copy of the editors’ draft.
+   <p>
+	This is a public copy of the editors’ draft.
 	It is provided for discussion only and may change at any moment.
 	Its publication here does not imply endorsement of its contents by W3C.
-	Don’t cite this document other than as work in progress. </p>
-   <p><a href="https://github.com/w3c/long-animation-frames/issues">GitHub Issues</a> are preferred for discussion of this specification. </p>
-   <p>This document is governed by the <a href="https://www.w3.org/policies/process/20231103/" id="w3c_process_revision">03 November 2023 W3C Process Document</a>. </p>
-   <p></p>
+	Don’t cite this document other than as work in progress.
+
+</p>
+   <p><a href="https://github.com/w3c/long-animation-frames/issues">GitHub Issues</a> are preferred for discussion of this specification.
+
+</p>
+   <p>This document is governed by the
+	<a href="https://www.w3.org/policies/process/20250818/" id="w3c_process_revision">18 August 2025 W3C Process Document</a>.
+
+</p>
    <p>If you wish to make comments regarding this document, please create an issue in the <a href="https://github.com/w3c/long-animation-frames">Long Animation Frames</a> repository.</p>
   </div>
   <div data-fill-with="at-risk"></div>
   <nav data-fill-with="table-of-contents" id="toc">
-   <h2 class="no-num no-toc no-ref" id="contents">Table of Contents</h2>
-   <ol class="toc" role="directory">
+   <h2 class="no-num no-ref no-toc" id="contents">Table of Contents</h2>
+   <ol class="toc">
     <li>
      <a href="#intro"><span class="secno">1</span> <span class="content">Introduction</span></a>
      <ol class="toc">
@@ -886,7 +899,8 @@ and end when the frame either renders or the user agents decides there is nothin
 attempts to remedy that by introducing a more user-centric metric of the same phenomenon of main
 thread congestion/jank.</p>
    <p>Because long animation frames are guaranteed to have a maximum of one rendering phase, we can also
-use them to expose additional information about the rendering phase itself, such as <code class="idl"><a data-link-type="idl" href="#dom-performancelonganimationframetiming-renderstart" id="ref-for-dom-performancelonganimationframetiming-renderstart">renderStart</a></code> and <code class="idl"><a data-link-type="idl" href="#dom-performancelonganimationframetiming-styleandlayoutstart" id="ref-for-dom-performancelonganimationframetiming-styleandlayoutstart">styleAndLayoutStart</a></code>.</p>
+use them to expose additional information about the rendering phase itself, such as
+<code class="idl"><a data-link-type="idl" href="#dom-performancelonganimationframetiming-renderstart" id="ref-for-dom-performancelonganimationframetiming-renderstart">renderStart</a></code> and <code class="idl"><a data-link-type="idl" href="#dom-performancelonganimationframetiming-styleandlayoutstart" id="ref-for-dom-performancelonganimationframetiming-styleandlayoutstart">styleAndLayoutStart</a></code>.</p>
    <h2 class="heading settled" data-level="2" id="sec-loaf-timing"><span class="secno">2. </span><span class="content">Long Animation Frame Timing</span><a class="self-link" href="#sec-loaf-timing"></a></h2>
    <p>A <dfn class="dfn-paneled" data-dfn-type="dfn" data-export id="long-animation-frame">long animation frame</dfn> refers to any of the following occurrences whose duration exceeds 50ms:</p>
    <ul>
@@ -897,7 +911,7 @@ use them to expose additional information about the rendering phase itself, such
    </ul>
    <p>Long Animation Frame timing involves the following new interfaces:</p>
    <h3 class="heading settled" data-level="2.1" id="sec-PerformanceLongAnimationFrameTiming"><span class="secno">2.1. </span><span class="content"><code class="idl"><a data-link-type="idl" href="#performancelonganimationframetiming" id="ref-for-performancelonganimationframetiming">PerformanceLongAnimationFrameTiming</a></code> interface</span><a class="self-link" href="#sec-PerformanceLongAnimationFrameTiming"></a></h3>
-<pre class="idl highlight def">[<a class="idl-code" data-link-type="extended-attribute" href="https://webidl.spec.whatwg.org/#Exposed" id="ref-for-Exposed"><c- g>Exposed</c-></a>=<c- n>Window</c->]
+<pre class="def highlight idl">[<a class="idl-code" data-link-type="extended-attribute" href="https://webidl.spec.whatwg.org/#Exposed" id="ref-for-Exposed"><c- g>Exposed</c-></a>=<c- n>Window</c->]
 <c- b>interface</c-> <dfn class="dfn-paneled idl-code" data-dfn-type="interface" data-export id="performancelonganimationframetiming"><code class="highlight"><c- g>PerformanceLongAnimationFrameTiming</c-></code></dfn> : <a data-link-type="idl-name" href="https://w3c.github.io/performance-timeline/#the-performanceentry-interface" id="ref-for-the-performanceentry-interface"><c- n>PerformanceEntry</c-></a> {
     /* Overloading PerformanceEntry */
     <c- b>readonly</c-> <c- b>attribute</c-> <a data-link-type="idl-name" href="https://w3c.github.io/hr-time/#idl-def-domhighrestimestamp" id="ref-for-idl-def-domhighrestimestamp"><c- n>DOMHighResTimeStamp</c-></a> <dfn class="dfn-paneled idl-code" data-dfn-for="PerformanceLongAnimationFrameTiming" data-dfn-type="attribute" data-export data-readonly data-type="DOMHighResTimeStamp" id="dom-performancelonganimationframetiming-starttime"><code class="highlight"><c- g>startTime</c-></code></dfn>;
@@ -918,21 +932,21 @@ use them to expose additional information about the rendering phase itself, such
    <p>A <code class="idl"><a data-link-type="idl" href="#performancelonganimationframetiming" id="ref-for-performancelonganimationframetiming②">PerformanceLongAnimationFrameTiming</a></code> has a <a data-link-type="dfn" href="#frame-timing-info" id="ref-for-frame-timing-info">frame timing info</a> <dfn class="dfn-paneled" data-dfn-for="PerformanceLongAnimationFrameTiming" data-dfn-type="dfn" data-noexport id="performancelonganimationframetiming-timing-info">timing info</dfn>.</p>
    <p>The <code class="idl"><a data-link-type="idl" href="#dom-performancelonganimationframetiming-entrytype" id="ref-for-dom-performancelonganimationframetiming-entrytype">entryType</a></code> attribute’s getter step is to return <code class="highlight"><c- u>"long-animation-frame"</c-></code>.</p>
    <p>The <code class="idl"><a data-link-type="idl" href="#dom-performancelonganimationframetiming-name" id="ref-for-dom-performancelonganimationframetiming-name">name</a></code> attribute’s getter step is to return <code class="highlight"><c- u>"long-animation-frame"</c-></code>.</p>
-   <p>The <code class="idl"><a data-link-type="idl" href="#dom-performancelonganimationframetiming-starttime" id="ref-for-dom-performancelonganimationframetiming-starttime">startTime</a></code> attribute’s getter step is to return the <a data-link-type="dfn" href="https://w3c.github.io/hr-time/#dfn-relative-high-resolution-time" id="ref-for-dfn-relative-high-resolution-time">relative high resolution time</a> given <a data-link-type="dfn" href="https://webidl.spec.whatwg.org/#this" id="ref-for-this">this</a>'s <a data-link-type="dfn" href="#performancelonganimationframetiming-timing-info" id="ref-for-performancelonganimationframetiming-timing-info">timing info</a>'s <a data-link-type="dfn" href="#frame-timing-info-start-time" id="ref-for-frame-timing-info-start-time">start time</a> and <a data-link-type="dfn" href="https://webidl.spec.whatwg.org/#this" id="ref-for-this①">this</a>'s <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/webappapis.html#concept-relevant-global" id="ref-for-concept-relevant-global">relevant global object</a>.</p>
-   <p>The <code class="idl"><a data-link-type="idl" href="#dom-performancelonganimationframetiming-duration" id="ref-for-dom-performancelonganimationframetiming-duration">duration</a></code> attribute’s getter step is to return the <a data-link-type="dfn" href="https://w3c.github.io/hr-time/#dfn-duration" id="ref-for-dfn-duration">duration</a> between <a data-link-type="dfn" href="https://webidl.spec.whatwg.org/#this" id="ref-for-this②">this</a>'s <code class="idl"><a data-link-type="idl" href="https://w3c.github.io/performance-timeline/#dom-performanceentry-starttime" id="ref-for-dom-performanceentry-starttime">startTime</a></code> and the <a data-link-type="dfn" href="https://w3c.github.io/hr-time/#dfn-relative-high-resolution-time" id="ref-for-dfn-relative-high-resolution-time①">relative high resolution time</a> given <a data-link-type="dfn" href="https://webidl.spec.whatwg.org/#this" id="ref-for-this③">this</a>'s <a data-link-type="dfn" href="#performancelonganimationframetiming-timing-info" id="ref-for-performancelonganimationframetiming-timing-info①">timing info</a>'s <a data-link-type="dfn" href="#frame-timing-info-end-time" id="ref-for-frame-timing-info-end-time">end time</a> and <a data-link-type="dfn" href="https://webidl.spec.whatwg.org/#this" id="ref-for-this④">this</a>'s <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/webappapis.html#concept-relevant-global" id="ref-for-concept-relevant-global①">relevant global object</a>.</p>
-   <p>The <code class="idl"><a data-link-type="idl" href="#dom-performancelonganimationframetiming-renderstart" id="ref-for-dom-performancelonganimationframetiming-renderstart①">renderStart</a></code> attribute’s getter step is to return the <a data-link-type="dfn" href="https://w3c.github.io/hr-time/#dfn-relative-high-resolution-time" id="ref-for-dfn-relative-high-resolution-time②">relative high resolution time</a> given <a data-link-type="dfn" href="https://webidl.spec.whatwg.org/#this" id="ref-for-this⑤">this</a>'s <a data-link-type="dfn" href="#performancelonganimationframetiming-timing-info" id="ref-for-performancelonganimationframetiming-timing-info②">timing info</a>'s <a data-link-type="dfn" href="#frame-timing-info-update-the-rendering-start-time" id="ref-for-frame-timing-info-update-the-rendering-start-time">update the rendering start time</a> and <a data-link-type="dfn" href="https://webidl.spec.whatwg.org/#this" id="ref-for-this⑥">this</a>'s <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/webappapis.html#concept-relevant-global" id="ref-for-concept-relevant-global②">relevant global object</a>.</p>
-   <p>The <code class="idl"><a data-link-type="idl" href="#dom-performancelonganimationframetiming-styleandlayoutstart" id="ref-for-dom-performancelonganimationframetiming-styleandlayoutstart①">styleAndLayoutStart</a></code> attribute’s getter step is to return the <a data-link-type="dfn" href="https://w3c.github.io/hr-time/#dfn-relative-high-resolution-time" id="ref-for-dfn-relative-high-resolution-time③">relative high resolution time</a> given <a data-link-type="dfn" href="https://webidl.spec.whatwg.org/#this" id="ref-for-this⑦">this</a>'s <a data-link-type="dfn" href="#performancelonganimationframetiming-timing-info" id="ref-for-performancelonganimationframetiming-timing-info③">timing info</a>'s <a data-link-type="dfn" href="#frame-timing-info-style-and-layout-start-time" id="ref-for-frame-timing-info-style-and-layout-start-time">style and layout start time</a> and <a data-link-type="dfn" href="https://webidl.spec.whatwg.org/#this" id="ref-for-this⑧">this</a>'s <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/webappapis.html#concept-relevant-global" id="ref-for-concept-relevant-global③">relevant global object</a>.</p>
-   <p>The <code class="idl"><a data-link-type="idl" href="#dom-performancelonganimationframetiming-firstuieventtimestamp" id="ref-for-dom-performancelonganimationframetiming-firstuieventtimestamp">firstUIEventTimestamp</a></code> attribute’s getter step is to return the <a data-link-type="dfn" href="https://w3c.github.io/hr-time/#dfn-relative-high-resolution-time" id="ref-for-dfn-relative-high-resolution-time④">relative high resolution time</a> given <a data-link-type="dfn" href="https://webidl.spec.whatwg.org/#this" id="ref-for-this⑨">this</a>'s <a data-link-type="dfn" href="#performancelonganimationframetiming-timing-info" id="ref-for-performancelonganimationframetiming-timing-info④">timing info</a>'s <a data-link-type="dfn" href="#frame-timing-info-first-ui-event-timestamp" id="ref-for-frame-timing-info-first-ui-event-timestamp">first ui event timestamp</a> and <a data-link-type="dfn" href="https://webidl.spec.whatwg.org/#this" id="ref-for-this①⓪">this</a>'s <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/webappapis.html#concept-relevant-global" id="ref-for-concept-relevant-global④">relevant global object</a>.</p>
+   <p>The <code class="idl"><a data-link-type="idl" href="#dom-performancelonganimationframetiming-starttime" id="ref-for-dom-performancelonganimationframetiming-starttime">startTime</a></code> attribute’s getter step is to return the <a data-link-type="dfn" href="https://w3c.github.io/hr-time/#dfn-relative-high-resolution-time" id="ref-for-dfn-relative-high-resolution-time">relative high resolution time</a> given <a data-link-type="dfn" href="https://webidl.spec.whatwg.org/#this" id="ref-for-this">this</a>’s <a data-link-type="dfn" href="#performancelonganimationframetiming-timing-info" id="ref-for-performancelonganimationframetiming-timing-info">timing info</a>’s <a data-link-type="dfn" href="#frame-timing-info-start-time" id="ref-for-frame-timing-info-start-time">start time</a> and <a data-link-type="dfn" href="https://webidl.spec.whatwg.org/#this" id="ref-for-this①">this</a>’s <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/webappapis.html#concept-relevant-global" id="ref-for-concept-relevant-global">relevant global object</a>.</p>
+   <p>The <code class="idl"><a data-link-type="idl" href="#dom-performancelonganimationframetiming-duration" id="ref-for-dom-performancelonganimationframetiming-duration">duration</a></code> attribute’s getter step is to return the <a data-link-type="dfn" href="https://w3c.github.io/hr-time/#dfn-duration" id="ref-for-dfn-duration">duration</a> between <a data-link-type="dfn" href="https://webidl.spec.whatwg.org/#this" id="ref-for-this②">this</a>’s <code class="idl"><a data-link-type="idl" href="https://w3c.github.io/performance-timeline/#dom-performanceentry-starttime" id="ref-for-dom-performanceentry-starttime">startTime</a></code> and the <a data-link-type="dfn" href="https://w3c.github.io/hr-time/#dfn-relative-high-resolution-time" id="ref-for-dfn-relative-high-resolution-time①">relative high resolution time</a> given <a data-link-type="dfn" href="https://webidl.spec.whatwg.org/#this" id="ref-for-this③">this</a>’s <a data-link-type="dfn" href="#performancelonganimationframetiming-timing-info" id="ref-for-performancelonganimationframetiming-timing-info①">timing info</a>’s <a data-link-type="dfn" href="#frame-timing-info-end-time" id="ref-for-frame-timing-info-end-time">end time</a> and <a data-link-type="dfn" href="https://webidl.spec.whatwg.org/#this" id="ref-for-this④">this</a>’s <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/webappapis.html#concept-relevant-global" id="ref-for-concept-relevant-global①">relevant global object</a>.</p>
+   <p>The <code class="idl"><a data-link-type="idl" href="#dom-performancelonganimationframetiming-renderstart" id="ref-for-dom-performancelonganimationframetiming-renderstart①">renderStart</a></code> attribute’s getter step is to return the <a data-link-type="dfn" href="https://w3c.github.io/hr-time/#dfn-relative-high-resolution-time" id="ref-for-dfn-relative-high-resolution-time②">relative high resolution time</a> given <a data-link-type="dfn" href="https://webidl.spec.whatwg.org/#this" id="ref-for-this⑤">this</a>’s <a data-link-type="dfn" href="#performancelonganimationframetiming-timing-info" id="ref-for-performancelonganimationframetiming-timing-info②">timing info</a>’s <a data-link-type="dfn" href="#frame-timing-info-update-the-rendering-start-time" id="ref-for-frame-timing-info-update-the-rendering-start-time">update the rendering start time</a> and <a data-link-type="dfn" href="https://webidl.spec.whatwg.org/#this" id="ref-for-this⑥">this</a>’s <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/webappapis.html#concept-relevant-global" id="ref-for-concept-relevant-global②">relevant global object</a>.</p>
+   <p>The <code class="idl"><a data-link-type="idl" href="#dom-performancelonganimationframetiming-styleandlayoutstart" id="ref-for-dom-performancelonganimationframetiming-styleandlayoutstart①">styleAndLayoutStart</a></code> attribute’s getter step is to return the <a data-link-type="dfn" href="https://w3c.github.io/hr-time/#dfn-relative-high-resolution-time" id="ref-for-dfn-relative-high-resolution-time③">relative high resolution time</a> given <a data-link-type="dfn" href="https://webidl.spec.whatwg.org/#this" id="ref-for-this⑦">this</a>’s <a data-link-type="dfn" href="#performancelonganimationframetiming-timing-info" id="ref-for-performancelonganimationframetiming-timing-info③">timing info</a>’s <a data-link-type="dfn" href="#frame-timing-info-style-and-layout-start-time" id="ref-for-frame-timing-info-style-and-layout-start-time">style and layout start time</a> and <a data-link-type="dfn" href="https://webidl.spec.whatwg.org/#this" id="ref-for-this⑧">this</a>’s <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/webappapis.html#concept-relevant-global" id="ref-for-concept-relevant-global③">relevant global object</a>.</p>
+   <p>The <code class="idl"><a data-link-type="idl" href="#dom-performancelonganimationframetiming-firstuieventtimestamp" id="ref-for-dom-performancelonganimationframetiming-firstuieventtimestamp">firstUIEventTimestamp</a></code> attribute’s getter step is to return the <a data-link-type="dfn" href="https://w3c.github.io/hr-time/#dfn-relative-high-resolution-time" id="ref-for-dfn-relative-high-resolution-time④">relative high resolution time</a> given <a data-link-type="dfn" href="https://webidl.spec.whatwg.org/#this" id="ref-for-this⑨">this</a>’s <a data-link-type="dfn" href="#performancelonganimationframetiming-timing-info" id="ref-for-performancelonganimationframetiming-timing-info④">timing info</a>’s <a data-link-type="dfn" href="#frame-timing-info-first-ui-event-timestamp" id="ref-for-frame-timing-info-first-ui-event-timestamp">first ui event timestamp</a> and <a data-link-type="dfn" href="https://webidl.spec.whatwg.org/#this" id="ref-for-this①⓪">this</a>’s <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/webappapis.html#concept-relevant-global" id="ref-for-concept-relevant-global④">relevant global object</a>.</p>
    <p>The <code class="idl"><a data-link-type="idl" href="#dom-performancelonganimationframetiming-blockingduration" id="ref-for-dom-performancelonganimationframetiming-blockingduration">blockingDuration</a></code> attribute’s getter steps are:</p>
    <ol>
     <li data-md>
-     <p>Let <var>sortedTaskDurations</var> be <a data-link-type="dfn" href="#performancelonganimationframetiming-timing-info" id="ref-for-performancelonganimationframetiming-timing-info⑤">timing info</a>'s <a data-link-type="dfn" href="#frame-timing-info-task-durations" id="ref-for-frame-timing-info-task-durations">task durations</a>, <a data-link-type="dfn" href="https://infra.spec.whatwg.org/#list-sort-in-descending-order" id="ref-for-list-sort-in-descending-order">sorted in descending order</a>.</p>
+     <p>Let <var>sortedTaskDurations</var> be <a data-link-type="dfn" href="#performancelonganimationframetiming-timing-info" id="ref-for-performancelonganimationframetiming-timing-info⑤">timing info</a>’s <a data-link-type="dfn" href="#frame-timing-info-task-durations" id="ref-for-frame-timing-info-task-durations">task durations</a>, <a data-link-type="dfn" href="https://infra.spec.whatwg.org/#list-sort-in-descending-order" id="ref-for-list-sort-in-descending-order">sorted in descending order</a>.</p>
     <li data-md>
-     <p>If <a data-link-type="dfn" href="https://webidl.spec.whatwg.org/#this" id="ref-for-this①①">this</a>'s <a data-link-type="dfn" href="#performancelonganimationframetiming-timing-info" id="ref-for-performancelonganimationframetiming-timing-info⑥">timing info</a>'s <a data-link-type="dfn" href="#frame-timing-info-update-the-rendering-start-time" id="ref-for-frame-timing-info-update-the-rendering-start-time①">update the rendering  start time</a> is not zero, then:</p>
+     <p>If <a data-link-type="dfn" href="https://webidl.spec.whatwg.org/#this" id="ref-for-this①①">this</a>’s <a data-link-type="dfn" href="#performancelonganimationframetiming-timing-info" id="ref-for-performancelonganimationframetiming-timing-info⑥">timing info</a>’s <a data-link-type="dfn" href="#frame-timing-info-update-the-rendering-start-time" id="ref-for-frame-timing-info-update-the-rendering-start-time①">update the rendering start time</a> is not zero, then:</p>
      <ol>
       <li data-md>
-       <p>Let <var>renderDuration</var> be the <a data-link-type="dfn" href="https://w3c.github.io/hr-time/#dfn-duration" id="ref-for-dfn-duration①">duration</a> between <a data-link-type="dfn" href="https://webidl.spec.whatwg.org/#this" id="ref-for-this①②">this</a>'s <code class="idl"><a data-link-type="idl" href="#dom-performancelonganimationframetiming-renderstart" id="ref-for-dom-performancelonganimationframetiming-renderstart②">renderStart</a></code> and
-the <a data-link-type="dfn" href="https://w3c.github.io/hr-time/#dfn-relative-high-resolution-time" id="ref-for-dfn-relative-high-resolution-time⑤">relative high resolution time</a> given <a data-link-type="dfn" href="https://webidl.spec.whatwg.org/#this" id="ref-for-this①③">this</a>'s <a data-link-type="dfn" href="#performancelonganimationframetiming-timing-info" id="ref-for-performancelonganimationframetiming-timing-info⑦">timing info</a>'s <a data-link-type="dfn" href="#frame-timing-info-end-time" id="ref-for-frame-timing-info-end-time①">end time</a>.</p>
+       <p>Let <var>renderDuration</var> be the <a data-link-type="dfn" href="https://w3c.github.io/hr-time/#dfn-duration" id="ref-for-dfn-duration①">duration</a> between <a data-link-type="dfn" href="https://webidl.spec.whatwg.org/#this" id="ref-for-this①②">this</a>’s <code class="idl"><a data-link-type="idl" href="#dom-performancelonganimationframetiming-renderstart" id="ref-for-dom-performancelonganimationframetiming-renderstart②">renderStart</a></code> and
+the <a data-link-type="dfn" href="https://w3c.github.io/hr-time/#dfn-relative-high-resolution-time" id="ref-for-dfn-relative-high-resolution-time⑤">relative high resolution time</a> given <a data-link-type="dfn" href="https://webidl.spec.whatwg.org/#this" id="ref-for-this①③">this</a>’s <a data-link-type="dfn" href="#performancelonganimationframetiming-timing-info" id="ref-for-performancelonganimationframetiming-timing-info⑦">timing info</a>’s <a data-link-type="dfn" href="#frame-timing-info-end-time" id="ref-for-frame-timing-info-end-time①">end time</a>.</p>
       <li data-md>
        <p>Increment <var>sortedTaskDurations</var>[0] by <var>renderDuration</var>.</p>
        <p class="note" role="note"><span class="marker">Note:</span> This makes it so that the longest task duration + render duration would be considered blocking if their total
@@ -952,12 +966,12 @@ duration is >50ms.</p>
     <li data-md>
      <p>Let <var>entryWindow</var> be <var>this</var>’s <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/webappapis.html#concept-relevant-global" id="ref-for-concept-relevant-global⑤">relevant global object</a>.</p>
     <li data-md>
-     <p><a data-link-type="dfn" href="https://infra.spec.whatwg.org/#list-iterate" id="ref-for-list-iterate①">For each</a> <var>scriptInfo</var> in <a data-link-type="dfn" href="https://webidl.spec.whatwg.org/#this" id="ref-for-this①④">this</a>'s <a data-link-type="dfn" href="#frame-timing-info" id="ref-for-frame-timing-info①">frame timing info</a>'s <a data-link-type="dfn" href="#frame-timing-info-scripts" id="ref-for-frame-timing-info-scripts">scripts</a>:</p>
+     <p><a data-link-type="dfn" href="https://infra.spec.whatwg.org/#list-iterate" id="ref-for-list-iterate①">For each</a> <var>scriptInfo</var> in <a data-link-type="dfn" href="https://webidl.spec.whatwg.org/#this" id="ref-for-this①④">this</a>’s <a data-link-type="dfn" href="#frame-timing-info" id="ref-for-frame-timing-info①">frame timing info</a>’s <a data-link-type="dfn" href="#frame-timing-info-scripts" id="ref-for-frame-timing-info-scripts">scripts</a>:</p>
      <ol>
       <li data-md>
        <p>Let <var>scriptWindow</var> be <var>scriptInfo</var>’s <a data-link-type="dfn" href="#script-timing-info-window" id="ref-for-script-timing-info-window">window</a>.</p>
       <li data-md>
-       <p>Let <var>scriptEntry</var> be a new <code class="idl"><a data-link-type="idl" href="#performancescripttiming" id="ref-for-performancescripttiming①">PerformanceScriptTiming</a></code> in <a data-link-type="dfn" href="https://webidl.spec.whatwg.org/#this" id="ref-for-this①⑤">this</a>'s <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/webappapis.html#concept-relevant-realm" id="ref-for-concept-relevant-realm">relevant realm</a>,
+       <p>Let <var>scriptEntry</var> be a new <code class="idl"><a data-link-type="idl" href="#performancescripttiming" id="ref-for-performancescripttiming①">PerformanceScriptTiming</a></code> in <a data-link-type="dfn" href="https://webidl.spec.whatwg.org/#this" id="ref-for-this①⑤">this</a>’s <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/webappapis.html#concept-relevant-realm" id="ref-for-concept-relevant-realm">relevant realm</a>,
 whose <a data-link-type="dfn" href="#performancescripttiming-timing-info" id="ref-for-performancescripttiming-timing-info">timing info</a> is <var>scriptInfo</var> and whose <a data-link-type="dfn" href="#performancescripttiming-window-attribution" id="ref-for-performancescripttiming-window-attribution">window attribution</a> is the value corresponding to the first matching statement:</p>
        <dl>
         <dt data-md><var>scriptWindow</var> is undefined
@@ -966,13 +980,13 @@ whose <a data-link-type="dfn" href="#performancescripttiming-timing-info" id="re
         <dt data-md><var>scriptWindow</var> is <var>entryWindow</var>
         <dd data-md>
          <p><code class="idl"><a data-link-type="idl" href="#dom-scriptwindowattribution-self" id="ref-for-dom-scriptwindowattribution-self">self</a></code></p>
-        <dt data-md><var>entryWindow</var>’s associated <code class="idl"><a data-link-type="idl" href="https://dom.spec.whatwg.org/#document" id="ref-for-document">Document</a></code>'s <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/document-sequences.html#node-navigable" id="ref-for-node-navigable">node navigable</a>'s <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/document-sequences.html#ancestor-navigables" id="ref-for-ancestor-navigables">ancestor navigables</a> <a data-link-type="dfn" href="https://infra.spec.whatwg.org/#list-contain" id="ref-for-list-contain">contains</a> <var>scriptWindow</var>’s associated <code class="idl"><a data-link-type="idl" href="https://dom.spec.whatwg.org/#document" id="ref-for-document①">Document</a></code>'s <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/document-sequences.html#node-navigable" id="ref-for-node-navigable①">node navigable</a>
+        <dt data-md><var>entryWindow</var>’s associated <code class="idl"><a data-link-type="idl" href="https://dom.spec.whatwg.org/#document" id="ref-for-document">Document</a></code>’s <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/document-sequences.html#node-navigable" id="ref-for-node-navigable">node navigable</a>’s <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/document-sequences.html#ancestor-navigables" id="ref-for-ancestor-navigables">ancestor navigables</a> <a data-link-type="dfn" href="https://infra.spec.whatwg.org/#list-contain" id="ref-for-list-contain">contains</a> <var>scriptWindow</var>’s associated <code class="idl"><a data-link-type="idl" href="https://dom.spec.whatwg.org/#document" id="ref-for-document①">Document</a></code>’s <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/document-sequences.html#node-navigable" id="ref-for-node-navigable①">node navigable</a>
         <dd data-md>
          <p><code class="idl"><a data-link-type="idl" href="#dom-scriptwindowattribution-ancestor" id="ref-for-dom-scriptwindowattribution-ancestor">ancestor</a></code></p>
-        <dt data-md><var>scriptWindow</var>’s associated <code class="idl"><a data-link-type="idl" href="https://dom.spec.whatwg.org/#document" id="ref-for-document②">Document</a></code>'s <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/document-sequences.html#node-navigable" id="ref-for-node-navigable②">node navigable</a>'s <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/document-sequences.html#ancestor-navigables" id="ref-for-ancestor-navigables①">ancestor navigables</a> <a data-link-type="dfn" href="https://infra.spec.whatwg.org/#list-contain" id="ref-for-list-contain①">contains</a> <var>entryWindow</var>’s associated <code class="idl"><a data-link-type="idl" href="https://dom.spec.whatwg.org/#document" id="ref-for-document③">Document</a></code>'s <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/document-sequences.html#node-navigable" id="ref-for-node-navigable③">node navigable</a>
+        <dt data-md><var>scriptWindow</var>’s associated <code class="idl"><a data-link-type="idl" href="https://dom.spec.whatwg.org/#document" id="ref-for-document②">Document</a></code>’s <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/document-sequences.html#node-navigable" id="ref-for-node-navigable②">node navigable</a>’s <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/document-sequences.html#ancestor-navigables" id="ref-for-ancestor-navigables①">ancestor navigables</a> <a data-link-type="dfn" href="https://infra.spec.whatwg.org/#list-contain" id="ref-for-list-contain①">contains</a> <var>entryWindow</var>’s associated <code class="idl"><a data-link-type="idl" href="https://dom.spec.whatwg.org/#document" id="ref-for-document③">Document</a></code>’s <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/document-sequences.html#node-navigable" id="ref-for-node-navigable③">node navigable</a>
         <dd data-md>
          <p><code class="idl"><a data-link-type="idl" href="#dom-scriptwindowattribution-descendant" id="ref-for-dom-scriptwindowattribution-descendant">descendant</a></code></p>
-        <dt data-md><var>entryWindow</var>’s associated <code class="idl"><a data-link-type="idl" href="https://dom.spec.whatwg.org/#document" id="ref-for-document④">Document</a></code>'s <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/document-sequences.html#node-navigable" id="ref-for-node-navigable④">node navigable</a>'s <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/document-sequences.html#nav-top" id="ref-for-nav-top">top-level traversable</a> is <var>scriptWindow</var>’s associated <code class="idl"><a data-link-type="idl" href="https://dom.spec.whatwg.org/#document" id="ref-for-document⑤">Document</a></code>'s <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/document-sequences.html#node-navigable" id="ref-for-node-navigable⑤">node navigable</a>'s <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/document-sequences.html#nav-top" id="ref-for-nav-top①">top-level traversable</a>
+        <dt data-md><var>entryWindow</var>’s associated <code class="idl"><a data-link-type="idl" href="https://dom.spec.whatwg.org/#document" id="ref-for-document④">Document</a></code>’s <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/document-sequences.html#node-navigable" id="ref-for-node-navigable④">node navigable</a>’s <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/document-sequences.html#nav-top" id="ref-for-nav-top">top-level traversable</a> is <var>scriptWindow</var>’s associated <code class="idl"><a data-link-type="idl" href="https://dom.spec.whatwg.org/#document" id="ref-for-document⑤">Document</a></code>’s <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/document-sequences.html#node-navigable" id="ref-for-node-navigable⑤">node navigable</a>’s <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/document-sequences.html#nav-top" id="ref-for-nav-top①">top-level traversable</a>
         <dd data-md>
          <p><code class="idl"><a data-link-type="idl" href="#dom-scriptwindowattribution-same-page" id="ref-for-dom-scriptwindowattribution-same-page">same-page</a></code></p>
         <dt data-md>Otherwise
@@ -986,7 +1000,7 @@ whose <a data-link-type="dfn" href="#performancescripttiming-timing-info" id="re
      <p>Return <var>scripts</var>.</p>
    </ol>
    <h3 class="heading settled" data-level="2.2" id="sec-PerformanceScriptTiming"><span class="secno">2.2. </span><span class="content"><code class="idl"><a data-link-type="idl" href="#performancescripttiming" id="ref-for-performancescripttiming②">PerformanceScriptTiming</a></code> interface</span><a class="self-link" href="#sec-PerformanceScriptTiming"></a></h3>
-<pre class="idl highlight def"><c- b>enum</c-> <dfn class="dfn-paneled idl-code" data-dfn-type="enum" data-export id="enumdef-scriptinvokertype"><code class="highlight"><c- g>ScriptInvokerType</c-></code></dfn> {
+<pre class="def highlight idl"><c- b>enum</c-> <dfn class="dfn-paneled idl-code" data-dfn-type="enum" data-export id="enumdef-scriptinvokertype"><code class="highlight"><c- g>ScriptInvokerType</c-></code></dfn> {
     <dfn class="dfn-paneled idl-code" data-dfn-for="ScriptInvokerType" data-dfn-type="enum-value" data-export id="dom-scriptinvokertype-classic-script"><code class="highlight"><c- s><c- u>"classic-script"</c-></c-></code></dfn>,
     <dfn class="dfn-paneled idl-code" data-dfn-for="ScriptInvokerType" data-dfn-type="enum-value" data-export id="dom-scriptinvokertype-module-script"><code class="highlight"><c- s><c- u>"module-script"</c-></c-></code></dfn>,
     <dfn class="dfn-paneled idl-code" data-dfn-for="ScriptInvokerType" data-dfn-type="enum-value" data-export id="dom-scriptinvokertype-event-listener"><code class="highlight"><c- s><c- u>"event-listener"</c-></c-></code></dfn>,
@@ -1024,7 +1038,7 @@ whose <a data-link-type="dfn" href="#performancescripttiming-timing-info" id="re
    <p>A <code class="idl"><a data-link-type="idl" href="#performancescripttiming" id="ref-for-performancescripttiming④">PerformanceScriptTiming</a></code> has an associated <code class="idl"><a data-link-type="idl" href="#enumdef-scriptwindowattribution" id="ref-for-enumdef-scriptwindowattribution①">ScriptWindowAttribution</a></code> <dfn class="dfn-paneled" data-dfn-for="PerformanceScriptTiming" data-dfn-type="dfn" data-noexport id="performancescripttiming-window-attribution">window attribution</dfn>.</p>
    <p>The <code class="idl"><a data-link-type="idl" href="#dom-performancescripttiming-entrytype" id="ref-for-dom-performancescripttiming-entrytype">entryType</a></code> attribute’s getter step is to return <code class="highlight"><c- u>"script"</c-></code>.</p>
    <p>The <code class="idl"><a data-link-type="idl" href="#dom-performancescripttiming-name" id="ref-for-dom-performancescripttiming-name">name</a></code> attribute’s getter step is to return <code class="highlight"><c- u>"script"</c-></code>.</p>
-   <p>The <code class="idl"><a data-link-type="idl" href="#dom-performancescripttiming-invokertype" id="ref-for-dom-performancescripttiming-invokertype">invokerType</a></code> attribute’s getter step is to return <a data-link-type="dfn" href="https://webidl.spec.whatwg.org/#this" id="ref-for-this①⑥">this</a>'s <a data-link-type="dfn" href="#performancescripttiming-timing-info" id="ref-for-performancescripttiming-timing-info①">timing info</a>'s <a data-link-type="dfn" href="#script-timing-info-invoker-type" id="ref-for-script-timing-info-invoker-type">invoker type</a>.</p>
+   <p>The <code class="idl"><a data-link-type="idl" href="#dom-performancescripttiming-invokertype" id="ref-for-dom-performancescripttiming-invokertype">invokerType</a></code> attribute’s getter step is to return <a data-link-type="dfn" href="https://webidl.spec.whatwg.org/#this" id="ref-for-this①⑥">this</a>’s <a data-link-type="dfn" href="#performancescripttiming-timing-info" id="ref-for-performancescripttiming-timing-info①">timing info</a>’s <a data-link-type="dfn" href="#script-timing-info-invoker-type" id="ref-for-script-timing-info-invoker-type">invoker type</a>.</p>
    <p>The <code class="idl"><a data-link-type="idl" href="#dom-performancescripttiming-invoker" id="ref-for-dom-performancescripttiming-invoker">invoker</a></code> attribute’s getter steps are:</p>
    <ol>
     <li data-md>
@@ -1033,31 +1047,31 @@ whose <a data-link-type="dfn" href="#performancescripttiming-timing-info" id="re
       <dt data-md>"`classic-script`"
       <dt data-md>"`module-script`"
       <dd data-md>
-       <p>Return <var>this</var>’s <a data-link-type="dfn" href="#performancescripttiming-timing-info" id="ref-for-performancescripttiming-timing-info②">timing info</a>'s <a data-link-type="dfn" href="#script-timing-info-source-url" id="ref-for-script-timing-info-source-url">source url</a>.</p>
+       <p>Return <var>this</var>’s <a data-link-type="dfn" href="#performancescripttiming-timing-info" id="ref-for-performancescripttiming-timing-info②">timing info</a>’s <a data-link-type="dfn" href="#script-timing-info-source-url" id="ref-for-script-timing-info-source-url">source url</a>.</p>
       <dt data-md>"`event-listener`"
       <dd data-md>
        <ol>
         <li data-md>
-         <p>Let <var>targetName</var> be <var>this</var>’s <a data-link-type="dfn" href="#performancescripttiming-timing-info" id="ref-for-performancescripttiming-timing-info③">timing info</a>'s <a data-link-type="dfn" href="#script-timing-info-invoker-name" id="ref-for-script-timing-info-invoker-name">invoker name</a>.</p>
+         <p>Let <var>targetName</var> be <var>this</var>’s <a data-link-type="dfn" href="#performancescripttiming-timing-info" id="ref-for-performancescripttiming-timing-info③">timing info</a>’s <a data-link-type="dfn" href="#script-timing-info-invoker-name" id="ref-for-script-timing-info-invoker-name">invoker name</a>.</p>
         <li data-md>
-         <p>If <var>this</var>’s <a data-link-type="dfn" href="#performancescripttiming-timing-info" id="ref-for-performancescripttiming-timing-info④">timing info</a>'s <a data-link-type="dfn" href="#script-timing-info-event-target-element-id" id="ref-for-script-timing-info-event-target-element-id">event target element id</a> is not the empty string, then:
-Set <var>targetName</var> to the <a data-link-type="dfn" href="https://infra.spec.whatwg.org/#string-concatenate" id="ref-for-string-concatenate">concatenation</a> of « <var>targetName</var>, "#", <var>this</var>’s <a data-link-type="dfn" href="#performancescripttiming-timing-info" id="ref-for-performancescripttiming-timing-info⑤">timing info</a>'s <a data-link-type="dfn" href="#script-timing-info-event-target-element-id" id="ref-for-script-timing-info-event-target-element-id①">event target element id</a> ».</p>
+         <p>If <var>this</var>’s <a data-link-type="dfn" href="#performancescripttiming-timing-info" id="ref-for-performancescripttiming-timing-info④">timing info</a>’s <a data-link-type="dfn" href="#script-timing-info-event-target-element-id" id="ref-for-script-timing-info-event-target-element-id">event target element id</a> is not the empty string, then:
+Set <var>targetName</var> to the <a data-link-type="dfn" href="https://infra.spec.whatwg.org/#string-concatenate" id="ref-for-string-concatenate">concatenation</a> of « <var>targetName</var>, "#", <var>this</var>’s <a data-link-type="dfn" href="#performancescripttiming-timing-info" id="ref-for-performancescripttiming-timing-info⑤">timing info</a>’s <a data-link-type="dfn" href="#script-timing-info-event-target-element-id" id="ref-for-script-timing-info-event-target-element-id①">event target element id</a> ».</p>
         <li data-md>
-         <p>Otherwise, If <var>this</var>’s <a data-link-type="dfn" href="#performancescripttiming-timing-info" id="ref-for-performancescripttiming-timing-info⑥">timing info</a>'s <a data-link-type="dfn" href="#script-timing-info-event-target-element-src-attribute" id="ref-for-script-timing-info-event-target-element-src-attribute">event target element src attribute</a> is not the empty string, then:
-Set <var>targetName</var> to the <a data-link-type="dfn" href="https://infra.spec.whatwg.org/#string-concatenate" id="ref-for-string-concatenate①">concatenation</a> of « <var>targetName</var>, '[src=', <var>this</var>’s <a data-link-type="dfn" href="#performancescripttiming-timing-info" id="ref-for-performancescripttiming-timing-info⑦">timing info</a>'s <a data-link-type="dfn" href="#script-timing-info-event-target-element-src-attribute" id="ref-for-script-timing-info-event-target-element-src-attribute①">event target element src attribute</a>, ']' ».</p>
+         <p>Otherwise, If <var>this</var>’s <a data-link-type="dfn" href="#performancescripttiming-timing-info" id="ref-for-performancescripttiming-timing-info⑥">timing info</a>’s <a data-link-type="dfn" href="#script-timing-info-event-target-element-src-attribute" id="ref-for-script-timing-info-event-target-element-src-attribute">event target element src attribute</a> is not the empty string, then:
+Set <var>targetName</var> to the <a data-link-type="dfn" href="https://infra.spec.whatwg.org/#string-concatenate" id="ref-for-string-concatenate①">concatenation</a> of « <var>targetName</var>, "[src=", <var>this</var>’s <a data-link-type="dfn" href="#performancescripttiming-timing-info" id="ref-for-performancescripttiming-timing-info⑦">timing info</a>’s <a data-link-type="dfn" href="#script-timing-info-event-target-element-src-attribute" id="ref-for-script-timing-info-event-target-element-src-attribute①">event target element src attribute</a>, "]" ».</p>
         <li data-md>
-         <p>Return the <a data-link-type="dfn" href="https://infra.spec.whatwg.org/#string-concatenate" id="ref-for-string-concatenate②">concatenation</a> of « <var>targetName</var>, ".on", <a data-link-type="dfn" href="https://webidl.spec.whatwg.org/#this" id="ref-for-this①⑦">this</a>'s <a data-link-type="dfn" href="#performancescripttiming-timing-info" id="ref-for-performancescripttiming-timing-info⑧">timing info</a>'s <a data-link-type="dfn" href="#script-timing-info-event-type" id="ref-for-script-timing-info-event-type">event type</a> ».</p>
+         <p>Return the <a data-link-type="dfn" href="https://infra.spec.whatwg.org/#string-concatenate" id="ref-for-string-concatenate②">concatenation</a> of « <var>targetName</var>, ".on", <a data-link-type="dfn" href="https://webidl.spec.whatwg.org/#this" id="ref-for-this①⑦">this</a>’s <a data-link-type="dfn" href="#performancescripttiming-timing-info" id="ref-for-performancescripttiming-timing-info⑧">timing info</a>’s <a data-link-type="dfn" href="#script-timing-info-event-type" id="ref-for-script-timing-info-event-type">event type</a> ».</p>
        </ol>
        <p class="issue" id="issue-5d051999"><a class="self-link" href="#issue-5d051999"></a> this feels a bit custom, need to discuss name generation.</p>
       <dt data-md>"`user-callback`"
       <dd data-md>
-       <p>Return <var>this</var>’s <a data-link-type="dfn" href="#performancescripttiming-timing-info" id="ref-for-performancescripttiming-timing-info⑨">timing info</a>'s <a data-link-type="dfn" href="#script-timing-info-invoker-name" id="ref-for-script-timing-info-invoker-name①">invoker name</a>.</p>
+       <p>Return <var>this</var>’s <a data-link-type="dfn" href="#performancescripttiming-timing-info" id="ref-for-performancescripttiming-timing-info⑨">timing info</a>’s <a data-link-type="dfn" href="#script-timing-info-invoker-name" id="ref-for-script-timing-info-invoker-name①">invoker name</a>.</p>
       <dt data-md>"`resolve-promise`"
       <dt data-md>"`reject-promise`"
       <dd data-md>
        <ol>
         <li data-md>
-         <p>If <var>this</var>’s <a data-link-type="dfn" href="#performancescripttiming-timing-info" id="ref-for-performancescripttiming-timing-info①⓪">timing info</a>'s <a data-link-type="dfn" href="#script-timing-info-invoker-name" id="ref-for-script-timing-info-invoker-name②">invoker name</a> is the empty string,
+         <p>If <var>this</var>’s <a data-link-type="dfn" href="#performancescripttiming-timing-info" id="ref-for-performancescripttiming-timing-info①⓪">timing info</a>’s <a data-link-type="dfn" href="#script-timing-info-invoker-name" id="ref-for-script-timing-info-invoker-name②">invoker name</a> is the empty string,
 then:</p>
          <ol>
           <li data-md>
@@ -1072,28 +1086,32 @@ then:</p>
        </ol>
      </dl>
    </ol>
-   <p>The <code class="idl"><a data-link-type="idl" href="#dom-performancescripttiming-starttime" id="ref-for-dom-performancescripttiming-starttime">startTime</a></code> attribute’s getter step is to return the <a data-link-type="dfn" href="https://w3c.github.io/hr-time/#dfn-relative-high-resolution-time" id="ref-for-dfn-relative-high-resolution-time⑥">relative high resolution time</a> given <a data-link-type="dfn" href="https://webidl.spec.whatwg.org/#this" id="ref-for-this①⑧">this</a>'s <a data-link-type="dfn" href="#performancescripttiming-timing-info" id="ref-for-performancescripttiming-timing-info①①">timing info</a>'s <a data-link-type="dfn" href="#script-timing-info-start-time" id="ref-for-script-timing-info-start-time">start time</a> and <a data-link-type="dfn" href="https://webidl.spec.whatwg.org/#this" id="ref-for-this①⑨">this</a>'s <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/webappapis.html#concept-relevant-global" id="ref-for-concept-relevant-global⑥">relevant global object</a>.</p>
-   <p>The <code class="idl"><a data-link-type="idl" href="#dom-performancescripttiming-duration" id="ref-for-dom-performancescripttiming-duration">duration</a></code> attribute’s getter step is to return the <a data-link-type="dfn" href="https://w3c.github.io/hr-time/#dfn-duration" id="ref-for-dfn-duration②">duration</a> between <a data-link-type="dfn" href="https://webidl.spec.whatwg.org/#this" id="ref-for-this②⓪">this</a>'s <code class="idl"><a data-link-type="idl" href="#dom-performancescripttiming-starttime" id="ref-for-dom-performancescripttiming-starttime①">startTime</a></code> and the <a data-link-type="dfn" href="https://w3c.github.io/hr-time/#dfn-relative-high-resolution-time" id="ref-for-dfn-relative-high-resolution-time⑦">relative high resolution time</a> given <a data-link-type="dfn" href="https://webidl.spec.whatwg.org/#this" id="ref-for-this②①">this</a>'s <a data-link-type="dfn" href="#performancescripttiming-timing-info" id="ref-for-performancescripttiming-timing-info①②">timing info</a>'s <a data-link-type="dfn" href="#script-timing-info-end-time" id="ref-for-script-timing-info-end-time">end time</a> and <a data-link-type="dfn" href="https://webidl.spec.whatwg.org/#this" id="ref-for-this②②">this</a>'s <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/webappapis.html#concept-relevant-global" id="ref-for-concept-relevant-global⑦">relevant global object</a>.</p>
-   <p>The <code class="idl"><a data-link-type="idl" href="#dom-performancescripttiming-executionstart" id="ref-for-dom-performancescripttiming-executionstart">executionStart</a></code> attribute’s getter step is to return 0 if <a data-link-type="dfn" href="https://webidl.spec.whatwg.org/#this" id="ref-for-this②③">this</a>'s <a data-link-type="dfn" href="#performancescripttiming-timing-info" id="ref-for-performancescripttiming-timing-info①③">timing info</a>'s <a data-link-type="dfn" href="#script-timing-info-execution-start-time" id="ref-for-script-timing-info-execution-start-time">execution start time</a> is 0; Otherwise the <a data-link-type="dfn" href="https://w3c.github.io/hr-time/#dfn-relative-high-resolution-time" id="ref-for-dfn-relative-high-resolution-time⑧">relative high resolution time</a> given <a data-link-type="dfn" href="https://webidl.spec.whatwg.org/#this" id="ref-for-this②④">this</a>'s <a data-link-type="dfn" href="#performancescripttiming-timing-info" id="ref-for-performancescripttiming-timing-info①④">timing info</a>'s <a data-link-type="dfn" href="#script-timing-info-execution-start-time" id="ref-for-script-timing-info-execution-start-time①">execution start time</a> and <a data-link-type="dfn" href="https://webidl.spec.whatwg.org/#this" id="ref-for-this②⑤">this</a>'s <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/webappapis.html#concept-relevant-global" id="ref-for-concept-relevant-global⑧">relevant global object</a>.</p>
+   <p>The <code class="idl"><a data-link-type="idl" href="#dom-performancescripttiming-starttime" id="ref-for-dom-performancescripttiming-starttime">startTime</a></code> attribute’s getter step is to return the <a data-link-type="dfn" href="https://w3c.github.io/hr-time/#dfn-relative-high-resolution-time" id="ref-for-dfn-relative-high-resolution-time⑥">relative high resolution time</a> given <a data-link-type="dfn" href="https://webidl.spec.whatwg.org/#this" id="ref-for-this①⑧">this</a>’s <a data-link-type="dfn" href="#performancescripttiming-timing-info" id="ref-for-performancescripttiming-timing-info①①">timing info</a>’s <a data-link-type="dfn" href="#script-timing-info-start-time" id="ref-for-script-timing-info-start-time">start time</a> and <a data-link-type="dfn" href="https://webidl.spec.whatwg.org/#this" id="ref-for-this①⑨">this</a>’s <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/webappapis.html#concept-relevant-global" id="ref-for-concept-relevant-global⑥">relevant global object</a>.</p>
+   <p>The <code class="idl"><a data-link-type="idl" href="#dom-performancescripttiming-duration" id="ref-for-dom-performancescripttiming-duration">duration</a></code> attribute’s getter step is to return the <a data-link-type="dfn" href="https://w3c.github.io/hr-time/#dfn-duration" id="ref-for-dfn-duration②">duration</a> between <a data-link-type="dfn" href="https://webidl.spec.whatwg.org/#this" id="ref-for-this②⓪">this</a>’s <code class="idl"><a data-link-type="idl" href="#dom-performancescripttiming-starttime" id="ref-for-dom-performancescripttiming-starttime①">startTime</a></code> and the <a data-link-type="dfn" href="https://w3c.github.io/hr-time/#dfn-relative-high-resolution-time" id="ref-for-dfn-relative-high-resolution-time⑦">relative high resolution time</a> given <a data-link-type="dfn" href="https://webidl.spec.whatwg.org/#this" id="ref-for-this②①">this</a>’s <a data-link-type="dfn" href="#performancescripttiming-timing-info" id="ref-for-performancescripttiming-timing-info①②">timing info</a>’s <a data-link-type="dfn" href="#script-timing-info-end-time" id="ref-for-script-timing-info-end-time">end time</a> and <a data-link-type="dfn" href="https://webidl.spec.whatwg.org/#this" id="ref-for-this②②">this</a>’s <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/webappapis.html#concept-relevant-global" id="ref-for-concept-relevant-global⑦">relevant global object</a>.</p>
+   <p>The <code class="idl"><a data-link-type="idl" href="#dom-performancescripttiming-executionstart" id="ref-for-dom-performancescripttiming-executionstart">executionStart</a></code> attribute’s getter step is to return 0 if <a data-link-type="dfn" href="https://webidl.spec.whatwg.org/#this" id="ref-for-this②③">this</a>’s <a data-link-type="dfn" href="#performancescripttiming-timing-info" id="ref-for-performancescripttiming-timing-info①③">timing info</a>’s <a data-link-type="dfn" href="#script-timing-info-execution-start-time" id="ref-for-script-timing-info-execution-start-time">execution start time</a> is 0; Otherwise the <a data-link-type="dfn" href="https://w3c.github.io/hr-time/#dfn-relative-high-resolution-time" id="ref-for-dfn-relative-high-resolution-time⑧">relative high resolution time</a> given <a data-link-type="dfn" href="https://webidl.spec.whatwg.org/#this" id="ref-for-this②④">this</a>’s <a data-link-type="dfn" href="#performancescripttiming-timing-info" id="ref-for-performancescripttiming-timing-info①④">timing info</a>’s <a data-link-type="dfn" href="#script-timing-info-execution-start-time" id="ref-for-script-timing-info-execution-start-time①">execution start time</a> and <a data-link-type="dfn" href="https://webidl.spec.whatwg.org/#this" id="ref-for-this②⑤">this</a>’s <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/webappapis.html#concept-relevant-global" id="ref-for-concept-relevant-global⑧">relevant global object</a>.</p>
    <p>The <code class="idl"><a data-link-type="idl" href="#dom-performancescripttiming-forcedstyleandlayoutduration" id="ref-for-dom-performancescripttiming-forcedstyleandlayoutduration">forcedStyleAndLayoutDuration</a></code> attribute’s getter step is to return an <a data-link-type="dfn" href="https://infra.spec.whatwg.org/#implementation-defined" id="ref-for-implementation-defined">implementation-defined</a> value that represents time spent performing style and layout synchronously, e.g. by calling <code class="idl"><a data-link-type="idl" href="https://drafts.csswg.org/cssom-1/#dom-window-getcomputedstyle" id="ref-for-dom-window-getcomputedstyle">getComputedStyle()</a></code> or <code class="idl"><a data-link-type="idl" href="https://drafts.csswg.org/cssom-view-1/#dom-element-getboundingclientrect" id="ref-for-dom-element-getboundingclientrect">getBoundingClientRect()</a></code>.</p>
    <p class="issue" id="issue-64d28a1e"><a class="self-link" href="#issue-64d28a1e"></a> Find a way to make this interoperable/normative. Perhaps mark those functions in WebIDL as requiring synchronous style/layout? Also move to <a data-link-type="dfn" href="#performancescripttiming-timing-info" id="ref-for-performancescripttiming-timing-info①⑤">timing info</a> once that’s resolved.</p>
-   <p>The <code class="idl"><a data-link-type="idl" href="#dom-performancescripttiming-pauseduration" id="ref-for-dom-performancescripttiming-pauseduration">pauseDuration</a></code> attribute’s getter step is to return <a data-link-type="dfn" href="https://webidl.spec.whatwg.org/#this" id="ref-for-this②⑥">this</a>'s <a data-link-type="dfn" href="#performancescripttiming-timing-info" id="ref-for-performancescripttiming-timing-info①⑥">timing info</a>'s <a data-link-type="dfn" href="#script-timing-info-pause-duration" id="ref-for-script-timing-info-pause-duration">pause duration</a>.</p>
-   <p>The <code class="idl"><a data-link-type="idl" href="#dom-performancescripttiming-sourceurl" id="ref-for-dom-performancescripttiming-sourceurl">sourceURL</a></code> attribute’s getter step is to return <a data-link-type="dfn" href="https://webidl.spec.whatwg.org/#this" id="ref-for-this②⑦">this</a>'s <a data-link-type="dfn" href="#performancescripttiming-timing-info" id="ref-for-performancescripttiming-timing-info①⑦">timing info</a>'s <a data-link-type="dfn" href="#script-timing-info-source-url" id="ref-for-script-timing-info-source-url①">source url</a>.
-The <code class="idl"><a data-link-type="idl" href="#dom-performancescripttiming-sourcefunctionname" id="ref-for-dom-performancescripttiming-sourcefunctionname">sourceFunctionName</a></code> attribute’s getter step is to return <a data-link-type="dfn" href="https://webidl.spec.whatwg.org/#this" id="ref-for-this②⑧">this</a>'s <a data-link-type="dfn" href="#performancescripttiming-timing-info" id="ref-for-performancescripttiming-timing-info①⑧">timing info</a>'s <a data-link-type="dfn" href="#script-timing-info-source-function-name" id="ref-for-script-timing-info-source-function-name">source function name</a>.
-The <code class="idl"><a data-link-type="idl" href="#dom-performancescripttiming-sourcecharposition" id="ref-for-dom-performancescripttiming-sourcecharposition">sourceCharPosition</a></code> attribute’s getter step is to return <a data-link-type="dfn" href="https://webidl.spec.whatwg.org/#this" id="ref-for-this②⑨">this</a>'s <a data-link-type="dfn" href="#performancescripttiming-timing-info" id="ref-for-performancescripttiming-timing-info①⑨">timing info</a>'s <a data-link-type="dfn" href="#script-timing-info-source-character-position" id="ref-for-script-timing-info-source-character-position">source character position</a>.</p>
+   <p>The <code class="idl"><a data-link-type="idl" href="#dom-performancescripttiming-pauseduration" id="ref-for-dom-performancescripttiming-pauseduration">pauseDuration</a></code> attribute’s getter step is to return <a data-link-type="dfn" href="https://webidl.spec.whatwg.org/#this" id="ref-for-this②⑥">this</a>’s <a data-link-type="dfn" href="#performancescripttiming-timing-info" id="ref-for-performancescripttiming-timing-info①⑥">timing info</a>’s <a data-link-type="dfn" href="#script-timing-info-pause-duration" id="ref-for-script-timing-info-pause-duration">pause duration</a>.</p>
+   <p>The <code class="idl"><a data-link-type="idl" href="#dom-performancescripttiming-sourceurl" id="ref-for-dom-performancescripttiming-sourceurl">sourceURL</a></code> attribute’s getter step is to return <a data-link-type="dfn" href="https://webidl.spec.whatwg.org/#this" id="ref-for-this②⑦">this</a>’s <a data-link-type="dfn" href="#performancescripttiming-timing-info" id="ref-for-performancescripttiming-timing-info①⑦">timing info</a>’s <a data-link-type="dfn" href="#script-timing-info-source-url" id="ref-for-script-timing-info-source-url①">source url</a>.
+The <code class="idl"><a data-link-type="idl" href="#dom-performancescripttiming-sourcefunctionname" id="ref-for-dom-performancescripttiming-sourcefunctionname">sourceFunctionName</a></code> attribute’s getter step is to return <a data-link-type="dfn" href="https://webidl.spec.whatwg.org/#this" id="ref-for-this②⑧">this</a>’s <a data-link-type="dfn" href="#performancescripttiming-timing-info" id="ref-for-performancescripttiming-timing-info①⑧">timing info</a>’s <a data-link-type="dfn" href="#script-timing-info-source-function-name" id="ref-for-script-timing-info-source-function-name">source function name</a>.
+The <code class="idl"><a data-link-type="idl" href="#dom-performancescripttiming-sourcecharposition" id="ref-for-dom-performancescripttiming-sourcecharposition">sourceCharPosition</a></code> attribute’s getter step is to return <a data-link-type="dfn" href="https://webidl.spec.whatwg.org/#this" id="ref-for-this②⑨">this</a>’s <a data-link-type="dfn" href="#performancescripttiming-timing-info" id="ref-for-performancescripttiming-timing-info①⑨">timing info</a>’s <a data-link-type="dfn" href="#script-timing-info-source-character-position" id="ref-for-script-timing-info-source-character-position">source character position</a>.</p>
    <p>The <code class="idl"><a data-link-type="idl" href="#dom-performancescripttiming-window" id="ref-for-dom-performancescripttiming-window">window</a></code> attribute’s getter steps are:</p>
    <ol>
     <li data-md>
-     <p>Let <var>window</var> be the result of calling <a data-link-type="dfn" href="https://tc39.es/ecma262/multipage/managing-memory.html#sec-weakrefderef" id="ref-for-sec-weakrefderef">deref</a> on <a data-link-type="dfn" href="https://webidl.spec.whatwg.org/#this" id="ref-for-this③⓪">this</a>'s <a data-link-type="dfn" href="#performancescripttiming-timing-info" id="ref-for-performancescripttiming-timing-info②⓪">timing info</a>'s <a data-link-type="dfn" href="#script-timing-info-window" id="ref-for-script-timing-info-window①">window</a>.</p>
+     <p>Let <var>window</var> be the result of calling <a data-link-type="dfn" href="https://tc39.es/ecma262/multipage/managing-memory.html#sec-weakrefderef" id="ref-for-sec-weakrefderef">deref</a> on <a data-link-type="dfn" href="https://webidl.spec.whatwg.org/#this" id="ref-for-this③⓪">this</a>’s <a data-link-type="dfn" href="#performancescripttiming-timing-info" id="ref-for-performancescripttiming-timing-info②⓪">timing info</a>’s <a data-link-type="dfn" href="#script-timing-info-window" id="ref-for-script-timing-info-window①">window</a>.</p>
     <li data-md>
      <p>If <var>window</var> is undefined, then return null; Otherwise return <var>window</var>.</p>
    </ol>
-   <p>The <code class="idl"><a data-link-type="idl" href="#dom-performancescripttiming-windowattribution" id="ref-for-dom-performancescripttiming-windowattribution">windowAttribution</a></code> attribute’s getter step is to return <a data-link-type="dfn" href="https://webidl.spec.whatwg.org/#this" id="ref-for-this③①">this</a>'s <a data-link-type="dfn" href="#performancescripttiming-window-attribution" id="ref-for-performancescripttiming-window-attribution①">window attribution</a>.</p>
+   <p>The <code class="idl"><a data-link-type="idl" href="#dom-performancescripttiming-windowattribution" id="ref-for-dom-performancescripttiming-windowattribution">windowAttribution</a></code> attribute’s getter step is to return <a data-link-type="dfn" href="https://webidl.spec.whatwg.org/#this" id="ref-for-this③①">this</a>’s <a data-link-type="dfn" href="#performancescripttiming-window-attribution" id="ref-for-performancescripttiming-window-attribution①">window attribution</a>.</p>
    <h2 class="heading settled" data-level="3" id="sec-processing-model"><span class="secno">3. </span><span class="content">Processing model</span><a class="self-link" href="#sec-processing-model"></a></h2>
-   <p class="note" role="note"><span class="marker">Note:</span> A user agent implementing the Long Animation Frame API would need to include <code class="highlight"><c- u>"long-animation-frame"</c-></code> in <code class="idl"><a data-link-type="idl" href="https://w3c.github.io/performance-timeline/#supportedentrytypes-attribute" id="ref-for-supportedentrytypes-attribute">supportedEntryTypes</a></code> for <code class="idl"><a data-link-type="idl" href="https://html.spec.whatwg.org/multipage/nav-history-apis.html#window" id="ref-for-window①">Window</a></code> contexts, respectively.</p>
+   <p class="note" role="note"><span class="marker">Note:</span> A user agent implementing the Long Animation Frame API would need to include <code class="highlight"><c- u>"long-animation-frame"</c-></code>
+    in <code class="idl"><a data-link-type="idl" href="https://w3c.github.io/performance-timeline/#supportedentrytypes-attribute" id="ref-for-supportedentrytypes-attribute">supportedEntryTypes</a></code> for <code class="idl"><a data-link-type="idl" href="https://html.spec.whatwg.org/multipage/nav-history-apis.html#window" id="ref-for-window①">Window</a></code> contexts, respectively.</p>
    <h3 class="heading settled" data-level="3.1" id="sec-frame-timing-info"><span class="secno">3.1. </span><span class="content">Frame Timing Info</span><a class="self-link" href="#sec-frame-timing-info"></a></h3>
-    <dfn class="dfn-paneled" data-dfn-type="dfn" data-export id="frame-timing-info">frame timing info</dfn> is a <a data-link-type="dfn" href="https://infra.spec.whatwg.org/#struct" id="ref-for-struct">struct</a> used as a bookkeeping detail by the long animation frame algorithms.
-It has the following <a data-link-type="dfn" href="https://infra.spec.whatwg.org/#struct-item" id="ref-for-struct-item">items</a>: 
+   
+<dfn class="dfn-paneled" data-dfn-type="dfn" data-export id="frame-timing-info">frame timing info</dfn> is a <a data-link-type="dfn" href="https://infra.spec.whatwg.org/#struct" id="ref-for-struct">struct</a> used as a bookkeeping detail by the long animation frame algorithms.
+It has the following <a data-link-type="dfn" href="https://infra.spec.whatwg.org/#struct-item" id="ref-for-struct-item">items</a>:
+
+
    <dl>
     <dt data-md><dfn class="dfn-paneled" data-dfn-for="frame timing info" data-dfn-type="dfn" data-noexport id="frame-timing-info-start-time">start time</dfn>
     <dt data-md><dfn class="dfn-paneled" data-dfn-for="frame timing info" data-dfn-type="dfn" data-noexport id="frame-timing-info-current-task-start-time">current task start time</dfn>
@@ -1103,7 +1121,7 @@ It has the following <a data-link-type="dfn" href="https://infra.spec.whatwg.org
     <dt data-md><dfn class="dfn-paneled" data-dfn-for="frame timing info" data-dfn-type="dfn" data-noexport id="frame-timing-info-end-time">end time</dfn>
     <dd data-md>
      <p>A <code class="idl"><a data-link-type="idl" href="https://w3c.github.io/hr-time/#idl-def-domhighrestimestamp" id="ref-for-idl-def-domhighrestimestamp①①">DOMHighResTimeStamp</a></code>, initially 0.
-Note: all the above are [=monotonic clock/unsafe current time=|unsafe=],
+Note: all the above are <a data-link-type="dfn" href="https://w3c.github.io/hr-time/#monotonic-clock-unsafe-current-time" id="ref-for-monotonic-clock-unsafe-current-time">unsafe</a>,
 and should be <a data-link-type="dfn" href="https://w3c.github.io/hr-time/#dfn-coarsen-time" id="ref-for-dfn-coarsen-time">coarsened</a> when exposed via an API.</p>
     <dt data-md><dfn class="dfn-paneled" data-dfn-for="frame timing info" data-dfn-type="dfn" data-noexport id="frame-timing-info-task-durations">task durations</dfn>
     <dd data-md>
@@ -1147,22 +1165,27 @@ and should be <a data-link-type="dfn" href="https://w3c.github.io/hr-time/#dfn-c
    <h3 class="heading settled" data-level="3.2" id="loaf-processing-model"><span class="secno">3.2. </span><span class="content">Report Long Animation Frames</span><a class="self-link" href="#loaf-processing-model"></a></h3>
    <h4 class="heading settled" data-level="3.2.1" id="loaf-monitoring"><span class="secno">3.2.1. </span><span class="content">Long Animation Frame Monitoring {#loaf-monitoring}</span><a class="self-link" href="#loaf-monitoring"></a></h4>
    <div class="algorithm" data-algorithm="Accessing the frame timing info">
-     To get the <dfn class="dfn-paneled" data-dfn-type="dfn" data-noexport id="nearest-same-origin-root">nearest same-origin root</dfn> for a <code class="idl"><a data-link-type="idl" href="https://dom.spec.whatwg.org/#document" id="ref-for-document⑦">Document</a></code> <var>document</var>: 
+    
+    To get the <dfn class="dfn-paneled" data-dfn-type="dfn" data-noexport id="nearest-same-origin-root">nearest same-origin root</dfn> for a <code class="idl"><a data-link-type="idl" href="https://dom.spec.whatwg.org/#document" id="ref-for-document⑦">Document</a></code> <var>document</var>:
+
     <ol>
      <li data-md>
       <p>Let <var>ancestors</var> be the <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/document-sequences.html#ancestor-navigables" id="ref-for-ancestor-navigables②">ancestor navigables</a> of <var>document</var>.</p>
      <li data-md>
       <p><a data-link-type="dfn" href="https://infra.spec.whatwg.org/#list-iterate" id="ref-for-list-iterate②">For each</a> <var>ancestorNavigable</var> in <var>ancestors</var>:
-If <var>ancestorNavigable</var>’s <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/document-sequences.html#nav-document" id="ref-for-nav-document">active document</a>'s <a data-link-type="dfn" href="https://dom.spec.whatwg.org/#concept-document-origin" id="ref-for-concept-document-origin">origin</a> is <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/browsers.html#same-origin" id="ref-for-same-origin">same origin</a> with <var>document</var>’s <a data-link-type="dfn" href="https://dom.spec.whatwg.org/#concept-document-origin" id="ref-for-concept-document-origin①">origin</a>,
-    and <var>ancestorNavigable</var>’s <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/document-sequences.html#nav-document" id="ref-for-nav-document①">active document</a>'s <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/webappapis.html#relevant-agent" id="ref-for-relevant-agent">relevant agent</a> is <var>document</var>’s <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/webappapis.html#relevant-agent" id="ref-for-relevant-agent①">relevant agent</a>,
+If <var>ancestorNavigable</var>’s <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/document-sequences.html#nav-document" id="ref-for-nav-document">active document</a>’s <a data-link-type="dfn" href="https://dom.spec.whatwg.org/#concept-document-origin" id="ref-for-concept-document-origin">origin</a> is <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/browsers.html#same-origin" id="ref-for-same-origin">same origin</a> with <var>document</var>’s <a data-link-type="dfn" href="https://dom.spec.whatwg.org/#concept-document-origin" id="ref-for-concept-document-origin①">origin</a>,
+    and <var>ancestorNavigable</var>’s <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/document-sequences.html#nav-document" id="ref-for-nav-document①">active document</a>’s <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/webappapis.html#relevant-agent" id="ref-for-relevant-agent">relevant agent</a> is <var>document</var>’s <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/webappapis.html#relevant-agent" id="ref-for-relevant-agent①">relevant agent</a>,
     then return <var>ancestorNavigable</var>’s <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/document-sequences.html#nav-document" id="ref-for-nav-document②">active document</a>.</p>
      <li data-md>
       <p>Return <var>document</var>.</p>
     </ol>
-    <p>The <dfn class="dfn-paneled" data-dfn-type="dfn" data-noexport id="relevant-frame-timing-info">relevant frame timing info</dfn> for a <code class="idl"><a data-link-type="idl" href="https://dom.spec.whatwg.org/#document" id="ref-for-document⑧">Document</a></code> <var>document</var> is its <a data-link-type="dfn" href="#nearest-same-origin-root" id="ref-for-nearest-same-origin-root">nearest same-origin root</a>'s <a data-link-type="dfn" href="#current-frame-timing-info" id="ref-for-current-frame-timing-info">current frame timing info</a>.</p>
+    <p>The <dfn class="dfn-paneled" data-dfn-type="dfn" data-noexport id="relevant-frame-timing-info">relevant frame timing info</dfn> for a <code class="idl"><a data-link-type="idl" href="https://dom.spec.whatwg.org/#document" id="ref-for-document⑧">Document</a></code> <var>document</var> is its <a data-link-type="dfn" href="#nearest-same-origin-root" id="ref-for-nearest-same-origin-root">nearest same-origin root</a>’s <a data-link-type="dfn" href="#current-frame-timing-info" id="ref-for-current-frame-timing-info">current frame timing info</a>.</p>
    </div>
    <div class="algorithm" data-algorithm="Record task start time">
-     To <dfn class="dfn-paneled" data-dfn-type="dfn" data-export id="record-task-start-time">record task start time</dfn> given a <code class="idl"><a data-link-type="idl" href="https://w3c.github.io/hr-time/#idl-def-domhighrestimestamp" id="ref-for-idl-def-domhighrestimestamp①⑤">DOMHighResTimeStamp</a></code> <var>unsafeTaskStartTime</var>, and a <code class="idl"><a data-link-type="idl" href="https://dom.spec.whatwg.org/#document" id="ref-for-document⑨">Document</a></code> <var>document</var>: 
+    
+    To <dfn class="dfn-paneled" data-dfn-type="dfn" data-export id="record-task-start-time">record task start time</dfn> given a <code class="idl"><a data-link-type="idl" href="https://w3c.github.io/hr-time/#idl-def-domhighrestimestamp" id="ref-for-idl-def-domhighrestimestamp①⑤">DOMHighResTimeStamp</a></code> <var>unsafeTaskStartTime</var>, and a <code class="idl"><a data-link-type="idl" href="https://dom.spec.whatwg.org/#document" id="ref-for-document⑨">Document</a></code> <var>document</var>:
+
+
     <ol>
      <li data-md>
       <p>Let <var>root</var> be <var>document</var>’s <a data-link-type="dfn" href="#nearest-same-origin-root" id="ref-for-nearest-same-origin-root①">nearest same-origin root</a>.</p>
@@ -1170,13 +1193,16 @@ If <var>ancestorNavigable</var>’s <a data-link-type="dfn" href="https://html.s
       <p>If <var>root</var>’s <a data-link-type="dfn" href="#current-frame-timing-info" id="ref-for-current-frame-timing-info①">current frame timing info</a> is null,
 then set <var>root</var>’s <a data-link-type="dfn" href="#current-frame-timing-info" id="ref-for-current-frame-timing-info②">current frame timing info</a> to a new <a data-link-type="dfn" href="#frame-timing-info" id="ref-for-frame-timing-info③">frame timing info</a> whose <a data-link-type="dfn" href="#frame-timing-info-start-time" id="ref-for-frame-timing-info-start-time①">start time</a> is <var>unsafeTaskStartTime</var>.</p>
      <li data-md>
-      <p>Set <var>root</var>’s <a data-link-type="dfn" href="#current-frame-timing-info" id="ref-for-current-frame-timing-info③">current frame timing info</a>'s <a data-link-type="dfn" href="#frame-timing-info-current-task-start-time" id="ref-for-frame-timing-info-current-task-start-time">current task start time</a> to <var>unsafeTaskStartTime</var>.</p>
+      <p>Set <var>root</var>’s <a data-link-type="dfn" href="#current-frame-timing-info" id="ref-for-current-frame-timing-info③">current frame timing info</a>’s <a data-link-type="dfn" href="#frame-timing-info-current-task-start-time" id="ref-for-frame-timing-info-current-task-start-time">current task start time</a> to <var>unsafeTaskStartTime</var>.</p>
      <li data-md>
-      <p>If <var>root</var>’s <a data-link-type="dfn" href="#current-frame-timing-info" id="ref-for-current-frame-timing-info④">current frame timing info</a>'s 's <a data-link-type="dfn" href="#frame-timing-info-start-time" id="ref-for-frame-timing-info-start-time②">start time</a> is 0, then set <var>root</var>’s <a data-link-type="dfn" href="#current-frame-timing-info" id="ref-for-current-frame-timing-info⑤">current frame timing info</a>'s <a data-link-type="dfn" href="#frame-timing-info-start-time" id="ref-for-frame-timing-info-start-time③">start time</a> to <var>unsafeTaskStartTime</var>.</p>
+      <p>If <var>root</var>’s <a data-link-type="dfn" href="#current-frame-timing-info" id="ref-for-current-frame-timing-info④">current frame timing info</a>’s 's <a data-link-type="dfn" href="#frame-timing-info-start-time" id="ref-for-frame-timing-info-start-time②">start time</a> is 0, then set <var>root</var>’s <a data-link-type="dfn" href="#current-frame-timing-info" id="ref-for-current-frame-timing-info⑤">current frame timing info</a>’s <a data-link-type="dfn" href="#frame-timing-info-start-time" id="ref-for-frame-timing-info-start-time③">start time</a> to <var>unsafeTaskStartTime</var>.</p>
     </ol>
    </div>
    <div class="algorithm" data-algorithm="Report task end time">
-     To <dfn class="dfn-paneled" data-dfn-type="dfn" data-export id="record-task-end-time">record task end time</dfn> given an <code class="idl"><a data-link-type="idl" href="https://w3c.github.io/hr-time/#idl-def-domhighrestimestamp" id="ref-for-idl-def-domhighrestimestamp①⑥">DOMHighResTimeStamp</a></code> <var>unsafeTaskEndTime</var>, and a <code class="idl"><a data-link-type="idl" href="https://dom.spec.whatwg.org/#document" id="ref-for-document①⓪">Document</a></code> <var>document</var>: 
+    
+    To <dfn class="dfn-paneled" data-dfn-type="dfn" data-export id="record-task-end-time">record task end time</dfn> given an <code class="idl"><a data-link-type="idl" href="https://w3c.github.io/hr-time/#idl-def-domhighrestimestamp" id="ref-for-idl-def-domhighrestimestamp①⑥">DOMHighResTimeStamp</a></code> <var>unsafeTaskEndTime</var>, and a <code class="idl"><a data-link-type="idl" href="https://dom.spec.whatwg.org/#document" id="ref-for-document①⓪">Document</a></code> <var>document</var>:
+
+
     <ol>
      <li data-md>
       <p>Let <var>timingInfo</var> be <var>document</var>’s <a data-link-type="dfn" href="#relevant-frame-timing-info" id="ref-for-relevant-frame-timing-info">relevant frame timing info</a>.</p>
@@ -1193,7 +1219,7 @@ then set <var>root</var>’s <a data-link-type="dfn" href="#current-frame-timing
       <p>If the user agent believes that updating the rendering of <var>document</var>’s <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/document-sequences.html#node-navigable" id="ref-for-node-navigable⑥">node navigable</a> would have no visible effect, then:</p>
       <ol>
        <li data-md>
-        <p>set <var>document</var>’s <a data-link-type="dfn" href="#nearest-same-origin-root" id="ref-for-nearest-same-origin-root②">nearest same-origin root</a>'s <a data-link-type="dfn" href="#current-frame-timing-info" id="ref-for-current-frame-timing-info⑥">current frame timing info</a> to null.</p>
+        <p>set <var>document</var>’s <a data-link-type="dfn" href="#nearest-same-origin-root" id="ref-for-nearest-same-origin-root②">nearest same-origin root</a>’s <a data-link-type="dfn" href="#current-frame-timing-info" id="ref-for-current-frame-timing-info⑥">current frame timing info</a> to null.</p>
        <li data-md>
         <p>Let <var>frameDuration</var> be the <a data-link-type="dfn" href="https://w3c.github.io/hr-time/#dfn-duration" id="ref-for-dfn-duration④">duration</a> between the <a data-link-type="dfn" href="https://w3c.github.io/hr-time/#dfn-relative-high-resolution-time" id="ref-for-dfn-relative-high-resolution-time①①">relative high resolution time</a> given <var>timingInfo</var>’s <a data-link-type="dfn" href="#frame-timing-info-start-time" id="ref-for-frame-timing-info-start-time④">start time</a> and <var>global</var>,
 and the <a data-link-type="dfn" href="https://w3c.github.io/hr-time/#dfn-relative-high-resolution-time" id="ref-for-dfn-relative-high-resolution-time①②">relative high resolution time</a> given <var>unsafeTaskEndTime</var> and <var>global</var>.</p>
@@ -1204,7 +1230,10 @@ and the <a data-link-type="dfn" href="https://w3c.github.io/hr-time/#dfn-relativ
     </ol>
    </div>
    <div class="algorithm" data-algorithm="Record rendering time">
-     To <dfn class="dfn-paneled" data-dfn-type="dfn" data-export id="record-rendering-time">record rendering time</dfn> given a <code class="idl"><a data-link-type="idl" href="https://dom.spec.whatwg.org/#document" id="ref-for-document①①">Document</a></code> <var>document</var>, and a <code class="idl"><a data-link-type="idl" href="https://w3c.github.io/hr-time/#idl-def-domhighrestimestamp" id="ref-for-idl-def-domhighrestimestamp①⑦">DOMHighResTimeStamp</a></code> <var>unsafeStyleAndLayoutStart</var>: 
+    
+    To <dfn class="dfn-paneled" data-dfn-type="dfn" data-export id="record-rendering-time">record rendering time</dfn> given a <code class="idl"><a data-link-type="idl" href="https://dom.spec.whatwg.org/#document" id="ref-for-document①①">Document</a></code> <var>document</var>, and a <code class="idl"><a data-link-type="idl" href="https://w3c.github.io/hr-time/#idl-def-domhighrestimestamp" id="ref-for-idl-def-domhighrestimestamp①⑦">DOMHighResTimeStamp</a></code> <var>unsafeStyleAndLayoutStart</var>:
+
+
     <ol>
      <li data-md>
       <p>Let <var>timingInfo</var> be <var>document</var>’s <a data-link-type="dfn" href="#relevant-frame-timing-info" id="ref-for-relevant-frame-timing-info①">relevant frame timing info</a>.</p>
@@ -1215,18 +1244,25 @@ and the <a data-link-type="dfn" href="https://w3c.github.io/hr-time/#dfn-relativ
       <p>Let <var>frameDuration</var> be the <a data-link-type="dfn" href="https://w3c.github.io/hr-time/#dfn-duration" id="ref-for-dfn-duration⑤">duration</a> between the <a data-link-type="dfn" href="https://w3c.github.io/hr-time/#dfn-relative-high-resolution-time" id="ref-for-dfn-relative-high-resolution-time①③">relative high resolution time</a> given <var>timingInfo</var>’s <a data-link-type="dfn" href="#frame-timing-info-start-time" id="ref-for-frame-timing-info-start-time⑤">start time</a> and <var>global</var>,
 and the <a data-link-type="dfn" href="https://w3c.github.io/hr-time/#dfn-current-high-resolution-time" id="ref-for-dfn-current-high-resolution-time">current high resolution time</a> given <var>global</var>.</p>
      <li data-md>
-      <p>If <var>frameDuration</var> is less than 50 milliseconds, then set <var>document</var>’s <a data-link-type="dfn" href="#nearest-same-origin-root" id="ref-for-nearest-same-origin-root③">nearest same-origin root</a>'s <a data-link-type="dfn" href="#current-frame-timing-info" id="ref-for-current-frame-timing-info⑦">current frame timing info</a> to null and return.</p>
+      <p>If <var>frameDuration</var> is less than 50 milliseconds, then set <var>document</var>’s <a data-link-type="dfn" href="#nearest-same-origin-root" id="ref-for-nearest-same-origin-root③">nearest same-origin root</a>’s <a data-link-type="dfn" href="#current-frame-timing-info" id="ref-for-current-frame-timing-info⑦">current frame timing info</a> to null and return.</p>
      <li data-md>
       <p>Set <var>timingInfo</var>’s <a data-link-type="dfn" href="#frame-timing-info-update-the-rendering-start-time" id="ref-for-frame-timing-info-update-the-rendering-start-time②">update the rendering start time</a> to <var>timingInfo</var>’s <a data-link-type="dfn" href="#frame-timing-info-current-task-start-time" id="ref-for-frame-timing-info-current-task-start-time②">current task start time</a>.</p>
      <li data-md>
       <p>Set <var>timingInfo</var>’s <a data-link-type="dfn" href="#frame-timing-info-style-and-layout-start-time" id="ref-for-frame-timing-info-style-and-layout-start-time①">style and layout start time</a> to <var>unsafeStyleAndLayoutStart</var>.</p>
     </ol>
    </div>
-   <div class="algorithm" data-algorithm="Queue frame timing"> To <dfn class="dfn-paneled" data-dfn-type="dfn" data-export id="queue-a-long-animation-frame-entry">queue a long animation frame entry</dfn> given a <code class="idl"><a data-link-type="idl" href="https://dom.spec.whatwg.org/#document" id="ref-for-document①②">Document</a></code> <var>document</var>, a <a data-link-type="dfn" href="#frame-timing-info" id="ref-for-frame-timing-info④">frame timing info</a> <var>timingInfo</var>, and a <a data-link-type="dfn" href="https://w3c.github.io/paint-timing/#paint-timing-info" id="ref-for-paint-timing-info">paint timing info</a> <var>paintTimingInfo</var>, <a data-link-type="dfn" href="https://w3c.github.io/performance-timeline/#dfn-queue-a-performanceentry" id="ref-for-dfn-queue-a-performanceentry">queue</a> a new <code class="idl"><a data-link-type="idl" href="#performancelonganimationframetiming" id="ref-for-performancelonganimationframetiming③">PerformanceLongAnimationFrameTiming</a></code> in <var>document</var>’s <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/webappapis.html#concept-relevant-realm" id="ref-for-concept-relevant-realm①">relevant realm</a>,
-        whose <a data-link-type="dfn" href="#performancelonganimationframetiming-timing-info" id="ref-for-performancelonganimationframetiming-timing-info⑧">timing info</a> is <var>timingInfo</var> and whose <a data-link-type="dfn" href="https://w3c.github.io/paint-timing/#painttimingmixin-paint-timing-info" id="ref-for-painttimingmixin-paint-timing-info">paint timing info</a> is <var>paintTimingInfo</var>. </div>
+   <div class="algorithm" data-algorithm="Queue frame timing">
+    To <dfn class="dfn-paneled" data-dfn-type="dfn" data-export id="queue-a-long-animation-frame-entry">queue a long animation frame entry</dfn> given a <code class="idl"><a data-link-type="idl" href="https://dom.spec.whatwg.org/#document" id="ref-for-document①②">Document</a></code> <var>document</var>, a <a data-link-type="dfn" href="#frame-timing-info" id="ref-for-frame-timing-info④">frame timing info</a> <var>timingInfo</var>, and a <a data-link-type="dfn" href="https://w3c.github.io/paint-timing/#paint-timing-info" id="ref-for-paint-timing-info">paint timing info</a> <var>paintTimingInfo</var>,
+        <a data-link-type="dfn" href="https://w3c.github.io/performance-timeline/#dfn-queue-a-performanceentry" id="ref-for-dfn-queue-a-performanceentry">queue</a> a new <code class="idl"><a data-link-type="idl" href="#performancelonganimationframetiming" id="ref-for-performancelonganimationframetiming③">PerformanceLongAnimationFrameTiming</a></code> in <var>document</var>’s <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/webappapis.html#concept-relevant-realm" id="ref-for-concept-relevant-realm①">relevant realm</a>,
+        whose <a data-link-type="dfn" href="#performancelonganimationframetiming-timing-info" id="ref-for-performancelonganimationframetiming-timing-info⑧">timing info</a> is <var>timingInfo</var> and whose <a data-link-type="dfn" href="https://w3c.github.io/paint-timing/#painttimingmixin-paint-timing-info" id="ref-for-painttimingmixin-paint-timing-info">paint timing info</a> is <var>paintTimingInfo</var>.
+</div>
    <h4 class="heading settled" data-level="3.2.2" id="long-script-monitoring"><span class="secno">3.2.2. </span><span class="content">Long Script Monitoring</span><a class="self-link" href="#long-script-monitoring"></a></h4>
    <div class="algorithm" data-algorithm="Report pending user callback">
-     To <dfn class="dfn-paneled" data-dfn-type="dfn" data-export id="record-timing-info-for-user-callback">record timing info for user callback</dfn> given a <a data-link-type="dfn" href="https://webidl.spec.whatwg.org/#dfn-callback-function" id="ref-for-dfn-callback-function">callback function</a> <var>callback</var> and an <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/webappapis.html#environment-settings-object" id="ref-for-environment-settings-object">environment settings object</a> <var>settings</var>: <a data-link-type="dfn" href="#create-script-entry-point" id="ref-for-create-script-entry-point">Create script entry point</a> given <var>settings</var>, "`user-callback`", and the following steps given a <a data-link-type="dfn" href="#script-timing-info" id="ref-for-script-timing-info③">script timing info</a> <var>scriptTimingInfo</var>: 
+    
+    To <dfn class="dfn-paneled" data-dfn-type="dfn" data-export id="record-timing-info-for-user-callback">record timing info for user callback</dfn> given a <a data-link-type="dfn" href="https://webidl.spec.whatwg.org/#dfn-callback-function" id="ref-for-dfn-callback-function">callback function</a> <var>callback</var> and an <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/webappapis.html#environment-settings-object" id="ref-for-environment-settings-object">environment settings object</a> <var>settings</var>:
+    <a data-link-type="dfn" href="#create-script-entry-point" id="ref-for-create-script-entry-point">Create script entry point</a> given <var>settings</var>, "`user-callback`", and the following steps given a <a data-link-type="dfn" href="#script-timing-info" id="ref-for-script-timing-info③">script timing info</a> <var>scriptTimingInfo</var>:
+
+
     <ol>
      <li data-md>
       <p>Set <var>scriptTimingInfo</var>’s <a data-link-type="dfn" href="#script-timing-info-invoker-name" id="ref-for-script-timing-info-invoker-name④">invoker name</a> to <var>callback</var>’s <a data-link-type="dfn" href="https://webidl.spec.whatwg.org/#dfn-identifier" id="ref-for-dfn-identifier">identifier</a>.</p>
@@ -1235,8 +1271,12 @@ and the <a data-link-type="dfn" href="https://w3c.github.io/hr-time/#dfn-current
     </ol>
    </div>
    <div class="algorithm" data-algorithm="Report pending timer">
-     To <dfn class="dfn-paneled" data-dfn-type="dfn" data-export id="record-timing-info-for-timer-handler">record timing info for timer handler</dfn> given a string or <code class="idl"><a data-link-type="idl" href="https://webidl.spec.whatwg.org/#Function" id="ref-for-Function">Function</a></code> <var>handler</var>, an <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/webappapis.html#environment-settings-object" id="ref-for-environment-settings-object①">environment settings object</a> <var>settings</var>, and a boolean <var>repeat</var>: <a data-link-type="dfn" href="#create-script-entry-point" id="ref-for-create-script-entry-point①">Create script entry point</a> given <var>settings</var>, "`user-callback`",
-            and the following steps given a <a data-link-type="dfn" href="#script-timing-info" id="ref-for-script-timing-info④">script timing info</a> <var>scriptTimingInfo</var>: 
+    
+    To <dfn class="dfn-paneled" data-dfn-type="dfn" data-export id="record-timing-info-for-timer-handler">record timing info for timer handler</dfn> given a string or <code class="idl"><a data-link-type="idl" href="https://webidl.spec.whatwg.org/#Function" id="ref-for-Function">Function</a></code> <var>handler</var>, an <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/webappapis.html#environment-settings-object" id="ref-for-environment-settings-object①">environment settings object</a> <var>settings</var>, and a boolean <var>repeat</var>:
+        <a data-link-type="dfn" href="#create-script-entry-point" id="ref-for-create-script-entry-point①">Create script entry point</a> given <var>settings</var>, "`user-callback`",
+            and the following steps given a <a data-link-type="dfn" href="#script-timing-info" id="ref-for-script-timing-info④">script timing info</a> <var>scriptTimingInfo</var>:
+
+
     <ol>
      <li data-md>
       <p>Let <var>setTimeoutOrInterval</var> be "setInterval" if <var>repeat</var> is true, "setTimeout" otherwise.</p>
@@ -1248,8 +1288,12 @@ and the <a data-link-type="dfn" href="https://w3c.github.io/hr-time/#dfn-current
     </ol>
    </div>
    <div class="algorithm" data-algorithm="Report event listener">
-     To <dfn class="dfn-paneled" data-dfn-type="dfn" data-export id="record-timing-info-for-event-listener">record timing info for event listener</dfn> given an <code class="idl"><a data-link-type="idl" href="https://dom.spec.whatwg.org/#event" id="ref-for-event">Event</a></code> <var>event</var> and an <code class="idl"><a data-link-type="idl" href="https://dom.spec.whatwg.org/#callbackdef-eventlistener" id="ref-for-callbackdef-eventlistener">EventListener</a></code> <var>listener</var>: <a data-link-type="dfn" href="#create-script-entry-point" id="ref-for-create-script-entry-point②">Create script entry point</a> given <var>listener</var>’s <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/webappapis.html#relevant-settings-object" id="ref-for-relevant-settings-object">relevant settings object</a>, "`event-listener`",
-        and the following steps given a <a data-link-type="dfn" href="#script-timing-info" id="ref-for-script-timing-info⑤">script timing info</a> <var>scriptTimingInfo</var> and a <a data-link-type="dfn" href="#frame-timing-info" id="ref-for-frame-timing-info⑤">frame timing info</a> <var>frameTimingInfo</var>: 
+    
+    To <dfn class="dfn-paneled" data-dfn-type="dfn" data-export id="record-timing-info-for-event-listener">record timing info for event listener</dfn> given an <code class="idl"><a data-link-type="idl" href="https://dom.spec.whatwg.org/#event" id="ref-for-event">Event</a></code> <var>event</var> and an <code class="idl"><a data-link-type="idl" href="https://dom.spec.whatwg.org/#callbackdef-eventlistener" id="ref-for-callbackdef-eventlistener">EventListener</a></code> <var>listener</var>:
+        <a data-link-type="dfn" href="#create-script-entry-point" id="ref-for-create-script-entry-point②">Create script entry point</a> given <var>listener</var>’s <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/webappapis.html#relevant-settings-object" id="ref-for-relevant-settings-object">relevant settings object</a>, "`event-listener`",
+        and the following steps given a <a data-link-type="dfn" href="#script-timing-info" id="ref-for-script-timing-info⑤">script timing info</a> <var>scriptTimingInfo</var> and a <a data-link-type="dfn" href="#frame-timing-info" id="ref-for-frame-timing-info⑤">frame timing info</a> <var>frameTimingInfo</var>:
+
+
     <ol>
      <li data-md>
       <p>Set <var>scriptTimingInfo</var>’s <a data-link-type="dfn" href="#script-timing-info-event-type" id="ref-for-script-timing-info-event-type①">event type</a> to <var>event</var>’s <code class="idl"><a data-link-type="idl" href="https://dom.spec.whatwg.org/#dom-event-type" id="ref-for-dom-event-type">type</a></code>.</p>
@@ -1279,10 +1323,12 @@ then set <var>frameTimingInfo</var>’s <a data-link-type="dfn" href="#frame-tim
     </ol>
    </div>
    <div class="algorithm" data-algorithm="Report promise resolver">
-     To <dfn class="dfn-paneled" data-dfn-type="dfn" data-export id="record-timing-info-for-promise-resolver">record timing info for promise resolver</dfn> given a <code class="idl"><a data-link-type="idl" href="https://webidl.spec.whatwg.org/#idl-promise" id="ref-for-idl-promise">Promise</a></code> <var>promise</var> and a "`resolve-promise`" or "`reject-promise`" <var>type</var>: 
+    
+    To <dfn class="dfn-paneled" data-dfn-type="dfn" data-export id="record-timing-info-for-promise-resolver">record timing info for promise resolver</dfn> given a <code class="idl"><a data-link-type="idl" href="https://webidl.spec.whatwg.org/#idl-promise" id="ref-for-idl-promise">Promise</a></code> <var>promise</var> and a "`resolve-promise`" or "`reject-promise`" <var>type</var>:
+
     <ol>
      <li data-md>
-      <p><a data-link-type="dfn" href="#create-script-entry-point" id="ref-for-create-script-entry-point③">Create script entry point</a> given <var>promise</var>’s <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/webappapis.html#concept-relevant-realm" id="ref-for-concept-relevant-realm②">relevant realm</a>'s <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/webappapis.html#concept-realm-settings-object" id="ref-for-concept-realm-settings-object">settings object</a>, <var>type</var>,
+      <p><a data-link-type="dfn" href="#create-script-entry-point" id="ref-for-create-script-entry-point③">Create script entry point</a> given <var>promise</var>’s <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/webappapis.html#concept-relevant-realm" id="ref-for-concept-relevant-realm②">relevant realm</a>’s <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/webappapis.html#concept-realm-settings-object" id="ref-for-concept-realm-settings-object">settings object</a>, <var>type</var>,
 and the following steps given a <a data-link-type="dfn" href="#script-timing-info" id="ref-for-script-timing-info⑥">script timing info</a> <var>scriptTimingInfo</var>:</p>
       <ol>
        <li data-md>
@@ -1293,7 +1339,9 @@ and the following steps given a <a data-link-type="dfn" href="#script-timing-inf
     </ol>
    </div>
    <div class="algorithm" data-algorithm="Set source URL for script block">
-     To <dfn class="dfn-paneled" data-dfn-type="dfn" data-noexport id="set-source-url-for-script-block">set source url for script block</dfn> given a <a data-link-type="dfn" href="#script-timing-info" id="ref-for-script-timing-info⑦">script timing info</a> <var>scriptTimingInfo</var>, a <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/webappapis.html#concept-script" id="ref-for-concept-script">script</a> <var>script</var>, and a <a data-link-type="dfn" href="https://url.spec.whatwg.org/#concept-url" id="ref-for-concept-url">URL</a>-or-null <var>url</var>: 
+    
+    To <dfn class="dfn-paneled" data-dfn-type="dfn" data-noexport id="set-source-url-for-script-block">set source url for script block</dfn> given a <a data-link-type="dfn" href="#script-timing-info" id="ref-for-script-timing-info⑦">script timing info</a> <var>scriptTimingInfo</var>, a <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/webappapis.html#concept-script" id="ref-for-concept-script">script</a> <var>script</var>, and a <a data-link-type="dfn" href="https://url.spec.whatwg.org/#concept-url" id="ref-for-concept-url">URL</a>-or-null <var>url</var>:
+
     <ol>
      <li data-md>
       <p>If <var>url</var> is null, then return.</p>
@@ -1304,15 +1352,20 @@ and the following steps given a <a data-link-type="dfn" href="#script-timing-inf
     </ol>
    </div>
    <div class="algorithm" data-algorithm="Report classic script execution">
-     To <dfn class="dfn-paneled" data-dfn-type="dfn" data-export id="record-classic-script-creation-time">record classic script creation time</dfn> given a <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/webappapis.html#concept-script" id="ref-for-concept-script①">script</a> <var>script</var> and a <a data-link-type="dfn" href="https://url.spec.whatwg.org/#concept-url" id="ref-for-concept-url①">URL</a>-or-null <var>originalSourceURL</var>: 
+    
+    To <dfn class="dfn-paneled" data-dfn-type="dfn" data-export id="record-classic-script-creation-time">record classic script creation time</dfn> given a <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/webappapis.html#concept-script" id="ref-for-concept-script①">script</a> <var>script</var> and a <a data-link-type="dfn" href="https://url.spec.whatwg.org/#concept-url" id="ref-for-concept-url①">URL</a>-or-null <var>originalSourceURL</var>:
+
     <ol>
      <li data-md>
       <p><a data-link-type="dfn" href="#create-script-entry-point" id="ref-for-create-script-entry-point④">Create script entry point</a> with <var>script</var>’s <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/webappapis.html#settings-object" id="ref-for-settings-object">settings object</a>, "`classic-script`",
-and the following step given a <a data-link-type="dfn" href="#script-timing-info" id="ref-for-script-timing-info⑧">script timing info</a> <var>scriptTimingInfo</var>: <a data-link-type="dfn" href="#set-source-url-for-script-block" id="ref-for-set-source-url-for-script-block">Set source url for script block</a> given <var>scriptTimingInfo</var>, <var>script</var>, and <var>originalSourceURL</var>.</p>
+and the following step given a <a data-link-type="dfn" href="#script-timing-info" id="ref-for-script-timing-info⑧">script timing info</a> <var>scriptTimingInfo</var>:
+<a data-link-type="dfn" href="#set-source-url-for-script-block" id="ref-for-set-source-url-for-script-block">Set source url for script block</a> given <var>scriptTimingInfo</var>, <var>script</var>, and <var>originalSourceURL</var>.</p>
     </ol>
    </div>
    <div class="algorithm" data-algorithm="Report classic script execution start">
-     To <dfn class="dfn-paneled" data-dfn-type="dfn" data-export id="record-classic-script-execution-start-time">record classic script execution start time</dfn> given a <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/webappapis.html#classic-script" id="ref-for-classic-script">classic script</a> <var>script</var>: 
+    
+    To <dfn class="dfn-paneled" data-dfn-type="dfn" data-export id="record-classic-script-execution-start-time">record classic script execution start time</dfn> given a <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/webappapis.html#classic-script" id="ref-for-classic-script">classic script</a> <var>script</var>:
+
     <ol>
      <li data-md>
       <p>Let <var>settings</var> be <var>script</var>’s <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/webappapis.html#settings-object" id="ref-for-settings-object①">settings object</a>.</p>
@@ -1327,14 +1380,17 @@ and the following step given a <a data-link-type="dfn" href="#script-timing-info
      <li data-md>
       <p>If <var>frameTimingInfo</var> is null or if <var>frameTimingInfo</var>’s <a data-link-type="dfn" href="#frame-timing-info-pending-script" id="ref-for-frame-timing-info-pending-script">pending script</a> is not null, then return.</p>
      <li data-md>
-      <p class="assertion">Assert: <var>frameTimingInfo</var>’s <a data-link-type="dfn" href="#frame-timing-info-pending-script" id="ref-for-frame-timing-info-pending-script①">pending script</a>'s <a data-link-type="dfn" href="#script-timing-info-invoker-type" id="ref-for-script-timing-info-invoker-type①">invoker type</a> is "`classic-script`".</p>
+      <p class="assertion">Assert: <var>frameTimingInfo</var>’s <a data-link-type="dfn" href="#frame-timing-info-pending-script" id="ref-for-frame-timing-info-pending-script①">pending script</a>’s <a data-link-type="dfn" href="#script-timing-info-invoker-type" id="ref-for-script-timing-info-invoker-type①">invoker type</a> is "`classic-script`".</p>
      <li data-md>
-      <p>Set <var>frameTimingInfo</var>’s <a data-link-type="dfn" href="#frame-timing-info-pending-script" id="ref-for-frame-timing-info-pending-script②">pending script</a>'s <a data-link-type="dfn" href="#script-timing-info-execution-start-time" id="ref-for-script-timing-info-execution-start-time②">execution start time</a> to the <a data-link-type="dfn" href="https://w3c.github.io/hr-time/#dfn-unsafe-shared-current-time" id="ref-for-dfn-unsafe-shared-current-time">unsafe shared current time</a>.</p>
+      <p>Set <var>frameTimingInfo</var>’s <a data-link-type="dfn" href="#frame-timing-info-pending-script" id="ref-for-frame-timing-info-pending-script②">pending script</a>’s <a data-link-type="dfn" href="#script-timing-info-execution-start-time" id="ref-for-script-timing-info-execution-start-time②">execution start time</a> to the <a data-link-type="dfn" href="https://w3c.github.io/hr-time/#dfn-unsafe-shared-current-time" id="ref-for-dfn-unsafe-shared-current-time">unsafe shared current time</a>.</p>
     </ol>
    </div>
    <div class="algorithm" data-algorithm="Report module script execution start">
-     To <dfn class="dfn-paneled" data-dfn-type="dfn" data-export id="record-module-script-execution-start-time">record module script execution start time</dfn> given a <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/webappapis.html#module-script" id="ref-for-module-script">module script</a> <var>script</var>: <a data-link-type="dfn" href="#create-script-entry-point" id="ref-for-create-script-entry-point⑤">Create script entry point</a> with <var>script</var>’s <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/webappapis.html#settings-object" id="ref-for-settings-object②">settings object</a>, "`module-script`",
-            and the following step given a <a data-link-type="dfn" href="#script-timing-info" id="ref-for-script-timing-info⑨">script timing info</a> <var>scriptTimingInfo</var>: 
+    
+    To <dfn class="dfn-paneled" data-dfn-type="dfn" data-export id="record-module-script-execution-start-time">record module script execution start time</dfn> given a <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/webappapis.html#module-script" id="ref-for-module-script">module script</a> <var>script</var>:
+        <a data-link-type="dfn" href="#create-script-entry-point" id="ref-for-create-script-entry-point⑤">Create script entry point</a> with <var>script</var>’s <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/webappapis.html#settings-object" id="ref-for-settings-object②">settings object</a>, "`module-script`",
+            and the following step given a <a data-link-type="dfn" href="#script-timing-info" id="ref-for-script-timing-info⑨">script timing info</a> <var>scriptTimingInfo</var>:
+
     <ol>
      <li data-md>
       <p>Set <var>scriptTimingInfo</var>’s <a data-link-type="dfn" href="#script-timing-info-execution-start-time" id="ref-for-script-timing-info-execution-start-time③">execution start time</a> to <var>script</var>’s <var>scriptTimingInfo</var>’s <a data-link-type="dfn" href="#script-timing-info-start-time" id="ref-for-script-timing-info-start-time①">start time</a>.</p>
@@ -1343,16 +1399,19 @@ and the following step given a <a data-link-type="dfn" href="#script-timing-info
     </ol>
    </div>
    <div class="algorithm" data-algorithm="Create script entry point">
-     To <dfn class="dfn-paneled" data-dfn-type="dfn" data-noexport id="create-script-entry-point">create script entry point</dfn> given an <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/webappapis.html#environment-settings-object" id="ref-for-environment-settings-object②">environment settings object</a> <var>settings</var>,
+    
+    To <dfn class="dfn-paneled" data-dfn-type="dfn" data-noexport id="create-script-entry-point">create script entry point</dfn> given an <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/webappapis.html#environment-settings-object" id="ref-for-environment-settings-object②">environment settings object</a> <var>settings</var>,
         a <code class="idl"><a data-link-type="idl" href="#enumdef-scriptinvokertype" id="ref-for-enumdef-scriptinvokertype②">ScriptInvokerType</a></code> <var>invokerType</var>, and <var>steps</var>,
-        which is an algorithm that takes a <a data-link-type="dfn" href="#script-timing-info" id="ref-for-script-timing-info①⓪">script timing info</a> and an optional <a data-link-type="dfn" href="#frame-timing-info" id="ref-for-frame-timing-info⑥">frame timing info</a>: 
+        which is an algorithm that takes a <a data-link-type="dfn" href="#script-timing-info" id="ref-for-script-timing-info①⓪">script timing info</a> and an optional <a data-link-type="dfn" href="#frame-timing-info" id="ref-for-frame-timing-info⑥">frame timing info</a>:
+
+
     <ol>
      <li data-md>
       <p>If <var>settings</var> is not a <code class="idl"><a data-link-type="idl" href="https://html.spec.whatwg.org/multipage/nav-history-apis.html#window" id="ref-for-window④">Window</a></code>, then return.</p>
      <li data-md>
       <p>Let <var>document</var> be <var>settings</var>’s <code class="idl"><a data-link-type="idl" href="https://html.spec.whatwg.org/multipage/nav-history-apis.html#dom-document-2" id="ref-for-dom-document-2①">document</a></code>.</p>
      <li data-md>
-      <p>If <var>document</var> is not <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/document-sequences.html#fully-active" id="ref-for-fully-active">fully active</a> or <code class="idl"><a data-link-type="idl" href="https://html.spec.whatwg.org/multipage/interaction.html#dom-document-hidden" id="ref-for-dom-document-hidden">hidden</a></code>, then return.</p>
+      <p>If <var>document</var> is not <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/document-sequences.html#fully-active" id="ref-for-fully-active">fully active</a> or	<code class="idl"><a data-link-type="idl" href="https://html.spec.whatwg.org/multipage/interaction.html#dom-document-hidden" id="ref-for-dom-document-hidden">hidden</a></code>, then return.</p>
      <li data-md>
       <p>Let <var>frameTimingInfo</var> be <var>document</var>’s <a data-link-type="dfn" href="#relevant-frame-timing-info" id="ref-for-relevant-frame-timing-info③">relevant frame timing info</a>.</p>
      <li data-md>
@@ -1360,7 +1419,8 @@ and the following step given a <a data-link-type="dfn" href="#script-timing-info
      <li data-md>
       <p>If <var>frameTimingInfo</var>’s <a data-link-type="dfn" href="#frame-timing-info-pending-script" id="ref-for-frame-timing-info-pending-script③">pending script</a> is not null, then return.</p>
      <li data-md>
-      <p>Let <var>scriptTimingInfo</var> be a new <a data-link-type="dfn" href="#script-timing-info" id="ref-for-script-timing-info①①">script timing info</a> whose <a data-link-type="dfn" href="#script-timing-info-start-time" id="ref-for-script-timing-info-start-time②">start time</a> is the <a data-link-type="dfn" href="https://w3c.github.io/hr-time/#dfn-unsafe-shared-current-time" id="ref-for-dfn-unsafe-shared-current-time①">unsafe shared current time</a>,
+      <p>Let <var>scriptTimingInfo</var> be a new <a data-link-type="dfn" href="#script-timing-info" id="ref-for-script-timing-info①①">script timing info</a>
+whose <a data-link-type="dfn" href="#script-timing-info-start-time" id="ref-for-script-timing-info-start-time②">start time</a> is the <a data-link-type="dfn" href="https://w3c.github.io/hr-time/#dfn-unsafe-shared-current-time" id="ref-for-dfn-unsafe-shared-current-time①">unsafe shared current time</a>,
 and whose <a data-link-type="dfn" href="#script-timing-info-invoker-type" id="ref-for-script-timing-info-invoker-type②">invoker type</a> is <var>invokerType</var>.</p>
      <li data-md>
       <p>Run <var>steps</var> given <var>scriptTimingInfo</var> and <var>frameTimingInfo</var>.</p>
@@ -1371,7 +1431,10 @@ and whose <a data-link-type="dfn" href="#script-timing-info-invoker-type" id="re
     </ol>
    </div>
    <div class="algorithm" data-algorithm="Record timing info for microtask checkpoint">
-     To <dfn class="dfn-paneled" data-dfn-type="dfn" data-export id="record-timing-info-for-microtask-checkpoint">record timing info for microtask checkpoint</dfn>: 
+    
+    To <dfn class="dfn-paneled" data-dfn-type="dfn" data-export id="record-timing-info-for-microtask-checkpoint">record timing info for microtask checkpoint</dfn>:
+
+
     <ol>
      <li data-md>
       <p>Let <var>script</var> be the <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/#running-script" id="ref-for-running-script">running script</a>.</p>
@@ -1380,7 +1443,7 @@ and whose <a data-link-type="dfn" href="#script-timing-info-invoker-type" id="re
      <li data-md>
       <p>Let <var>document</var> be <var>settings</var>’s <code class="idl"><a data-link-type="idl" href="https://html.spec.whatwg.org/multipage/nav-history-apis.html#dom-document-2" id="ref-for-dom-document-2②">document</a></code>.</p>
      <li data-md>
-      <p>If <var>document</var> is not <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/document-sequences.html#fully-active" id="ref-for-fully-active①">fully active</a> or <code class="idl"><a data-link-type="idl" href="https://html.spec.whatwg.org/multipage/interaction.html#dom-document-hidden" id="ref-for-dom-document-hidden①">hidden</a></code>, then return.</p>
+      <p>If <var>document</var> is not <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/document-sequences.html#fully-active" id="ref-for-fully-active①">fully active</a> or	<code class="idl"><a data-link-type="idl" href="https://html.spec.whatwg.org/multipage/interaction.html#dom-document-hidden" id="ref-for-dom-document-hidden①">hidden</a></code>, then return.</p>
      <li data-md>
       <p>Let <var>frameTimingInfo</var> be <var>document</var>’s <a data-link-type="dfn" href="#relevant-frame-timing-info" id="ref-for-relevant-frame-timing-info④">relevant frame timing info</a>.</p>
      <li data-md>
@@ -1402,11 +1465,14 @@ and whose <a data-link-type="dfn" href="#script-timing-info-invoker-type" id="re
         <p>set <var>scriptTimingInfo</var>’s <a data-link-type="dfn" href="#script-timing-info-source-function-name" id="ref-for-script-timing-info-source-function-name①">source function name</a> to the empty string.</p>
       </ol>
      <li data-md>
-      <p>If the <a data-link-type="dfn" href="https://w3c.github.io/hr-time/#dfn-duration" id="ref-for-dfn-duration⑥">duration</a> between <var>scriptTimingInfo</var>’s <a data-link-type="dfn" href="#script-timing-info-start-time" id="ref-for-script-timing-info-start-time③">start time</a> and <var>scriptTimingInfo</var>’s <a data-link-type="dfn" href="#script-timing-info-end-time" id="ref-for-script-timing-info-end-time②">end time</a> is greater than 5 milliseconds, then <a data-link-type="dfn" href="https://infra.spec.whatwg.org/#list-append" id="ref-for-list-append②">append</a> <var>scriptTimingInfo</var> to <var>frameTimingInfo</var>’s <a data-link-type="dfn" href="#frame-timing-info-scripts" id="ref-for-frame-timing-info-scripts①">scripts</a>.</p>
+      <p>If the <a data-link-type="dfn" href="https://w3c.github.io/hr-time/#dfn-duration" id="ref-for-dfn-duration⑥">duration</a> between <var>scriptTimingInfo</var>’s <a data-link-type="dfn" href="#script-timing-info-start-time" id="ref-for-script-timing-info-start-time③">start time</a> and <var>scriptTimingInfo</var>’s <a data-link-type="dfn" href="#script-timing-info-end-time" id="ref-for-script-timing-info-end-time②">end time</a> is greater than 5 milliseconds, then
+<a data-link-type="dfn" href="https://infra.spec.whatwg.org/#list-append" id="ref-for-list-append②">append</a> <var>scriptTimingInfo</var> to <var>frameTimingInfo</var>’s <a data-link-type="dfn" href="#frame-timing-info-scripts" id="ref-for-frame-timing-info-scripts①">scripts</a>.</p>
     </ol>
    </div>
    <div class="algorithm" data-algorithm="Applying source location">
-     To <dfn class="dfn-paneled" data-dfn-type="dfn" data-noexport id="apply-source-location">apply source location</dfn> to a <a data-link-type="dfn" href="#script-timing-info" id="ref-for-script-timing-info①②">script timing info</a> <var>scriptTimingInfo</var> given a <a data-link-type="dfn" href="https://webidl.spec.whatwg.org/#dfn-callback-function" id="ref-for-dfn-callback-function①">callback function</a> or <code class="idl"><a data-link-type="idl" href="https://webidl.spec.whatwg.org/#Function" id="ref-for-Function②">Function</a></code> <var>callback</var>: 
+    
+    To <dfn class="dfn-paneled" data-dfn-type="dfn" data-noexport id="apply-source-location">apply source location</dfn> to a <a data-link-type="dfn" href="#script-timing-info" id="ref-for-script-timing-info①②">script timing info</a> <var>scriptTimingInfo</var> given a <a data-link-type="dfn" href="https://webidl.spec.whatwg.org/#dfn-callback-function" id="ref-for-dfn-callback-function①">callback function</a> or <code class="idl"><a data-link-type="idl" href="https://webidl.spec.whatwg.org/#Function" id="ref-for-Function②">Function</a></code> <var>callback</var>:
+
     <ol>
      <li data-md>
       <p>The user agent may set <var>scriptTimingInfo</var>’s <a data-link-type="dfn" href="#script-timing-info-source-url" id="ref-for-script-timing-info-source-url⑥">source url</a> to the source URL of the script where <var>callback</var> was defined.</p>
@@ -1417,7 +1483,9 @@ and whose <a data-link-type="dfn" href="#script-timing-info-invoker-type" id="re
     </ol>
    </div>
    <div class="algorithm" data-algorithm="Report pause duration">
-     To <dfn class="dfn-paneled" data-dfn-type="dfn" data-export id="record-pause-duration">record pause duration</dfn> given a <a data-link-type="dfn" href="https://w3c.github.io/hr-time/#dfn-duration" id="ref-for-dfn-duration⑦">duration</a> <var>duration</var>: 
+    
+    To <dfn class="dfn-paneled" data-dfn-type="dfn" data-export id="record-pause-duration">record pause duration</dfn> given a <a data-link-type="dfn" href="https://w3c.github.io/hr-time/#dfn-duration" id="ref-for-dfn-duration⑦">duration</a> <var>duration</var>:
+
     <ol>
      <li data-md>
       <p>Let <var>script</var> be the <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/#running-script" id="ref-for-running-script①">running script</a>.</p>
@@ -1428,7 +1496,7 @@ and whose <a data-link-type="dfn" href="#script-timing-info-invoker-type" id="re
      <li data-md>
       <p>Let <var>document</var> be <var>settings</var>’s <code class="idl"><a data-link-type="idl" href="https://html.spec.whatwg.org/multipage/nav-history-apis.html#dom-document-2" id="ref-for-dom-document-2③">document</a></code>.</p>
      <li data-md>
-      <p>If <var>document</var> is not <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/document-sequences.html#fully-active" id="ref-for-fully-active②">fully active</a> or <code class="idl"><a data-link-type="idl" href="https://html.spec.whatwg.org/multipage/interaction.html#dom-document-hidden" id="ref-for-dom-document-hidden②">hidden</a></code>, then return.</p>
+      <p>If <var>document</var> is not <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/document-sequences.html#fully-active" id="ref-for-fully-active②">fully active</a> or	<code class="idl"><a data-link-type="idl" href="https://html.spec.whatwg.org/multipage/interaction.html#dom-document-hidden" id="ref-for-dom-document-hidden②">hidden</a></code>, then return.</p>
      <li data-md>
       <p>Let <var>frameTimingInfo</var> be <var>document</var>’s <a data-link-type="dfn" href="#relevant-frame-timing-info" id="ref-for-relevant-frame-timing-info⑤">relevant frame timing info</a>.</p>
      <li data-md>
@@ -1436,14 +1504,17 @@ and whose <a data-link-type="dfn" href="#script-timing-info-invoker-type" id="re
      <li data-md>
       <p>If <var>frameTimingInfo</var>’s <a data-link-type="dfn" href="#frame-timing-info-pending-script" id="ref-for-frame-timing-info-pending-script⑦">pending script</a> is null, then return.</p>
      <li data-md>
-      <p>Increment <var>frameTimingInfo</var>’s <a data-link-type="dfn" href="#frame-timing-info-pending-script" id="ref-for-frame-timing-info-pending-script⑧">pending script</a>'s <a data-link-type="dfn" href="#script-timing-info-pause-duration" id="ref-for-script-timing-info-pause-duration①">pause duration</a> by the milliseconds value of <var>duration</var>.</p>
+      <p>Increment <var>frameTimingInfo</var>’s <a data-link-type="dfn" href="#frame-timing-info-pending-script" id="ref-for-frame-timing-info-pending-script⑧">pending script</a>’s <a data-link-type="dfn" href="#script-timing-info-pause-duration" id="ref-for-script-timing-info-pause-duration①">pause duration</a> by the milliseconds value of <var>duration</var>.</p>
     </ol>
    </div>
    <h2 class="heading settled" data-level="4" id="other-standards"><span class="secno">4. </span><span class="content">Additions to existing standards</span><a class="self-link" href="#other-standards"></a></h2>
    <h3 class="heading settled" data-level="4.1" id="webidl-monkey-patches"><span class="secno">4.1. </span><span class="content">Monkey-patches to the WebIDL standard</span><a class="self-link" href="#webidl-monkey-patches"></a></h3>
    <div class="algorithm" data-algorithm="Monkey patches to promise handling">
-     The <code class="idl"><a data-link-type="idl" href="https://webidl.spec.whatwg.org/#idl-promise" id="ref-for-idl-promise①">Promise</a></code> interface has an associated string <dfn class="dfn-paneled" data-dfn-for="Promise" data-dfn-type="dfn" data-noexport id="promise-invoker-name-when-created">invoker name when created</dfn>, initially "`Promise`".
-The <code class="idl"><a data-link-type="idl" href="https://webidl.spec.whatwg.org/#idl-promise" id="ref-for-idl-promise②">Promise</a></code> interface has an associated string <dfn class="dfn-paneled" data-dfn-for="Promise" data-dfn-type="dfn" data-noexport id="promise-script-url-when-created">script url when created</dfn>, initially the empty string. 
+    
+The <code class="idl"><a data-link-type="idl" href="https://webidl.spec.whatwg.org/#idl-promise" id="ref-for-idl-promise①">Promise</a></code> interface has an associated string <dfn class="dfn-paneled" data-dfn-for="Promise" data-dfn-type="dfn" data-noexport id="promise-invoker-name-when-created">invoker name when created</dfn>, initially "`Promise`".
+The <code class="idl"><a data-link-type="idl" href="https://webidl.spec.whatwg.org/#idl-promise" id="ref-for-idl-promise②">Promise</a></code> interface has an associated string <dfn class="dfn-paneled" data-dfn-for="Promise" data-dfn-type="dfn" data-noexport id="promise-script-url-when-created">script url when created</dfn>, initially the empty string.
+
+
     <p>Append the following steps to <a href="https://webidl.spec.whatwg.org/#a-new-promise">creating a new promise</a>, before returning the <code class="idl"><a data-link-type="idl" href="https://webidl.spec.whatwg.org/#idl-promise" id="ref-for-idl-promise③">Promise</a></code>:</p>
     <ol>
      <li data-md>
@@ -1451,18 +1522,23 @@ The <code class="idl"><a data-link-type="idl" href="https://webidl.spec.whatwg.o
      <li data-md>
       <p>Let <var>attributeName</var> be a string representing the <a data-link-type="dfn" href="https://webidl.spec.whatwg.org/#dfn-attribute" id="ref-for-dfn-attribute">attribute</a> in the interface responsible for creating this promise.</p>
      <li data-md>
-      <p>Set the created <code class="idl"><a data-link-type="idl" href="https://webidl.spec.whatwg.org/#idl-promise" id="ref-for-idl-promise④">Promise</a></code>'s <a data-link-type="dfn" href="#promise-script-url-when-created" id="ref-for-promise-script-url-when-created①">script url when created</a> to the <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/#running-script" id="ref-for-running-script②">running script</a>'s <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/webappapis.html#concept-script-base-url" id="ref-for-concept-script-base-url②">base URL</a>.</p>
+      <p>Set the created <code class="idl"><a data-link-type="idl" href="https://webidl.spec.whatwg.org/#idl-promise" id="ref-for-idl-promise④">Promise</a></code>’s <a data-link-type="dfn" href="#promise-script-url-when-created" id="ref-for-promise-script-url-when-created①">script url when created</a> to the <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/#running-script" id="ref-for-running-script②">running script</a>’s <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/webappapis.html#concept-script-base-url" id="ref-for-concept-script-base-url②">base URL</a>.</p>
      <li data-md>
-      <p>The user-agent may set the created <code class="idl"><a data-link-type="idl" href="https://webidl.spec.whatwg.org/#idl-promise" id="ref-for-idl-promise⑤">Promise</a></code>'s <a data-link-type="dfn" href="#promise-invoker-name-when-created" id="ref-for-promise-invoker-name-when-created①">invoker name when created</a> to the last known <a data-link-type="dfn" href="https://infra.spec.whatwg.org/#string-concatenate" id="ref-for-string-concatenate⑥">concatenation</a> of
+      <p>The user-agent may set the created <code class="idl"><a data-link-type="idl" href="https://webidl.spec.whatwg.org/#idl-promise" id="ref-for-idl-promise⑤">Promise</a></code>’s <a data-link-type="dfn" href="#promise-invoker-name-when-created" id="ref-for-promise-invoker-name-when-created①">invoker name when created</a> to the last known <a data-link-type="dfn" href="https://infra.spec.whatwg.org/#string-concatenate" id="ref-for-string-concatenate⑥">concatenation</a> of
 « <var>interfaceName</var>, ".", <var>attributeName</var> »</p>
       <p class="issue" id="issue-c02eb1bd"><a class="self-link" href="#issue-c02eb1bd"></a> this is quite handwavy, because this is difficult to do in a normative way. Need to see if
 that can be improved, or if the source location for promise handlers would remain a bit implementation-defined.</p>
     </ol>
-    <p>Prepend the following step to <a href="https://webidl.spec.whatwg.org/#resolve">resolve a promise</a> given <code class="idl"><a data-link-type="idl" href="https://webidl.spec.whatwg.org/#idl-promise" id="ref-for-idl-promise⑥">Promise</a></code> <var>p</var>: <a data-link-type="dfn" href="#record-timing-info-for-promise-resolver" id="ref-for-record-timing-info-for-promise-resolver">Record timing info for promise resolver</a> given <var>p</var> and "`resolve-promise`".</p>
-    <p>Prepend the following step to <a href="https://webidl.spec.whatwg.org/#reject">reject a promise</a> given <code class="idl"><a data-link-type="idl" href="https://webidl.spec.whatwg.org/#idl-promise" id="ref-for-idl-promise⑦">Promise</a></code> <var>p</var>: <a data-link-type="dfn" href="#record-timing-info-for-promise-resolver" id="ref-for-record-timing-info-for-promise-resolver①">Record timing info for promise resolver</a> given <var>p</var> and "`reject-promise`".</p>
+    <p>Prepend the following step to <a href="https://webidl.spec.whatwg.org/#resolve">resolve a promise</a> given <code class="idl"><a data-link-type="idl" href="https://webidl.spec.whatwg.org/#idl-promise" id="ref-for-idl-promise⑥">Promise</a></code> <var>p</var>:
+    <a data-link-type="dfn" href="#record-timing-info-for-promise-resolver" id="ref-for-record-timing-info-for-promise-resolver">Record timing info for promise resolver</a> given <var>p</var> and "`resolve-promise`".</p>
+    <p>Prepend the following step to <a href="https://webidl.spec.whatwg.org/#reject">reject a promise</a> given <code class="idl"><a data-link-type="idl" href="https://webidl.spec.whatwg.org/#idl-promise" id="ref-for-idl-promise⑦">Promise</a></code> <var>p</var>:
+    <a data-link-type="dfn" href="#record-timing-info-for-promise-resolver" id="ref-for-record-timing-info-for-promise-resolver①">Record timing info for promise resolver</a> given <var>p</var> and "`reject-promise`".</p>
    </div>
-   <div class="algorithm" data-algorithm="Monkey patch to callback invocation"> Insert the following steps to <a href="https://webidl.spec.whatwg.org/#invoke-a-callback-function">invoke a callback function</a>,
-    once we have an <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/webappapis.html#environment-settings-object" id="ref-for-environment-settings-object③">environment settings object</a> <var>relevant settings</var> and a <a data-link-type="dfn" href="https://webidl.spec.whatwg.org/#dfn-callback-function" id="ref-for-dfn-callback-function②">callback function</a> <var>F</var>: <a data-link-type="dfn" href="#record-timing-info-for-user-callback" id="ref-for-record-timing-info-for-user-callback">Record timing info for user callback</a> given <var>F</var> and <var>relevant settings</var>. </div>
+   <div class="algorithm" data-algorithm="Monkey patch to callback invocation">
+Insert the following steps to <a href="https://webidl.spec.whatwg.org/#invoke-a-callback-function">invoke a callback function</a>,
+    once we have an <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/webappapis.html#environment-settings-object" id="ref-for-environment-settings-object③">environment settings object</a> <var>relevant settings</var> and a <a data-link-type="dfn" href="https://webidl.spec.whatwg.org/#dfn-callback-function" id="ref-for-dfn-callback-function②">callback function</a> <var>F</var>:
+        <a data-link-type="dfn" href="#record-timing-info-for-user-callback" id="ref-for-record-timing-info-for-user-callback">Record timing info for user callback</a> given <var>F</var> and <var>relevant settings</var>.
+</div>
    <h2 class="heading settled" data-level="5" id="priv-sec"><span class="secno">5. </span><span class="content">Security &amp; privacy considerations</span><a class="self-link" href="#priv-sec"></a></h2>
    <p>The Long Animation Frames API adheres to the same-origin policy by including origin-safe attribution information about
 the source of the long task. There is a 50ms threshold for long tasks. Durations are only provided in 1 ms
@@ -1490,29 +1566,38 @@ valid, etc. See an <a href="http://crypto.stanford.edu/~dabo/papers/webtiming.pd
     <li data-md>
      <p><b>Side-channel timing attacks</b>: using time for video parsing, script parsing, App Cache reads
 or Cache API (service workers) usage to uniquely identify a user, or to create a profile of the
-user’s age, gender, location, and interests etc. For <a href="https://tom.vg/papers/timing-attacks_ccs2015.pdf">instance</a>, status updates from
+user’s age, gender, location, and interests etc. For
+<a href="https://tom.vg/papers/timing-attacks_ccs2015.pdf">instance</a>, status updates from
 a social network can be limited to certain demographic (eg. females of age 20-30) the file size of
 the permalink page can be used to determine whether the user is in the target demographic.</p>
    </ol>
    <p>These scenarios are addressed by the 50ms threshold AND respecting cross-origin boundary i.e. not
 showing task type or additional attribution to untrusted cross origin observers.</p>
    <h3 class="heading settled" data-level="5.3" id="loaf-sec-priv"><span class="secno">5.3. </span><span class="content">Additional information exposed by the Long Animation Frames API</span><a class="self-link" href="#loaf-sec-priv"></a></h3>
-    Since several cross-origin documents can share the same event loop, they can also render as part of
+   
+Since several cross-origin documents can share the same event loop, they can also render as part of
 the same frame sequence and influence each other’s rendering time. This makes it so that these timings
 are already somewhat observable cross-origin, e.g. by requesting an animation frame and observing if it is delayed,
-though long animation frames exposes them at a higher fidelity. 
+though long animation frames exposes them at a higher fidelity.
+
+
    <p>To mitigate this, long animation frames are only reported to "participating local roots": only documents
 that are associated with a work task that contributed to the sequence, or that were rendered as part of the frame,
 are eligible to observe the long animation frame, and that long animation frame would be available only in
 their nearest ancestor that is either topmost or has a cross-origin parent.</p>
    <h3 class="heading settled" data-level="5.4" id="loaf-opaque-scripts-sec"><span class="secno">5.4. </span><span class="content"><code class="idl"><a data-link-type="idl" href="#performancescripttiming" id="ref-for-performancescripttiming⑤">PerformanceScriptTiming</a></code> and opaque scripts</span><a class="self-link" href="#loaf-opaque-scripts-sec"></a></h3>
-    Since <code class="idl"><a data-link-type="idl" href="#performancescripttiming" id="ref-for-performancescripttiming⑥">PerformanceScriptTiming</a></code> exposes information about script execution, we need to make sure it
+   
+Since <code class="idl"><a data-link-type="idl" href="#performancescripttiming" id="ref-for-performancescripttiming⑥">PerformanceScriptTiming</a></code> exposes information about script execution, we need to make sure it
 doesn’t expose too much information about <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/#cors-cross-origin" id="ref-for-cors-cross-origin">CORS cross-origin</a> scripts that cannot be easily deduced otherwise.
-To do that, we use the existing <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/#muted-errors" id="ref-for-muted-errors②">muted errors</a> boolean, and report an empty <code class="idl"><a data-link-type="idl" href="#dom-performancescripttiming-sourceurl" id="ref-for-dom-performancescripttiming-sourceurl①">sourceURL</a></code> in such cases. 
+To do that, we use the existing <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/#muted-errors" id="ref-for-muted-errors②">muted errors</a> boolean, and report an empty <code class="idl"><a data-link-type="idl" href="#dom-performancescripttiming-sourceurl" id="ref-for-dom-performancescripttiming-sourceurl①">sourceURL</a></code>
+in such cases.
+
+
+
   </main>
   <div data-fill-with="conformance">
-   <h2 class="no-ref no-num heading settled" id="w3c-conformance"><span class="content">Conformance</span><a class="self-link" href="#w3c-conformance"></a></h2>
-   <h3 class="no-ref no-num heading settled" id="w3c-conventions"><span class="content">Document conventions</span><a class="self-link" href="#w3c-conventions"></a></h3>
+   <h2 class="heading no-num no-ref settled" id="w3c-conformance"><span class="content">Conformance</span><a class="self-link" href="#w3c-conformance"></a></h2>
+   <h3 class="heading no-num no-ref settled" id="w3c-conventions"><span class="content">Document conventions</span><a class="self-link" href="#w3c-conventions"></a></h3>
    <p>Conformance requirements are expressed
     with a combination of descriptive assertions
     and RFC 2119 terminology.
@@ -1520,42 +1605,55 @@ To do that, we use the existing <a data-link-type="dfn" href="https://html.spec.
     in the normative parts of this document
     are to be interpreted as described in RFC 2119.
     However, for readability,
-    these words do not appear in all uppercase letters in this specification. </p>
+    these words do not appear in all uppercase letters in this specification.
+
+    </p>
    <p>All of the text of this specification is normative
-    except sections explicitly marked as non-normative, examples, and notes. <a data-link-type="biblio" href="#biblio-rfc2119" title="Key words for use in RFCs to Indicate Requirement Levels">[RFC2119]</a> </p>
+    except sections explicitly marked as non-normative, examples, and notes. <a data-link-type="biblio" href="#biblio-rfc2119" title="Key words for use in RFCs to Indicate Requirement Levels">[RFC2119]</a>
+
+    </p>
    <p>Examples in this specification are introduced with the words “for example”
     or are set apart from the normative text
     with <code class="highlight"><c- a>class</c-><c- o>=</c-><c- u>"example"</c-></code>,
-    like this: </p>
+    like this:
+
+    </p>
    <div class="example" id="w3c-example">
-    <a class="self-link" href="#w3c-example"></a> 
-    <p>This is an example of an informative example. </p>
+    <a class="self-link" href="#w3c-example"></a>
+        
+    <p>This is an example of an informative example.
+    </p>
    </div>
    <p>Informative notes begin with the word “Note”
     and are set apart from the normative text
     with <code class="highlight"><c- a>class</c-><c- o>=</c-><c- u>"note"</c-></code>,
-    like this: </p>
+    like this:
+
+    </p>
    <p class="note" role="note">Note, this is an informative note.</p>
    <section>
-    <h3 class="no-ref no-num heading settled" id="w3c-conformant-algorithms"><span class="content">Conformant Algorithms</span><a class="self-link" href="#w3c-conformant-algorithms"></a></h3>
+    <h3 class="heading no-num no-ref settled" id="w3c-conformant-algorithms"><span class="content">Conformant Algorithms</span><a class="self-link" href="#w3c-conformant-algorithms"></a></h3>
     <p>Requirements phrased in the imperative as part of algorithms
     (such as "strip any leading space characters"
     or "return false and abort these steps")
     are to be interpreted with the meaning of the key word
     ("must", "should", "may", etc)
-    used in introducing the algorithm. </p>
+    used in introducing the algorithm.
+
+    </p>
     <p>Conformance requirements phrased as algorithms or specific steps
     can be implemented in any manner,
     so long as the end result is equivalent.
     In particular, the algorithms defined in this specification
     are intended to be easy to understand
     and are not intended to be performant.
-    Implementers are encouraged to optimize. </p>
+    Implementers are encouraged to optimize.
+</p>
    </section>
   </div>
   <script src="https://www.w3.org/scripts/TR/2021/fixup.js"></script>
-  <h2 class="no-num no-ref heading settled" id="index"><span class="content">Index</span><a class="self-link" href="#index"></a></h2>
-  <h3 class="no-num no-ref heading settled" id="index-defined-here"><span class="content">Terms defined by this specification</span><a class="self-link" href="#index-defined-here"></a></h3>
+  <h2 class="heading no-num no-ref settled" id="index"><span class="content">Index</span><a class="self-link" href="#index"></a></h2>
+  <h3 class="heading no-num no-ref settled" id="index-defined-here"><span class="content">Terms defined by this specification</span><a class="self-link" href="#index-defined-here"></a></h3>
   <ul class="index">
    <li><a href="#dom-scriptwindowattribution-ancestor">"ancestor"</a><span>, in § 2.2</span>
    <li><a href="#apply-source-location">apply source location</a><span>, in § 3.2.2</span>
@@ -1687,7 +1785,7 @@ To do that, we use the existing <a data-link-type="dfn" href="https://html.spec.
    <li><a href="#performancescripttiming-window-attribution">window attribution</a><span>, in § 2.2</span>
    <li><a href="#dom-performancescripttiming-windowattribution">windowAttribution</a><span>, in § 2.2</span>
   </ul>
-  <h3 class="no-num no-ref heading settled" id="index-defined-elsewhere"><span class="content">Terms defined by reference</span><a class="self-link" href="#index-defined-elsewhere"></a></h3>
+  <h3 class="heading no-num no-ref settled" id="index-defined-elsewhere"><span class="content">Terms defined by reference</span><a class="self-link" href="#index-defined-elsewhere"></a></h3>
   <ul class="index">
    <li>
     <a data-link-type="biblio">[]</a> defines the following terms:
@@ -1738,6 +1836,7 @@ To do that, we use the existing <a data-link-type="dfn" href="https://html.spec.
      <li><span class="dfn-paneled" id="80bf04ff">coarsen time</span>
      <li><span class="dfn-paneled" id="4b2c8c72">duration</span>
      <li><span class="dfn-paneled" id="69ea869d">relative high resolution time</span>
+     <li><span class="dfn-paneled" id="479aeb1d">unsafe current time</span>
      <li><span class="dfn-paneled" id="9a31d086">unsafe shared current time</span>
     </ul>
    <li>
@@ -1832,13 +1931,13 @@ To do that, we use the existing <a data-link-type="dfn" href="https://html.spec.
      <li><span class="dfn-paneled" id="4013a022">this</span>
     </ul>
   </ul>
-  <h2 class="no-num no-ref heading settled" id="references"><span class="content">References</span><a class="self-link" href="#references"></a></h2>
-  <h3 class="no-num no-ref heading settled" id="normative"><span class="content">Normative References</span><a class="self-link" href="#normative"></a></h3>
+  <h2 class="heading no-num no-ref settled" id="references"><span class="content">References</span><a class="self-link" href="#references"></a></h2>
+  <h3 class="heading no-num no-ref settled" id="normative"><span class="content">Normative References</span><a class="self-link" href="#normative"></a></h3>
   <dl>
    <dt id="biblio-cssom-1">[CSSOM-1]
    <dd>Daniel Glazman; Emilio Cobos Álvarez. <a href="https://drafts.csswg.org/cssom/"><cite>CSS Object Model (CSSOM)</cite></a>. URL: <a href="https://drafts.csswg.org/cssom/">https://drafts.csswg.org/cssom/</a>
    <dt id="biblio-cssom-view-1">[CSSOM-VIEW-1]
-   <dd>Simon Pieters. <a href="https://drafts.csswg.org/cssom-view/"><cite>CSSOM View Module</cite></a>. URL: <a href="https://drafts.csswg.org/cssom-view/">https://drafts.csswg.org/cssom-view/</a>
+   <dd>Simon Fraser; Emilio Cobos Álvarez. <a href="https://drafts.csswg.org/cssom-view/"><cite>CSSOM View Module</cite></a>. URL: <a href="https://drafts.csswg.org/cssom-view/">https://drafts.csswg.org/cssom-view/</a>
    <dt id="biblio-dom">[DOM]
    <dd>Anne van Kesteren. <a href="https://dom.spec.whatwg.org/"><cite>DOM Standard</cite></a>. Living Standard. URL: <a href="https://dom.spec.whatwg.org/">https://dom.spec.whatwg.org/</a>
    <dt id="biblio-ecmascript">[ECMASCRIPT]
@@ -1860,14 +1959,14 @@ To do that, we use the existing <a data-link-type="dfn" href="https://html.spec.
    <dt id="biblio-rfc2119">[RFC2119]
    <dd>S. Bradner. <a href="https://datatracker.ietf.org/doc/html/rfc2119"><cite>Key words for use in RFCs to Indicate Requirement Levels</cite></a>. March 1997. Best Current Practice. URL: <a href="https://datatracker.ietf.org/doc/html/rfc2119">https://datatracker.ietf.org/doc/html/rfc2119</a>
    <dt id="biblio-uievents">[UIEVENTS]
-   <dd>Gary Kacmarcik; Travis Leithead. <a href="https://w3c.github.io/uievents/"><cite>UI Events</cite></a>. URL: <a href="https://w3c.github.io/uievents/">https://w3c.github.io/uievents/</a>
+   <dd>Xiaoqian Wu. <a href="https://w3c.github.io/uievents/"><cite>UI Events</cite></a>. URL: <a href="https://w3c.github.io/uievents/">https://w3c.github.io/uievents/</a>
    <dt id="biblio-url">[URL]
    <dd>Anne van Kesteren. <a href="https://url.spec.whatwg.org/"><cite>URL Standard</cite></a>. Living Standard. URL: <a href="https://url.spec.whatwg.org/">https://url.spec.whatwg.org/</a>
    <dt id="biblio-webidl">[WEBIDL]
    <dd>Edgar Chen; Timothy Gu. <a href="https://webidl.spec.whatwg.org/"><cite>Web IDL Standard</cite></a>. Living Standard. URL: <a href="https://webidl.spec.whatwg.org/">https://webidl.spec.whatwg.org/</a>
   </dl>
-  <h2 class="no-num no-ref heading settled" id="idl-index"><span class="content">IDL Index</span><a class="self-link" href="#idl-index"></a></h2>
-<pre class="idl highlight def">[<a class="idl-code" data-link-type="extended-attribute" href="https://webidl.spec.whatwg.org/#Exposed"><c- g>Exposed</c-></a>=<c- n>Window</c->]
+  <h2 class="heading no-num no-ref settled" id="idl-index"><span class="content">IDL Index</span><a class="self-link" href="#idl-index"></a></h2>
+<pre class="def highlight idl">[<a class="idl-code" data-link-type="extended-attribute" href="https://webidl.spec.whatwg.org/#Exposed"><c- g>Exposed</c-></a>=<c- n>Window</c->]
 <c- b>interface</c-> <a href="#performancelonganimationframetiming"><code class="highlight"><c- g>PerformanceLongAnimationFrameTiming</c-></code></a> : <a data-link-type="idl-name" href="https://w3c.github.io/performance-timeline/#the-performanceentry-interface"><c- n>PerformanceEntry</c-></a> {
     /* Overloading PerformanceEntry */
     <c- b>readonly</c-> <c- b>attribute</c-> <a data-link-type="idl-name" href="https://w3c.github.io/hr-time/#idl-def-domhighrestimestamp"><c- n>DOMHighResTimeStamp</c-></a> <a data-readonly data-type="DOMHighResTimeStamp" href="#dom-performancelonganimationframetiming-starttime"><code class="highlight"><c- g>startTime</c-></code></a>;
@@ -1920,7 +2019,7 @@ To do that, we use the existing <a data-link-type="dfn" href="https://html.spec.
 };
 
 </pre>
-  <h2 class="no-num no-ref heading settled" id="issues-index"><span class="content">Issues Index</span><a class="self-link" href="#issues-index"></a></h2>
+  <h2 class="heading no-num no-ref settled" id="issues-index"><span class="content">Issues Index</span><a class="self-link" href="#issues-index"></a></h2>
   <div style="counter-reset:issue">
    <div class="issue"> this feels a bit custom, need to discuss name generation. <a class="issue-return" href="#issue-5d051999" title="Jump to section">↵</a></div>
    <div class="issue"> Find a way to make this interoperable/normative. Perhaps mark those functions in WebIDL as requiring synchronous style/layout? Also move to <a data-link-type="dfn" href="#performancescripttiming-timing-info">timing info</a> once that’s resolved. <a class="issue-return" href="#issue-64d28a1e" title="Jump to section">↵</a></div>
@@ -2150,6 +2249,7 @@ let dfnPanelData = {
 "3e12e042": {"dfnID":"3e12e042","dfnText":"environment settings object","external":true,"refSections":[{"refs":[{"id":"ref-for-environment-settings-object"},{"id":"ref-for-environment-settings-object\u2460"},{"id":"ref-for-environment-settings-object\u2461"}],"title":"3.2.2. Long Script Monitoring"},{"refs":[{"id":"ref-for-environment-settings-object\u2462"}],"title":"4.1. Monkey-patches to the WebIDL standard"}],"url":"https://html.spec.whatwg.org/multipage/webappapis.html#environment-settings-object"},
 "4013a022": {"dfnID":"4013a022","dfnText":"this","external":true,"refSections":[{"refs":[{"id":"ref-for-this"},{"id":"ref-for-this\u2460"},{"id":"ref-for-this\u2461"},{"id":"ref-for-this\u2462"},{"id":"ref-for-this\u2463"},{"id":"ref-for-this\u2464"},{"id":"ref-for-this\u2465"},{"id":"ref-for-this\u2466"},{"id":"ref-for-this\u2467"},{"id":"ref-for-this\u2468"},{"id":"ref-for-this\u2460\u24ea"},{"id":"ref-for-this\u2460\u2460"},{"id":"ref-for-this\u2460\u2461"},{"id":"ref-for-this\u2460\u2462"},{"id":"ref-for-this\u2460\u2463"},{"id":"ref-for-this\u2460\u2464"}],"title":"2.1. PerformanceLongAnimationFrameTiming interface"},{"refs":[{"id":"ref-for-this\u2460\u2465"},{"id":"ref-for-this\u2460\u2466"},{"id":"ref-for-this\u2460\u2467"},{"id":"ref-for-this\u2460\u2468"},{"id":"ref-for-this\u2461\u24ea"},{"id":"ref-for-this\u2461\u2460"},{"id":"ref-for-this\u2461\u2461"},{"id":"ref-for-this\u2461\u2462"},{"id":"ref-for-this\u2461\u2463"},{"id":"ref-for-this\u2461\u2464"},{"id":"ref-for-this\u2461\u2465"},{"id":"ref-for-this\u2461\u2466"},{"id":"ref-for-this\u2461\u2467"},{"id":"ref-for-this\u2461\u2468"},{"id":"ref-for-this\u2462\u24ea"},{"id":"ref-for-this\u2462\u2460"}],"title":"2.2. PerformanceScriptTiming interface"}],"url":"https://webidl.spec.whatwg.org/#this"},
 "41cd0b68": {"dfnID":"41cd0b68","dfnText":"DOMHighResTimeStamp","external":true,"refSections":[{"refs":[{"id":"ref-for-idl-def-domhighrestimestamp"},{"id":"ref-for-idl-def-domhighrestimestamp\u2460"},{"id":"ref-for-idl-def-domhighrestimestamp\u2461"},{"id":"ref-for-idl-def-domhighrestimestamp\u2462"},{"id":"ref-for-idl-def-domhighrestimestamp\u2463"},{"id":"ref-for-idl-def-domhighrestimestamp\u2464"}],"title":"2.1. PerformanceLongAnimationFrameTiming interface"},{"refs":[{"id":"ref-for-idl-def-domhighrestimestamp\u2465"},{"id":"ref-for-idl-def-domhighrestimestamp\u2466"},{"id":"ref-for-idl-def-domhighrestimestamp\u2467"},{"id":"ref-for-idl-def-domhighrestimestamp\u2468"},{"id":"ref-for-idl-def-domhighrestimestamp\u2460\u24ea"}],"title":"2.2. PerformanceScriptTiming interface"},{"refs":[{"id":"ref-for-idl-def-domhighrestimestamp\u2460\u2460"},{"id":"ref-for-idl-def-domhighrestimestamp\u2460\u2461"},{"id":"ref-for-idl-def-domhighrestimestamp\u2460\u2462"},{"id":"ref-for-idl-def-domhighrestimestamp\u2460\u2463"}],"title":"3.1. Frame Timing Info"},{"refs":[{"id":"ref-for-idl-def-domhighrestimestamp\u2460\u2464"},{"id":"ref-for-idl-def-domhighrestimestamp\u2460\u2465"},{"id":"ref-for-idl-def-domhighrestimestamp\u2460\u2466"}],"title":"3.2.1. Long Animation Frame Monitoring {#loaf-monitoring}"}],"url":"https://w3c.github.io/hr-time/#idl-def-domhighrestimestamp"},
+"479aeb1d": {"dfnID":"479aeb1d","dfnText":"unsafe current time","external":true,"refSections":[{"refs":[{"id":"ref-for-monotonic-clock-unsafe-current-time"}],"title":"3.1. Frame Timing Info"}],"url":"https://w3c.github.io/hr-time/#monotonic-clock-unsafe-current-time"},
 "4a3bf5fb": {"dfnID":"4a3bf5fb","dfnText":"concatenate","external":true,"refSections":[{"refs":[{"id":"ref-for-string-concatenate"},{"id":"ref-for-string-concatenate\u2460"},{"id":"ref-for-string-concatenate\u2461"},{"id":"ref-for-string-concatenate\u2462"}],"title":"2.2. PerformanceScriptTiming interface"},{"refs":[{"id":"ref-for-string-concatenate\u2463"},{"id":"ref-for-string-concatenate\u2464"}],"title":"3.2.2. Long Script Monitoring"},{"refs":[{"id":"ref-for-string-concatenate\u2465"}],"title":"4.1. Monkey-patches to the WebIDL standard"}],"url":"https://infra.spec.whatwg.org/#string-concatenate"},
 "4b2c8c72": {"dfnID":"4b2c8c72","dfnText":"duration","external":true,"refSections":[{"refs":[{"id":"ref-for-dfn-duration"},{"id":"ref-for-dfn-duration\u2460"}],"title":"2.1. PerformanceLongAnimationFrameTiming interface"},{"refs":[{"id":"ref-for-dfn-duration\u2461"}],"title":"2.2. PerformanceScriptTiming interface"},{"refs":[{"id":"ref-for-dfn-duration\u2462"},{"id":"ref-for-dfn-duration\u2463"},{"id":"ref-for-dfn-duration\u2464"}],"title":"3.2.1. Long Animation Frame Monitoring {#loaf-monitoring}"},{"refs":[{"id":"ref-for-dfn-duration\u2465"},{"id":"ref-for-dfn-duration\u2466"}],"title":"3.2.2. Long Script Monitoring"}],"url":"https://w3c.github.io/hr-time/#dfn-duration"},
 "53275e46": {"dfnID":"53275e46","dfnText":"append","external":true,"refSections":[{"refs":[{"id":"ref-for-list-append"}],"title":"2.1. PerformanceLongAnimationFrameTiming interface"},{"refs":[{"id":"ref-for-list-append\u2460"}],"title":"3.2.1. Long Animation Frame Monitoring {#loaf-monitoring}"},{"refs":[{"id":"ref-for-list-append\u2461"}],"title":"3.2.2. Long Script Monitoring"}],"url":"https://infra.spec.whatwg.org/#list-append"},
@@ -2815,6 +2915,7 @@ let refsData = {
 "https://w3c.github.io/hr-time/#dfn-relative-high-resolution-time": {"displayText":"relative high resolution time","export":true,"for_":[],"level":"3","normative":true,"shortname":"hr-time","spec":"hr-time-3","status":"current","text":"relative high resolution time","type":"dfn","url":"https://w3c.github.io/hr-time/#dfn-relative-high-resolution-time"},
 "https://w3c.github.io/hr-time/#dfn-unsafe-shared-current-time": {"displayText":"unsafe shared current time","export":true,"for_":[],"level":"3","normative":true,"shortname":"hr-time","spec":"hr-time-3","status":"current","text":"unsafe shared current time","type":"dfn","url":"https://w3c.github.io/hr-time/#dfn-unsafe-shared-current-time"},
 "https://w3c.github.io/hr-time/#idl-def-domhighrestimestamp": {"displayText":"DOMHighResTimeStamp","export":true,"for_":[],"level":"2","normative":true,"shortname":"hr-time","spec":"hr-time-2","status":"anchor-block","text":"DOMHighResTimeStamp","type":"typedef","url":"https://w3c.github.io/hr-time/#idl-def-domhighrestimestamp"},
+"https://w3c.github.io/hr-time/#monotonic-clock-unsafe-current-time": {"displayText":"unsafe current time","export":true,"for_":["monotonic clock"],"level":"3","normative":true,"shortname":"hr-time","spec":"hr-time-3","status":"current","text":"unsafe current time","type":"dfn","url":"https://w3c.github.io/hr-time/#monotonic-clock-unsafe-current-time"},
 "https://w3c.github.io/longtasks/#long-task": {"displayText":"long task","export":true,"for_":[],"level":"1","normative":true,"shortname":"longtasks","spec":"longtasks-1","status":"current","text":"long task","type":"dfn","url":"https://w3c.github.io/longtasks/#long-task"},
 "https://w3c.github.io/paint-timing/#paint-timing-info": {"displayText":"paint timing info","export":true,"for_":[],"level":"","normative":true,"shortname":"paint-timing","spec":"paint-timing","status":"anchor-block","text":"paint timing info","type":"dfn","url":"https://w3c.github.io/paint-timing/#paint-timing-info"},
 "https://w3c.github.io/paint-timing/#painttimingmixin": {"displayText":"PaintTimingMixin","export":true,"for_":[],"level":"","normative":true,"shortname":"paint-timing","spec":"paint-timing","status":"anchor-block","text":"PaintTimingMixin","type":"interface","url":"https://w3c.github.io/paint-timing/#painttimingmixin"},
@@ -2919,7 +3020,12 @@ function hideRefHint(refHint) {
 function showRefHint(link) {
     if(link.classList.contains("dfn-link")) return;
     const url = link.getAttribute("href");
-    const ref = refsData[url];
+    const refHintKey = link.getAttribute("data-refhint-key");
+    let key = url;
+    if(refHintKey) {
+        key = refHintKey + "_" + url;
+    }
+    const ref = refsData[key];
     if(!ref) return;
 
     hideAllRefHints(); // Only display one at this time.
