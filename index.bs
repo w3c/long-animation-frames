@@ -420,6 +420,15 @@ Report Long Animation Frames {#loaf-processing-model}
     The <dfn>relevant frame timing info</dfn> for a {{Document}} |document| is its [=nearest same-origin root=]'s [=current frame timing info=].
 </div>
 
+<div algorithm="Record if needed">
+    To <dfn export>start recording task time if needed</dfn> given an [=environment settings object=] |settingsObject|:
+
+    1. If |settingsObject| is not a {{Document}} or its [=relevant frame timing info=] is non-null, then return false.
+    1. [=Record task start time=] given the [=unsafe shared current time=] and |settingsObject|.
+    1. Return true.
+</div>
+
+
 <div algorithm="Record task start time">
     To <dfn export>record task start time</dfn> given a {{DOMHighResTimeStamp}} |unsafeTaskStartTime|, and a null or {{Document}} |document|:
 
@@ -579,12 +588,10 @@ Report Long Animation Frames {#loaf-processing-model}
         1. If |settings| is not a {{Window}}, then return.
         1. Let |document| be |settings|'s {{Window/document}}.
         1. If |document| is not [=fully active=] or	{{Document/hidden}}, then return.
+        1. Let |didStartRecording| be the result of calling [=start recording task time if needed=] given |document|.
         1. Let |frameTimingInfo| be |document|'s [=relevant frame timing info=].
-        1. If |frameTimingInfo| is null, then
-            1. [=Record task start time=] given the [=unsafe shared current time=] and |document|.
-            1. Set |frameTimingInfo| to |document|'s [=relevant frame timing info=].
-            1. Set |frameTimingInfo|'s [=script initiated=] to true.
         1. [=Assert=]: |frameTimingInfo| is non-null.
+        1. Set |frameTimingInfo|'s [=script initiated=] to |didStartRecording|.
         1. If |frameTimingInfo|'s [=frame timing info/pending script=] is not null, then return.
         1. Let |scriptTimingInfo| be a new [=script timing info=]
             whose [=script timing info/start time=] is the [=unsafe shared current time=],
@@ -646,12 +653,9 @@ Monkey-patches to the DOM API {#dom-api-monkey-patches}
 ----------------------------------------------------------
 <div algorithm="Monkey patches to event firing">
 Patch the [=fire an event=] algorithm as follows given |target|:
-    1. Let |eventInitiatedTask| be false;
-    1. If |target|'s [=relevant settings object=] is a {{Document}} whose [=relevant frame timing info=] is null, then:
-        1. Let |document| be |target|'s [=relevant settings object=].
-        1. Set |eventInitiatedTask| to true.
-        1. [=Record task start time=] given the [=unsafe shared current time=] and |document|.
-    1. At the end of the algorithm, if |eventInitiatedTask| is true, then [=record task end time=] given the [=unsafe shared current time=] and |document|.
+    1. Let |eventInitiatedTask| be the result of calling [=start recording task time if needed=] given |target|'s [=relevant settings object=];
+    1. At the end of the algorithm:
+        If |eventInitiatedTask| is true, then [=record task end time=] given the [=unsafe shared current time=] and |target|'s [=relevant settings object=].
 </div>
 
 Monkey-patches to the WebIDL standard {#webidl-monkey-patches}
