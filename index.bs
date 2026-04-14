@@ -365,8 +365,8 @@ It has the following [=struct/items=]:
     : <dfn>pending script</dfn>
     :: Null or a [=script timing info=], initially null.
 
-    : <dfn>current task invoker type</dfn>
-    :: Null or a {{ScriptInvokerType}}, initially nulll.
+    : <dfn>script initiated</dfn>
+    :: A boolean, initially false.
 </dl>
 
 <dfn export>script timing info</dfn> is a [=struct=]. It has the following [=struct/items=]:
@@ -418,18 +418,6 @@ Report Long Animation Frames {#loaf-processing-model}
     1. Return |document|.
 
     The <dfn>relevant frame timing info</dfn> for a {{Document}} |document| is its [=nearest same-origin root=]'s [=current frame timing info=].
-
-    To <dfn>get relevant frame timing info for script</dfn> given a {{Document}} |document| and a {{ScriptInvokerType}} |type|:
-
-        Note: this allows monitoring long animation frame in scenarios where there is no document-associated task.
-        The "task" in this case, as far as the long animation frame processing model is concerned, is either a script block or when [=fire an event|firing an event=].
-
-        1. Let |document|'s [=relevant frame timing info=] is non-null, then return |document|'s [=relevant frame timing info=].
-        1. [=Record task start time=] given the [=unsafe shared current time=] and |document|.
-        1. Let |timingInfo| be |document|'s [=relevant frame timing info=].
-        1. [=Assert=]: |timingInfo| is non-null.
-        1. Set |timingInfo|'s [=current task invoker type=] to |type|.
-        1. Return |timingInfo|.
 </div>
 
 <div algorithm="Record task start time">
@@ -569,9 +557,9 @@ Report Long Animation Frames {#loaf-processing-model}
         1. If |script|'s [=classic script/muted errors=] is true, then return.
         1. If |settings| is not a {{Window}}, then return.
         1. Let |document| be |settings|'s {{Window/document}}.
-        1. Let |frameTimingInfo| be the result of calling [=get relevant frame timing info for script=] given |document| and `script`.
+        1. Let |frameTimingInfo| be |document|'s [=relevant frame timing info=].
+        1. [=Assert=]: |frameTimingInfo| is non-nulll.
         1. If |frameTimingInfo|'s [=frame timing info/pending script=] is not null, then return.
-        1. Assert: |frameTimingInfo|'s [=frame timing info/pending script=]'s [=script timing info/invoker type=] is "`classic-script`".
         1. Set |frameTimingInfo|'s [=frame timing info/pending script=]'s [=script timing info/execution start time=] to the [=unsafe shared current time=].
 </div>
 
@@ -591,7 +579,12 @@ Report Long Animation Frames {#loaf-processing-model}
         1. If |settings| is not a {{Window}}, then return.
         1. Let |document| be |settings|'s {{Window/document}}.
         1. If |document| is not [=fully active=] or	{{Document/hidden}}, then return.
-        1. Let |frameTimingInfo| be the result of calling [=get relevant frame timing info for script=] given |document| and |invokerType|.
+        1. Let |frameTimingInfo| be |document|'s [=relevant frame timing info=].
+        1. If |frameTimingInfo| is null, then
+            1. [=Record task start time=] given the [=unsafe shared current time=] and |document|.
+            1. Set |frameTimingInfo| to |document|'s [=relevant frame timing info=].
+            1. Set |frameTimingInfo|'s [=script initiated=] to true.
+        1. [=Assert=]: |frameTimingInfo| is non-null.
         1. If |frameTimingInfo|'s [=frame timing info/pending script=] is not null, then return.
         1. Let |scriptTimingInfo| be a new [=script timing info=]
             whose [=script timing info/start time=] is the [=unsafe shared current time=],
@@ -621,7 +614,7 @@ Report Long Animation Frames {#loaf-processing-model}
         1. set |scriptTimingInfo|'s [=script timing info/source function name=] to the empty string.
     1. If the [=duration=] between |scriptTimingInfo|'s [=script timing info/start time=] and |scriptTimingInfo|'s [=script timing info/end time=] is greater than 5 milliseconds, then
         [=list/append=] |scriptTimingInfo| to |frameTimingInfo|'s [=frame timing info/scripts=].
-    1. If |frameTimingInfo|'s [=current task invoker type=] is not null or "`event-listener`", then [=record task end time=] given |endTime| and |document|.
+    1. If |frameTimingInfo| is [=frame timing info/script initiated=], then [=record task end time=] given |endTime| and |document|.
 
         Note: For event listeners, the task ends at the end of the [=fire an event=] algorithm rather than at the end of a single listener's execution.
 </div>
@@ -652,10 +645,13 @@ Additions to existing standards {#other-standards}
 Monkey-patches to the DOM API {#dom-api-monkey-patches}
 ----------------------------------------------------------
 <div algorithm="Monkey patches to event firing">
-    At the end of the [=fire an event=] algorithm:
-        1. If the event's [=relevant realm=]'s [=realm/settings object=] is a {{Document}} |document|:
-            1. If |document|'s [=relevant frame timing info=] is non-null and its [=frame timing info/current task invoker type=] is "`event-listener`":
-                1. [=Record task end time=] given the [=unsafe shared current time=] and |document|.
+Patch the [=fire an event=] algorithm as follows given |target|:
+    1. Let |eventInitiatedTask| be false;
+    1. If |target|'s [=relevant settings object=] is a {{Document}} whose [=relevant frame timing info=] is null, then:
+        1. Let |document| be |target|'s [=relevant settings object=].
+        1. Set |eventInitiatedTask| to true.
+        1. [=Record task start time=] given the [=unsafe shared current time=] and |document|.
+    1. At the end of the algorithm, if |eventInitiatedTask| is true, then [=record task end time=] given the [=unsafe shared current time=] and |document|.
 </div>
 
 Monkey-patches to the WebIDL standard {#webidl-monkey-patches}
