@@ -566,7 +566,7 @@ Report Long Animation Frames {#loaf-processing-model}
         1. If |settings| is not a {{Window}}, then return.
         1. Let |document| be |settings|'s {{Window/document}}.
         1. Let |frameTimingInfo| be |document|'s [=relevant frame timing info=].
-        1. [=Assert=]: |frameTimingInfo| is non-nulll.
+        1. [=Assert=]: |frameTimingInfo| is non-null.
         1. If |frameTimingInfo|'s [=frame timing info/pending script=] is not null, then return.
         1. Set |frameTimingInfo|'s [=frame timing info/pending script=]'s [=script timing info/execution start time=] to the [=unsafe shared current time=].
 </div>
