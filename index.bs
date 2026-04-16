@@ -622,7 +622,7 @@ Report Long Animation Frames {#loaf-processing-model}
         [=list/append=] |scriptTimingInfo| to |frameTimingInfo|'s [=frame timing info/scripts=].
     1. If |frameTimingInfo| is [=frame timing info/script initiated=], then [=record task end time=] given |endTime| and |document|.
 
-        Note: For event listeners, the task ends at the end of the [=fire an event=] algorithm rather than at the end of a single listener's execution.
+        Note: For event listeners, the task lifetime is managed by the [=fire an event=] algorithm, which may invoke multiple listeners to the same event, rather than at the end of a single listener's execution.
 </div>
 
 <div algorithm="Applying source location">
