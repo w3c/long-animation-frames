@@ -434,12 +434,7 @@ Report Long Animation Frames {#loaf-processing-model}
 
 
 <div algorithm="Record task start time">
-    To <dfn export>record task start time</dfn> given a {{DOMHighResTimeStamp}} |unsafeTaskStartTime|, and a null or {{Document}} |document|:
-
-    1. If |document| is null, return.
-
-        Note: according to the HTML standard, a task always has an associated [=task/document=]. However, this often requires getting it via the [=implied document=].
-        This spec is more rigorous as it doesn't rely on the concept of the [=implied document=] and instead defines what happens when scripts or events run in a document-less task.
+    To <dfn export>record task start time</dfn> given a {{DOMHighResTimeStamp}} |unsafeTaskStartTime|, and a {{Document}} |document|:
 
     1. Let |root| be |document|'s [=nearest same-origin root=].
 
