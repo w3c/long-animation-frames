@@ -112,10 +112,6 @@ Usage Example {#example}
             // ...
         }
     });
-    // Register observer for previous and future long task notifications.
-    observer.observe({type: "long-animation-frame", buffered: true});
-    // Long script execution after this will result in queueing
-    // and receiving "long-animation-frame" entries in the observer.
 
     // Register observer for previous and future long animation frame notifications.
     // After this, long periods where the main thread is busy will result in queueing
