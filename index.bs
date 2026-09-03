@@ -427,7 +427,7 @@ Report Long Animation Frames {#loaf-processing-model}
     It starts recording frame timing info for the duration of the [=fire an event|event firing=] or [=create script entry point|script=], as if it was a task.
     This accounts for script and event durations that are not associated with tasks, which would otherwise require an [=implied document=].
 
-    1. If |settingsObject| is not a {{Document}} or its [=relevant frame timing info=] is non-null, then return false.
+    1. If |settingsObject|'s [=environment settings object/global object=] is not a {{Window}} or its [=relevant frame timing info=] is non-null, then return false.
     1. [=Record task start time=] given the [=unsafe shared current time=] and |settingsObject|.
     1. Return true.
 </div>
@@ -636,7 +636,7 @@ Report Long Animation Frames {#loaf-processing-model}
     To <dfn export>record pause duration</dfn> given a [=duration=] |duration|:
     1. Let |script| be the [=running script=].
     1. Let |settings| be |script|'s [=script/settings object=].
-    1. If |settings| is not a {{Window}}, then return.
+    1. If |settings|'s [=environment settings object/global object=] is not a {{Window}}, then return.
     1. Let |document| be |settings|'s {{Window/document}}.
     1. If |document| is not [=fully active=] or	{{Document/hidden}}, then return.
     1. Let |frameTimingInfo| be the [=relevant frame timing info=] given |document|.
