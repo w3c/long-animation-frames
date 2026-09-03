@@ -5,9 +5,9 @@
   <title>Long Animation Frames API</title>
   <meta content="ED" name="w3c-status">
   <link href="https://www.w3.org/StyleSheets/TR/2021/W3C-ED" rel="stylesheet">
-  <meta content="Bikeshed version 0ef803fdf, updated Tue Jan 6 11:59:39 2026 -0800" name="generator">
+  <meta content="Bikeshed version ac92c2f0d, updated Fri Aug 21 16:01:29 2026 -0700" name="generator">
   <link href="https://w3c.github.io/long-animation-frames/" rel="canonical">
-  <meta content="088c2e1824a54d74cca7ebc032e0094b05faff1a" name="revision">
+  <meta content="77420995f826ec4907386ab739f441f5b73cf3da" name="revision">
   <meta content="dark light" name="color-scheme">
   <link href="https://www.w3.org/StyleSheets/TR/2021/dark.css" media="(prefers-color-scheme: dark)" rel="stylesheet" type="text/css">
 <style>
@@ -308,7 +308,7 @@ pre .property::before, pre .property::after {
 </style>
 <style>/* Boilerplate: style-counters */
 body {
-    counter-reset: example figure issue;
+    counter-reset: example figure issue table;
 }
 .issue {
     counter-increment: issue;
@@ -333,6 +333,13 @@ figcaption {
 }
 figcaption:not(.no-marker)::before {
     content: "Figure " counter(figure) " ";
+}
+
+figure.table figcaption {
+    counter-increment: table;
+}
+figure.table figcaption:not(.no-marker)::before {
+    content: "Table " counter(table) " ";
 }
 </style>
 <style>/* Boilerplate: style-dfn-panel */
@@ -695,6 +702,30 @@ c-[il] { color: #000000 } /* Literal.Number.Integer.Long */
     c-[vm] { color: #cb4b16 } /* Name.Variable.Magic */
     c-[il] { color: #657b83 } /* Literal.Number.Integer.Long */
 }
+
+@media print {
+    /* Darken colors for print that would otherwise print too faintly */
+    c-[c]  { color: #555555 } /* Comment */
+    c-[d]  { color: #555555 } /* Comment.Multiline */
+    c-[cp] { color: #555555 } /* Comment.Preproc */
+    c-[c1] { color: #555555 } /* Comment.Single */
+    c-[cs] { color: #555555 } /* Comment.Special */
+    c-[o]  { color: #222222 } /* Operator */
+    c-[p]  { color: #222222 } /* Punctuation */
+    c-[ow] { color: #222222 } /* Operator.Word */
+    c-[s]  { color: #664400 } /* Literal.String */
+    c-[t]  { color: #664400 } /* Literal.String.Single */
+    c-[u]  { color: #664400 } /* Literal.String.Double */
+    c-[sb] { color: #664400 } /* Literal.String.Backtick */
+    c-[sc] { color: #664400 } /* Literal.String.Char */
+    c-[sd] { color: #664400 } /* Literal.String.Doc */
+    c-[se] { color: #664400 } /* Literal.String.Escape */
+    c-[sh] { color: #664400 } /* Literal.String.Heredoc */
+    c-[si] { color: #664400 } /* Literal.String.Interpol */
+    c-[sx] { color: #664400 } /* Literal.String.Other */
+    c-[sr] { color: #664400 } /* Literal.String.Regex */
+    c-[ss] { color: #664400 } /* Literal.String.Symbol */
+}
 </style>
 <style>/* Boilerplate: style-var-click-highlighting */
 /*
@@ -747,7 +778,7 @@ var[data-var-color="6"] { --var-vg: #FFBCF2; }
 </p>
    <h1 class="no-ref p-name" id="title">Long Animation Frames API</h1>
    <p id="w3c-state"><a href="https://www.w3.org/standards/types/#ED">Editor’s Draft</a>,
-    <time class="dt-updated" datetime="2026-04-16">16 April 2026</time></p>
+    <time class="dt-updated" datetime="2026-09-03">3 September 2026</time></p>
    <details open>
     <summary>More details about this document</summary>
     <div data-fill-with="spec-metadata">
@@ -1194,7 +1225,7 @@ If <var>ancestorNavigable</var>’s <a data-link-type="dfn" href="https://html.s
     This accounts for script and event durations that are not associated with tasks, which would otherwise require an <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/#implied-document" id="ref-for-implied-document">implied document</a>.</p>
     <ol>
      <li data-md>
-      <p>If <var>settingsObject</var> is not a <code class="idl"><a data-link-type="idl" href="https://dom.spec.whatwg.org/#document" id="ref-for-document⑨">Document</a></code> or its <a data-link-type="dfn" href="#relevant-frame-timing-info" id="ref-for-relevant-frame-timing-info">relevant frame timing info</a> is non-null, then return false.</p>
+      <p>If <var>settingsObject</var>’s <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/webappapis.html#concept-settings-object-global" id="ref-for-concept-settings-object-global">global object</a> is not a <code class="idl"><a data-link-type="idl" href="https://html.spec.whatwg.org/multipage/nav-history-apis.html#window" id="ref-for-window③">Window</a></code> or its <a data-link-type="dfn" href="#relevant-frame-timing-info" id="ref-for-relevant-frame-timing-info">relevant frame timing info</a> is non-null, then return false.</p>
      <li data-md>
       <p><a data-link-type="dfn" href="#record-task-start-time" id="ref-for-record-task-start-time">Record task start time</a> given the <a data-link-type="dfn" href="https://w3c.github.io/hr-time/#dfn-unsafe-shared-current-time" id="ref-for-dfn-unsafe-shared-current-time">unsafe shared current time</a> and <var>settingsObject</var>.</p>
      <li data-md>
@@ -1203,7 +1234,7 @@ If <var>ancestorNavigable</var>’s <a data-link-type="dfn" href="https://html.s
    </div>
    <div class="algorithm" data-algorithm="Record task start time">
     
-    To <dfn class="dfn-paneled" data-dfn-type="dfn" data-export id="record-task-start-time">record task start time</dfn> given a <code class="idl"><a data-link-type="idl" href="https://w3c.github.io/hr-time/#idl-def-domhighrestimestamp" id="ref-for-idl-def-domhighrestimestamp①⑤">DOMHighResTimeStamp</a></code> <var>unsafeTaskStartTime</var>, and a <code class="idl"><a data-link-type="idl" href="https://dom.spec.whatwg.org/#document" id="ref-for-document①⓪">Document</a></code> <var>document</var>:
+    To <dfn class="dfn-paneled" data-dfn-type="dfn" data-export id="record-task-start-time">record task start time</dfn> given a <code class="idl"><a data-link-type="idl" href="https://w3c.github.io/hr-time/#idl-def-domhighrestimestamp" id="ref-for-idl-def-domhighrestimestamp①⑤">DOMHighResTimeStamp</a></code> <var>unsafeTaskStartTime</var>, and a <code class="idl"><a data-link-type="idl" href="https://dom.spec.whatwg.org/#document" id="ref-for-document⑨">Document</a></code> <var>document</var>:
 
 
     <ol>
@@ -1220,7 +1251,7 @@ then set <var>root</var>’s <a data-link-type="dfn" href="#current-frame-timing
    </div>
    <div class="algorithm" data-algorithm="Report task end time">
     
-    To <dfn class="dfn-paneled" data-dfn-type="dfn" data-export id="record-task-end-time">record task end time</dfn> given an <code class="idl"><a data-link-type="idl" href="https://w3c.github.io/hr-time/#idl-def-domhighrestimestamp" id="ref-for-idl-def-domhighrestimestamp①⑥">DOMHighResTimeStamp</a></code> <var>unsafeTaskEndTime</var>, and a <code class="idl"><a data-link-type="idl" href="https://dom.spec.whatwg.org/#document" id="ref-for-document①①">Document</a></code> <var>document</var>:
+    To <dfn class="dfn-paneled" data-dfn-type="dfn" data-export id="record-task-end-time">record task end time</dfn> given an <code class="idl"><a data-link-type="idl" href="https://w3c.github.io/hr-time/#idl-def-domhighrestimestamp" id="ref-for-idl-def-domhighrestimestamp①⑥">DOMHighResTimeStamp</a></code> <var>unsafeTaskEndTime</var>, and a <code class="idl"><a data-link-type="idl" href="https://dom.spec.whatwg.org/#document" id="ref-for-document①⓪">Document</a></code> <var>document</var>:
 
 
     <ol>
@@ -1251,7 +1282,7 @@ and the <a data-link-type="dfn" href="https://w3c.github.io/hr-time/#dfn-relativ
    </div>
    <div class="algorithm" data-algorithm="Record rendering time">
     
-    To <dfn class="dfn-paneled" data-dfn-type="dfn" data-export id="record-rendering-time">record rendering time</dfn> given a <code class="idl"><a data-link-type="idl" href="https://dom.spec.whatwg.org/#document" id="ref-for-document①②">Document</a></code> <var>document</var>, and a <code class="idl"><a data-link-type="idl" href="https://w3c.github.io/hr-time/#idl-def-domhighrestimestamp" id="ref-for-idl-def-domhighrestimestamp①⑦">DOMHighResTimeStamp</a></code> <var>unsafeStyleAndLayoutStart</var>:
+    To <dfn class="dfn-paneled" data-dfn-type="dfn" data-export id="record-rendering-time">record rendering time</dfn> given a <code class="idl"><a data-link-type="idl" href="https://dom.spec.whatwg.org/#document" id="ref-for-document①①">Document</a></code> <var>document</var>, and a <code class="idl"><a data-link-type="idl" href="https://w3c.github.io/hr-time/#idl-def-domhighrestimestamp" id="ref-for-idl-def-domhighrestimestamp①⑦">DOMHighResTimeStamp</a></code> <var>unsafeStyleAndLayoutStart</var>:
 
 
     <ol>
@@ -1272,7 +1303,7 @@ and the <a data-link-type="dfn" href="https://w3c.github.io/hr-time/#dfn-current
     </ol>
    </div>
    <div class="algorithm" data-algorithm="Queue frame timing">
-    To <dfn class="dfn-paneled" data-dfn-type="dfn" data-export id="queue-a-long-animation-frame-entry">queue a long animation frame entry</dfn> given a <code class="idl"><a data-link-type="idl" href="https://dom.spec.whatwg.org/#document" id="ref-for-document①③">Document</a></code> <var>document</var>, a <a data-link-type="dfn" href="#frame-timing-info" id="ref-for-frame-timing-info④">frame timing info</a> <var>timingInfo</var>, and a <a data-link-type="dfn" href="https://w3c.github.io/paint-timing/#paint-timing-info" id="ref-for-paint-timing-info">paint timing info</a> <var>paintTimingInfo</var>,
+    To <dfn class="dfn-paneled" data-dfn-type="dfn" data-export id="queue-a-long-animation-frame-entry">queue a long animation frame entry</dfn> given a <code class="idl"><a data-link-type="idl" href="https://dom.spec.whatwg.org/#document" id="ref-for-document①②">Document</a></code> <var>document</var>, a <a data-link-type="dfn" href="#frame-timing-info" id="ref-for-frame-timing-info④">frame timing info</a> <var>timingInfo</var>, and a <a data-link-type="dfn" href="https://w3c.github.io/paint-timing/#paint-timing-info" id="ref-for-paint-timing-info">paint timing info</a> <var>paintTimingInfo</var>,
         <a data-link-type="dfn" href="https://w3c.github.io/performance-timeline/#dfn-queue-a-performanceentry" id="ref-for-dfn-queue-a-performanceentry">queue</a> a new <code class="idl"><a data-link-type="idl" href="#performancelonganimationframetiming" id="ref-for-performancelonganimationframetiming③">PerformanceLongAnimationFrameTiming</a></code> in <var>document</var>’s <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/webappapis.html#concept-relevant-realm" id="ref-for-concept-relevant-realm①">relevant realm</a>,
         whose <a data-link-type="dfn" href="#performancelonganimationframetiming-timing-info" id="ref-for-performancelonganimationframetiming-timing-info⑧">timing info</a> is <var>timingInfo</var> and whose <a data-link-type="dfn" href="https://w3c.github.io/paint-timing/#painttimingmixin-paint-timing-info" id="ref-for-painttimingmixin-paint-timing-info">paint timing info</a> is <var>paintTimingInfo</var>.
 </div>
@@ -1392,7 +1423,7 @@ and the following step given a <a data-link-type="dfn" href="#script-timing-info
      <li data-md>
       <p>If <var>script</var>’s <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/#muted-errors" id="ref-for-muted-errors">muted errors</a> is true, then return.</p>
      <li data-md>
-      <p>If <var>settings</var> is not a <code class="idl"><a data-link-type="idl" href="https://html.spec.whatwg.org/multipage/nav-history-apis.html#window" id="ref-for-window③">Window</a></code>, then return.</p>
+      <p>If <var>settings</var> is not a <code class="idl"><a data-link-type="idl" href="https://html.spec.whatwg.org/multipage/nav-history-apis.html#window" id="ref-for-window④">Window</a></code>, then return.</p>
      <li data-md>
       <p>Let <var>document</var> be <var>settings</var>’s <code class="idl"><a data-link-type="idl" href="https://html.spec.whatwg.org/multipage/nav-history-apis.html#dom-document-2" id="ref-for-dom-document-2">document</a></code>.</p>
      <li data-md>
@@ -1427,7 +1458,7 @@ and the following step given a <a data-link-type="dfn" href="#script-timing-info
 
     <ol>
      <li data-md>
-      <p>If <var>settings</var> is not a <code class="idl"><a data-link-type="idl" href="https://html.spec.whatwg.org/multipage/nav-history-apis.html#window" id="ref-for-window④">Window</a></code>, then return.</p>
+      <p>If <var>settings</var> is not a <code class="idl"><a data-link-type="idl" href="https://html.spec.whatwg.org/multipage/nav-history-apis.html#window" id="ref-for-window⑤">Window</a></code>, then return.</p>
      <li data-md>
       <p>Let <var>document</var> be <var>settings</var>’s <code class="idl"><a data-link-type="idl" href="https://html.spec.whatwg.org/multipage/nav-history-apis.html#dom-document-2" id="ref-for-dom-document-2①">document</a></code>.</p>
      <li data-md>
@@ -1523,7 +1554,7 @@ and whose <a data-link-type="dfn" href="#script-timing-info-invoker-type" id="re
      <li data-md>
       <p>Let <var>settings</var> be <var>script</var>’s <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/webappapis.html#settings-object" id="ref-for-settings-object④">settings object</a>.</p>
      <li data-md>
-      <p>If <var>settings</var> is not a <code class="idl"><a data-link-type="idl" href="https://html.spec.whatwg.org/multipage/nav-history-apis.html#window" id="ref-for-window⑤">Window</a></code>, then return.</p>
+      <p>If <var>settings</var>’s <a data-link-type="dfn" href="https://html.spec.whatwg.org/multipage/webappapis.html#concept-settings-object-global" id="ref-for-concept-settings-object-global①">global object</a> is not a <code class="idl"><a data-link-type="idl" href="https://html.spec.whatwg.org/multipage/nav-history-apis.html#window" id="ref-for-window⑥">Window</a></code>, then return.</p>
      <li data-md>
       <p>Let <var>document</var> be <var>settings</var>’s <code class="idl"><a data-link-type="idl" href="https://html.spec.whatwg.org/multipage/nav-history-apis.html#dom-document-2" id="ref-for-dom-document-2③">document</a></code>.</p>
      <li data-md>
@@ -1885,6 +1916,7 @@ in such cases.
      <li><span class="dfn-paneled" id="04e0443f">document</span>
      <li><span class="dfn-paneled" id="3e12e042">environment settings object</span>
      <li><span class="dfn-paneled" id="0e3ba9f8">fully active</span>
+     <li><span class="dfn-paneled" id="8a30477b">global object</span>
      <li><span class="dfn-paneled" id="061031fb">hidden</span>
      <li><span class="dfn-paneled" id="27df5d64">implied document</span>
      <li><span class="dfn-paneled" id="a1005ed9">module script</span>
@@ -2293,7 +2325,7 @@ let dfnPanelData = {
 "5991ccfb": {"dfnID":"5991ccfb","dfnText":"relevant realm","external":true,"refSections":[{"refs":[{"id":"ref-for-concept-relevant-realm"}],"title":"2.1. PerformanceLongAnimationFrameTiming interface"},{"refs":[{"id":"ref-for-concept-relevant-realm\u2460"}],"title":"3.2.1. Long Animation Frame Monitoring {#loaf-monitoring}"},{"refs":[{"id":"ref-for-concept-relevant-realm\u2461"}],"title":"3.2.2. Long Script Monitoring"}],"url":"https://html.spec.whatwg.org/multipage/webappapis.html#concept-relevant-realm"},
 "5bf9ea61": {"dfnID":"5bf9ea61","dfnText":"attribute","external":true,"refSections":[{"refs":[{"id":"ref-for-dfn-attribute"}],"title":"4.1. Monkey-patches to the WebIDL standard"}],"url":"https://webidl.spec.whatwg.org/#dfn-attribute"},
 "5ca8693f": {"dfnID":"5ca8693f","dfnText":"currentTarget","external":true,"refSections":[{"refs":[{"id":"ref-for-dom-event-currenttarget"}],"title":"3.2.2. Long Script Monitoring"}],"url":"https://dom.spec.whatwg.org/#dom-event-currenttarget"},
-"5d7209e9": {"dfnID":"5d7209e9","dfnText":"Window","external":true,"refSections":[{"refs":[{"id":"ref-for-window"}],"title":"2.2. PerformanceScriptTiming interface"},{"refs":[{"id":"ref-for-window\u2460"}],"title":"3. Processing model"},{"refs":[{"id":"ref-for-window\u2461"}],"title":"3.1. Frame Timing Info"},{"refs":[{"id":"ref-for-window\u2462"},{"id":"ref-for-window\u2463"},{"id":"ref-for-window\u2464"}],"title":"3.2.2. Long Script Monitoring"}],"url":"https://html.spec.whatwg.org/multipage/nav-history-apis.html#window"},
+"5d7209e9": {"dfnID":"5d7209e9","dfnText":"Window","external":true,"refSections":[{"refs":[{"id":"ref-for-window"}],"title":"2.2. PerformanceScriptTiming interface"},{"refs":[{"id":"ref-for-window\u2460"}],"title":"3. Processing model"},{"refs":[{"id":"ref-for-window\u2461"}],"title":"3.1. Frame Timing Info"},{"refs":[{"id":"ref-for-window\u2462"}],"title":"3.2.1. Long Animation Frame Monitoring {#loaf-monitoring}"},{"refs":[{"id":"ref-for-window\u2463"},{"id":"ref-for-window\u2464"},{"id":"ref-for-window\u2465"}],"title":"3.2.2. Long Script Monitoring"}],"url":"https://html.spec.whatwg.org/multipage/nav-history-apis.html#window"},
 "5fd23811": {"dfnID":"5fd23811","dfnText":"fire an event","external":true,"refSections":[{"refs":[{"id":"ref-for-concept-event-fire"},{"id":"ref-for-concept-event-fire\u2460"}],"title":"3.2.1. Long Animation Frame Monitoring {#loaf-monitoring}"},{"refs":[{"id":"ref-for-concept-event-fire\u2461"}],"title":"3.2.2. Long Script Monitoring"}],"url":"https://dom.spec.whatwg.org/#concept-event-fire"},
 "622d9f0e": {"dfnID":"622d9f0e","dfnText":"callback","external":true,"refSections":[{"refs":[{"id":"ref-for-event-listener-callback"}],"title":"3.2.2. Long Script Monitoring"}],"url":"https://dom.spec.whatwg.org/#event-listener-callback"},
 "649608b9": {"dfnID":"649608b9","dfnText":"list","external":true,"refSections":[{"refs":[{"id":"ref-for-list"}],"title":"2.1. PerformanceLongAnimationFrameTiming interface"},{"refs":[{"id":"ref-for-list\u2460"},{"id":"ref-for-list\u2461"}],"title":"3.1. Frame Timing Info"}],"url":"https://infra.spec.whatwg.org/#list"},
@@ -2305,11 +2337,12 @@ let dfnPanelData = {
 "7e7cc1d8": {"dfnID":"7e7cc1d8","dfnText":"current high resolution time","external":true,"refSections":[{"refs":[{"id":"ref-for-dfn-current-high-resolution-time"}],"title":"3.2.1. Long Animation Frame Monitoring {#loaf-monitoring}"}],"url":"https://w3c.github.io/hr-time/#dfn-current-high-resolution-time"},
 "80bf04ff": {"dfnID":"80bf04ff","dfnText":"coarsen time","external":true,"refSections":[{"refs":[{"id":"ref-for-dfn-coarsen-time"}],"title":"3.1. Frame Timing Info"}],"url":"https://w3c.github.io/hr-time/#dfn-coarsen-time"},
 "80e9abc9": {"dfnID":"80e9abc9","dfnText":"CORS cross-origin","external":true,"refSections":[{"refs":[{"id":"ref-for-cors-cross-origin"}],"title":"5.4. PerformanceScriptTiming and opaque scripts"}],"url":"https://html.spec.whatwg.org/multipage/#cors-cross-origin"},
-"85394472": {"dfnID":"85394472","dfnText":"Document","external":true,"refSections":[{"refs":[{"id":"ref-for-document"},{"id":"ref-for-document\u2460"},{"id":"ref-for-document\u2461"},{"id":"ref-for-document\u2462"},{"id":"ref-for-document\u2463"},{"id":"ref-for-document\u2464"}],"title":"2.1. PerformanceLongAnimationFrameTiming interface"},{"refs":[{"id":"ref-for-document\u2465"}],"title":"3.1. Frame Timing Info"},{"refs":[{"id":"ref-for-document\u2466"},{"id":"ref-for-document\u2467"},{"id":"ref-for-document\u2468"},{"id":"ref-for-document\u2460\u24ea"},{"id":"ref-for-document\u2460\u2460"},{"id":"ref-for-document\u2460\u2461"},{"id":"ref-for-document\u2460\u2462"}],"title":"3.2.1. Long Animation Frame Monitoring {#loaf-monitoring}"}],"url":"https://dom.spec.whatwg.org/#document"},
+"85394472": {"dfnID":"85394472","dfnText":"Document","external":true,"refSections":[{"refs":[{"id":"ref-for-document"},{"id":"ref-for-document\u2460"},{"id":"ref-for-document\u2461"},{"id":"ref-for-document\u2462"},{"id":"ref-for-document\u2463"},{"id":"ref-for-document\u2464"}],"title":"2.1. PerformanceLongAnimationFrameTiming interface"},{"refs":[{"id":"ref-for-document\u2465"}],"title":"3.1. Frame Timing Info"},{"refs":[{"id":"ref-for-document\u2466"},{"id":"ref-for-document\u2467"},{"id":"ref-for-document\u2468"},{"id":"ref-for-document\u2460\u24ea"},{"id":"ref-for-document\u2460\u2460"},{"id":"ref-for-document\u2460\u2461"}],"title":"3.2.1. Long Animation Frame Monitoring {#loaf-monitoring}"}],"url":"https://dom.spec.whatwg.org/#document"},
 "860300d4": {"dfnID":"860300d4","dfnText":"implementation-defined","external":true,"refSections":[{"refs":[{"id":"ref-for-implementation-defined"}],"title":"2.2. PerformanceScriptTiming interface"}],"url":"https://infra.spec.whatwg.org/#implementation-defined"},
 "87aba61f": {"dfnID":"87aba61f","dfnText":"nodeName","external":true,"refSections":[{"refs":[{"id":"ref-for-dom-node-nodename"}],"title":"3.2.2. Long Script Monitoring"}],"url":"https://dom.spec.whatwg.org/#dom-node-nodename"},
 "8855a9aa": {"dfnID":"8855a9aa","dfnText":"DOMString","external":true,"refSections":[{"refs":[{"id":"ref-for-idl-DOMString"},{"id":"ref-for-idl-DOMString\u2460"}],"title":"2.1. PerformanceLongAnimationFrameTiming interface"},{"refs":[{"id":"ref-for-idl-DOMString\u2461"},{"id":"ref-for-idl-DOMString\u2462"},{"id":"ref-for-idl-DOMString\u2463"},{"id":"ref-for-idl-DOMString\u2464"},{"id":"ref-for-idl-DOMString\u2465"}],"title":"2.2. PerformanceScriptTiming interface"}],"url":"https://webidl.spec.whatwg.org/#idl-DOMString"},
 "889e932f": {"dfnID":"889e932f","dfnText":"Exposed","external":true,"refSections":[{"refs":[{"id":"ref-for-Exposed"}],"title":"2.1. PerformanceLongAnimationFrameTiming interface"},{"refs":[{"id":"ref-for-Exposed\u2460"}],"title":"2.2. PerformanceScriptTiming interface"}],"url":"https://webidl.spec.whatwg.org/#Exposed"},
+"8a30477b": {"dfnID":"8a30477b","dfnText":"global object","external":true,"refSections":[{"refs":[{"id":"ref-for-concept-settings-object-global"}],"title":"3.2.1. Long Animation Frame Monitoring {#loaf-monitoring}"},{"refs":[{"id":"ref-for-concept-settings-object-global\u2460"}],"title":"3.2.2. Long Script Monitoring"}],"url":"https://html.spec.whatwg.org/multipage/webappapis.html#concept-settings-object-global"},
 "92000da2": {"dfnID":"92000da2","dfnText":"UIEvent","external":true,"refSections":[{"refs":[{"id":"ref-for-uievent"}],"title":"3.2.2. Long Script Monitoring"}],"url":"https://w3c.github.io/uievents/#uievent"},
 "96c16e60": {"dfnID":"96c16e60","dfnText":"Node","external":true,"refSections":[{"refs":[{"id":"ref-for-node"}],"title":"3.2.2. Long Script Monitoring"}],"url":"https://dom.spec.whatwg.org/#node"},
 "980252f2": {"dfnID":"980252f2","dfnText":"identifier","external":true,"refSections":[{"refs":[{"id":"ref-for-dfn-identifier"}],"title":"3.2.2. Long Script Monitoring"}],"url":"https://webidl.spec.whatwg.org/#dfn-identifier"},
@@ -2937,6 +2970,7 @@ let refsData = {
 "https://html.spec.whatwg.org/multipage/webappapis.html#concept-relevant-realm": {"displayText":"relevant realm","export":true,"for_":[],"level":"1","normative":true,"shortname":"html","spec":"html","status":"current","text":"relevant realm","type":"dfn","url":"https://html.spec.whatwg.org/multipage/webappapis.html#concept-relevant-realm"},
 "https://html.spec.whatwg.org/multipage/webappapis.html#concept-script": {"displayText":"script","export":true,"for_":[],"level":"1","normative":true,"shortname":"html","spec":"html","status":"current","text":"script","type":"dfn","url":"https://html.spec.whatwg.org/multipage/webappapis.html#concept-script"},
 "https://html.spec.whatwg.org/multipage/webappapis.html#concept-script-base-url": {"displayText":"base URL","export":true,"for_":["script"],"level":"1","normative":true,"shortname":"html","spec":"html","status":"current","text":"base url","type":"dfn","url":"https://html.spec.whatwg.org/multipage/webappapis.html#concept-script-base-url"},
+"https://html.spec.whatwg.org/multipage/webappapis.html#concept-settings-object-global": {"displayText":"global object","export":true,"for_":["environment settings object"],"level":"1","normative":true,"shortname":"html","spec":"html","status":"current","text":"global object","type":"dfn","url":"https://html.spec.whatwg.org/multipage/webappapis.html#concept-settings-object-global"},
 "https://html.spec.whatwg.org/multipage/webappapis.html#concept-task": {"displayText":"task","export":true,"for_":[],"level":"1","normative":true,"shortname":"html","spec":"html","status":"current","text":"task","type":"dfn","url":"https://html.spec.whatwg.org/multipage/webappapis.html#concept-task"},
 "https://html.spec.whatwg.org/multipage/webappapis.html#environment-settings-object": {"displayText":"environment settings object","export":true,"for_":[],"level":"1","normative":true,"shortname":"html","spec":"html","status":"current","text":"environment settings object","type":"dfn","url":"https://html.spec.whatwg.org/multipage/webappapis.html#environment-settings-object"},
 "https://html.spec.whatwg.org/multipage/webappapis.html#module-script": {"displayText":"module script","export":true,"for_":[],"level":"1","normative":true,"shortname":"html","spec":"html","status":"current","text":"module script","type":"dfn","url":"https://html.spec.whatwg.org/multipage/webappapis.html#module-script"},
