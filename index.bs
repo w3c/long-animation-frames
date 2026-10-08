@@ -343,7 +343,7 @@ The {{PerformanceScriptTiming/forcedStyleDuration}} attribute's getter step is t
 The {{PerformanceScriptTiming/forcedLayoutDuration}} attribute's getter step is to return an [=implementation-defined=] value that represents time spent performing layout synchronously, e.g. by calling {{Element/getBoundingClientRect()}} after the layout is already invalidated.
 This excludes time spent recalculating styles, including style recalculation that is interleaved with layout, e.g. when evaluating [=container size queries=].
 
-    Issue: Find a way to make {{PerformanceScriptTiming/forcedStyleDuration}} and {{PerformanceScriptTiming/forcedLayoutDuration}} interoperable/normative.
+    Issue: Find a way to make {{PerformanceScriptTiming/forcedStyleDuration}} and {{PerformanceScriptTiming/forcedLayoutDuration}} interoperable/normative. Perhaps mark those functions in WebIDL as requiring synchronous style/layout? Also move them to [=PerformanceScriptTiming/timing info=] once that's resolved.
 
 The {{PerformanceScriptTiming/pauseDuration}} attribute's getter step is to return [=this=]'s [=PerformanceScriptTiming/timing info=]'s [=script timing info/pause duration=].
 
