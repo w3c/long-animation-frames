@@ -195,12 +195,12 @@ The {{PerformanceLongAnimationFrameTiming/styleDuration}} attribute's getter ste
 The {{PerformanceLongAnimationFrameTiming/layoutDuration}} attribute's getter step is to return [=this=]'s [=PerformanceLongAnimationFrameTiming/timing info=]'s [=frame timing info/layout duration=].
 
 For every {{PerformanceLongAnimationFrameTiming}} |entry|, the sum of |entry|'s {{PerformanceLongAnimationFrameTiming/styleDuration}} and {{PerformanceLongAnimationFrameTiming/layoutDuration}}
-must be less than or equal to the [=duration=] between |entry|'s {{PerformanceLongAnimationFrameTiming/styleAndLayoutStart}} and |entry|'s {{PaintTimingMixin/paintTime}}.
+MUST be less than or equal to the [=duration=] between |entry|'s {{PerformanceLongAnimationFrameTiming/styleAndLayoutStart}} and |entry|'s {{PaintTimingMixin/paintTime}}.
 If |entry|'s [=PerformanceLongAnimationFrameTiming/timing info=]'s [=frame timing info/update the rendering start time=] is 0, i.e. the frame did not include a rendering update,
-then |entry|'s {{PerformanceLongAnimationFrameTiming/styleDuration}} and {{PerformanceLongAnimationFrameTiming/layoutDuration}} must both be 0.
+then |entry|'s {{PerformanceLongAnimationFrameTiming/styleDuration}} and {{PerformanceLongAnimationFrameTiming/layoutDuration}} MUST both be 0.
 
 Note: {{PerformanceLongAnimationFrameTiming/styleDuration}} and {{PerformanceLongAnimationFrameTiming/layoutDuration}} represent the time spent recalculating styles and updating layout, respectively, as part of the rendering update.
-Their sum can be less than the duration between {{PerformanceLongAnimationFrameTiming/styleAndLayoutStart}} and {{PaintTimingMixin/paintTime}}, as that period can also include other work, such as running {{ResizeObserver}} callbacks or updating intersection observations.
+Their sum can be less than the duration between {{PerformanceLongAnimationFrameTiming/styleAndLayoutStart}} and {{PaintTimingMixin/paintTime}}, as that period can also include other work that is not included in these durations, such as running {{ResizeObserver}} callbacks or updating intersection observations.
 Style and layout performed synchronously by scripts are not included, and are reported via {{PerformanceScriptTiming/forcedStyleDuration}} and {{PerformanceScriptTiming/forcedLayoutDuration}} instead.
 
 The {{PerformanceLongAnimationFrameTiming/firstUIEventTimestamp}} attribute's getter step is to return the [=relative high resolution time=] given [=this=]'s [=PerformanceLongAnimationFrameTiming/timing info=]'s [=frame timing info/first ui event timestamp=] and [=this=]'s [=relevant global object=].
@@ -520,10 +520,10 @@ Report Long Animation Frames {#loaf-processing-model}
     1. Set |timingInfo|'s [=frame timing info/style and layout start time=] to |unsafeStyleAndLayoutStart|.
 
     1. Increment |timingInfo|'s [=frame timing info/style duration=] by the [=implementation-defined=] number of milliseconds spent recalculating the styles of |document| since |unsafeStyleAndLayoutStart|,
-        excluding style recalculation performed synchronously by a script.
+        excluding time during which |timingInfo|'s [=frame timing info/pending script=] was non-null, e.g. while running a {{ResizeObserver}} callback.
 
     1. Increment |timingInfo|'s [=frame timing info/layout duration=] by the [=implementation-defined=] number of milliseconds spent updating the layout of |document| since |unsafeStyleAndLayoutStart|,
-        excluding time spent recalculating styles, and excluding layout performed synchronously by a script.
+        excluding time spent recalculating styles, and time during which |timingInfo|'s [=frame timing info/pending script=] was non-null, e.g. while running a {{ResizeObserver}} callback.
 
         Note: Style recalculation and layout can be interleaved, e.g. when evaluating [=container size queries=].
         In that case, the time spent recalculating styles counts towards the [=frame timing info/style duration=], and the rest of the time spent on layout counts towards the [=frame timing info/layout duration=], so the same time is never counted in both.
