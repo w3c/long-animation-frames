@@ -194,6 +194,15 @@ The {{PerformanceLongAnimationFrameTiming/styleDuration}} attribute's getter ste
 
 The {{PerformanceLongAnimationFrameTiming/layoutDuration}} attribute's getter step is to return [=this=]'s [=PerformanceLongAnimationFrameTiming/timing info=]'s [=frame timing info/layout duration=].
 
+For every {{PerformanceLongAnimationFrameTiming}} |entry|, the sum of |entry|'s {{PerformanceLongAnimationFrameTiming/styleDuration}} and {{PerformanceLongAnimationFrameTiming/layoutDuration}}
+must be less than or equal to the [=duration=] between |entry|'s {{PerformanceLongAnimationFrameTiming/styleAndLayoutStart}} and |entry|'s {{PaintTimingMixin/paintTime}}.
+If |entry|'s [=PerformanceLongAnimationFrameTiming/timing info=]'s [=frame timing info/update the rendering start time=] is 0, i.e. the frame did not include a rendering update,
+then |entry|'s {{PerformanceLongAnimationFrameTiming/styleDuration}} and {{PerformanceLongAnimationFrameTiming/layoutDuration}} must both be 0.
+
+Note: {{PerformanceLongAnimationFrameTiming/styleDuration}} and {{PerformanceLongAnimationFrameTiming/layoutDuration}} represent the time spent recalculating styles and updating layout, respectively, as part of the rendering update.
+Their sum can be less than the duration between {{PerformanceLongAnimationFrameTiming/styleAndLayoutStart}} and {{PaintTimingMixin/paintTime}}, as that period can also include other work, such as running {{ResizeObserver}} callbacks or updating intersection observations.
+Style and layout performed synchronously by scripts are not included, and are reported via {{PerformanceScriptTiming/forcedStyleDuration}} and {{PerformanceScriptTiming/forcedLayoutDuration}} instead.
+
 The {{PerformanceLongAnimationFrameTiming/firstUIEventTimestamp}} attribute's getter step is to return the [=relative high resolution time=] given [=this=]'s [=PerformanceLongAnimationFrameTiming/timing info=]'s [=frame timing info/first ui event timestamp=] and [=this=]'s [=relevant global object=].
 
 The {{PerformanceLongAnimationFrameTiming/blockingDuration}} attribute's getter steps are:
@@ -327,17 +336,14 @@ The {{PerformanceScriptTiming/duration}} attribute's getter step is to return th
 
 The {{PerformanceScriptTiming/executionStart}} attribute's getter step is to return 0 if [=this=]'s [=PerformanceScriptTiming/timing info=]'s [=script timing info/execution start time=] is 0; Otherwise the [=relative high resolution time=] given [=this=]'s [=PerformanceScriptTiming/timing info=]'s [=script timing info/execution start time=] and [=this=]'s [=relevant global object=].
 
-The {{PerformanceScriptTiming/forcedStyleAndLayoutDuration}} attribute's getter step is to return an [=implementation-defined=] value that represents time spent performing style and layout synchronously, e.g. by calling {{Window/getComputedStyle()}} or {{Element/getBoundingClientRect()}}.
+The {{PerformanceScriptTiming/forcedStyleAndLayoutDuration}} attribute's getter step is to return the sum of [=this=]'s {{PerformanceScriptTiming/forcedStyleDuration}} and [=this=]'s {{PerformanceScriptTiming/forcedLayoutDuration}}.
 
-    Issue: Find a way to make this interoperable/normative. Perhaps mark those functions in WebIDL as requiring synchronous style/layout? Also move to [=PerformanceScriptTiming/timing info=] once that's resolved.
+The {{PerformanceScriptTiming/forcedStyleDuration}} attribute's getter step is to return an [=implementation-defined=] value that represents time spent performing style recalculation synchronously (excluding layout), e.g. by calling {{Window/getComputedStyle()}}.
 
-The {{PerformanceScriptTiming/forcedStyleDuration}} attribute's getter step is to return an [=implementation-defined=] value that represents time spent performing style recalculation synchronously (without layout), e.g. by calling {{Window/getComputedStyle()}}.
+The {{PerformanceScriptTiming/forcedLayoutDuration}} attribute's getter step is to return an [=implementation-defined=] value that represents time spent performing layout synchronously, e.g. by calling {{Element/getBoundingClientRect()}} after the layout is already invalidated.
+This excludes time spent recalculating styles, including style recalculation that is interleaved with layout, e.g. when evaluating [=container size queries=].
 
-    Issue: Find a way to make this interoperable/normative.
-
-The {{PerformanceScriptTiming/forcedLayoutDuration}} attribute's getter step is to return an [=implementation-defined=] value that represents time spent performing layout synchronously (without style recalculation), e.g. by calling {{Element/getBoundingClientRect()}} after the layout is already invalidated.
-
-    Issue: Find a way to make this interoperable/normative.
+    Issue: Find a way to make {{PerformanceScriptTiming/forcedStyleDuration}} and {{PerformanceScriptTiming/forcedLayoutDuration}} interoperable/normative.
 
 The {{PerformanceScriptTiming/pauseDuration}} attribute's getter step is to return [=this=]'s [=PerformanceScriptTiming/timing info=]'s [=script timing info/pause duration=].
 
@@ -512,6 +518,16 @@ Report Long Animation Frames {#loaf-processing-model}
     1. Set |timingInfo|'s [=frame timing info/update the rendering start time=] to |timingInfo|'s [=frame timing info/current task start time=].
 
     1. Set |timingInfo|'s [=frame timing info/style and layout start time=] to |unsafeStyleAndLayoutStart|.
+
+    1. Increment |timingInfo|'s [=frame timing info/style duration=] by the [=implementation-defined=] number of milliseconds spent recalculating the styles of |document| since |unsafeStyleAndLayoutStart|,
+        excluding style recalculation performed synchronously by a script.
+
+    1. Increment |timingInfo|'s [=frame timing info/layout duration=] by the [=implementation-defined=] number of milliseconds spent updating the layout of |document| since |unsafeStyleAndLayoutStart|,
+        excluding time spent recalculating styles, and excluding layout performed synchronously by a script.
+
+        Note: Style recalculation and layout can be interleaved, e.g. when evaluating [=container size queries=].
+        In that case, the time spent recalculating styles counts towards the [=frame timing info/style duration=], and the rest of the time spent on layout counts towards the [=frame timing info/layout duration=], so the same time is never counted in both.
+        Style recalculation and layout performed synchronously by a script, e.g. in a {{ResizeObserver}} callback, are reported via that script's {{PerformanceScriptTiming/forcedStyleDuration}} and {{PerformanceScriptTiming/forcedLayoutDuration}} instead.
 </div>
 
 <div algorithm="Queue frame timing">
