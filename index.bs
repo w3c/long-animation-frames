@@ -338,12 +338,12 @@ The {{PerformanceScriptTiming/executionStart}} attribute's getter step is to ret
 
 The {{PerformanceScriptTiming/forcedStyleAndLayoutDuration}} attribute's getter step is to return the sum of [=this=]'s {{PerformanceScriptTiming/forcedStyleDuration}} and [=this=]'s {{PerformanceScriptTiming/forcedLayoutDuration}}.
 
-The {{PerformanceScriptTiming/forcedStyleDuration}} attribute's getter step is to return an [=implementation-defined=] value that represents time spent performing style recalculation synchronously (excluding layout), e.g. by calling {{Window/getComputedStyle()}}.
+The {{PerformanceScriptTiming/forcedStyleDuration}} attribute's getter step is to return [=this=]'s [=PerformanceScriptTiming/timing info=]'s [=script timing info/forced style duration=].
 
-The {{PerformanceScriptTiming/forcedLayoutDuration}} attribute's getter step is to return an [=implementation-defined=] value that represents time spent performing layout synchronously, e.g. by calling {{Element/getBoundingClientRect()}} after the layout is already invalidated.
-This excludes time spent recalculating styles, including style recalculation that is interleaved with layout, e.g. when evaluating [=container size queries=].
+The {{PerformanceScriptTiming/forcedLayoutDuration}} attribute's getter step is to return [=this=]'s [=PerformanceScriptTiming/timing info=]'s [=script timing info/forced layout duration=].
 
-    Issue: Find a way to make {{PerformanceScriptTiming/forcedStyleDuration}} and {{PerformanceScriptTiming/forcedLayoutDuration}} interoperable/normative. Perhaps mark those functions in WebIDL as requiring synchronous style/layout? Also move them to [=PerformanceScriptTiming/timing info=] once that's resolved.
+Note: {{PerformanceScriptTiming/forcedStyleDuration}} and {{PerformanceScriptTiming/forcedLayoutDuration}} represent the time spent recalculating styles and updating layout, respectively, synchronously while the script was running,
+e.g. when it called {{Window/getComputedStyle()}} or {{Element/getBoundingClientRect()}}. See [[#style-and-layout-monitoring]].
 
 The {{PerformanceScriptTiming/pauseDuration}} attribute's getter step is to return [=this=]'s [=PerformanceScriptTiming/timing info=]'s [=script timing info/pause duration=].
 
@@ -385,6 +385,13 @@ It has the following [=struct/items=]:
     : <dfn>layout duration</dfn>
     :: A {{DOMHighResTimeStamp}} representing a number of milliseconds, initially 0.
 
+    : <dfn>style and layout stack</dfn>
+    :: A [=stack=] of "`style`", "`layout`", and "`script`" strings, initially empty.
+        It represents the style recalculations, layouts, and scripts that are in progress, with the innermost one at the top.
+
+    : <dfn>style and layout stack change time</dfn>
+    :: An unsafe {{DOMHighResTimeStamp}}, initially 0, representing the last time the [=frame timing info/style and layout stack=] was modified.
+
     : <dfn>task durations</dfn>
     :: A [=/list=] of {{DOMHighResTimeStamp}}, initially empty.
 
@@ -410,6 +417,8 @@ It has the following [=struct/items=]:
     :: An unsafe {{DOMHighResTimeStamp}}, initially 0.
 
     : <dfn>pause duration</dfn>
+    : <dfn>forced style duration</dfn>
+    : <dfn>forced layout duration</dfn>
     :: A {{DOMHighResTimeStamp}} representing a number of milliseconds, initially 0.
 
     : <dfn>invoker name</dfn>
@@ -510,6 +519,10 @@ Report Long Animation Frames {#loaf-processing-model}
 
         Note: This can occur if the browser becomes hidden during the sequence.
 
+    1. [=Assert=]: |timingInfo|'s [=frame timing info/style and layout stack=] [=list/is empty=].
+
+        Note: This means that no style recalculation, layout, or script is in progress.
+
     1. Let |frameDuration| be the [=duration=] between the [=relative high resolution time=] given |timingInfo|'s [=frame timing info/start time=] and |global|,
         and the [=current high resolution time=] given |global|.
 
@@ -518,16 +531,6 @@ Report Long Animation Frames {#loaf-processing-model}
     1. Set |timingInfo|'s [=frame timing info/update the rendering start time=] to |timingInfo|'s [=frame timing info/current task start time=].
 
     1. Set |timingInfo|'s [=frame timing info/style and layout start time=] to |unsafeStyleAndLayoutStart|.
-
-    1. Increment |timingInfo|'s [=frame timing info/style duration=] by the [=implementation-defined=] number of milliseconds spent recalculating the styles of |document| since |unsafeStyleAndLayoutStart|,
-        excluding time during which |timingInfo|'s [=frame timing info/pending script=] was non-null, e.g. while running a {{ResizeObserver}} callback.
-
-    1. Increment |timingInfo|'s [=frame timing info/layout duration=] by the [=implementation-defined=] number of milliseconds spent updating the layout of |document| since |unsafeStyleAndLayoutStart|,
-        excluding time spent recalculating styles, and time during which |timingInfo|'s [=frame timing info/pending script=] was non-null, e.g. while running a {{ResizeObserver}} callback.
-
-        Note: Style recalculation and layout can be interleaved, e.g. when evaluating [=container size queries=].
-        In that case, the time spent recalculating styles counts towards the [=frame timing info/style duration=], and the rest of the time spent on layout counts towards the [=frame timing info/layout duration=], so the same time is never counted in both.
-        Style recalculation and layout performed synchronously by a script, e.g. in a {{ResizeObserver}} callback, are reported via that script's {{PerformanceScriptTiming/forcedStyleDuration}} and {{PerformanceScriptTiming/forcedLayoutDuration}} instead.
 </div>
 
 <div algorithm="Queue frame timing">
@@ -636,6 +639,8 @@ Report Long Animation Frames {#loaf-processing-model}
             and whose [=script timing info/invoker type=] is |invokerType|.
         1. Run |steps| given |scriptTimingInfo| and |frameTimingInfo|.
         1. Set |scriptTimingInfo|'s [=script timing info/window=] to |settings|.
+        1. [=Accumulate style and layout time=] given |frameTimingInfo|.
+        1. [=stack/Push=] "`script`" onto |frameTimingInfo|'s [=frame timing info/style and layout stack=].
         1. Set |frameTimingInfo|'s [=frame timing info/pending script=] to |scriptTimingInfo|.
 </div>
 
@@ -649,6 +654,10 @@ Report Long Animation Frames {#loaf-processing-model}
     1. Let |frameTimingInfo| be |document|'s [=relevant frame timing info=].
     1. [=Assert=]: |frameTimingInfo| is not null.
     1. Let |scriptTimingInfo| be |frameTimingInfo|'s [=frame timing info/pending script=].
+    1. If |scriptTimingInfo| is not null, then:
+        1. [=Accumulate style and layout time=] given |frameTimingInfo|.
+        1. [=Assert=]: The result of [=stack/pop|popping=] from |frameTimingInfo|'s [=frame timing info/style and layout stack=] is "`script`",
+            i.e. any style recalculation or layout forced by the script has ended.
     1. Let |endTime| be the [=unsafe shared current time=].
     1. Set |frameTimingInfo|'s [=frame timing info/pending script=] to null.
     1. If |scriptTimingInfo| is null, then return.
@@ -682,6 +691,69 @@ Report Long Animation Frames {#loaf-processing-model}
     1. Assert: |frameTimingInfo| is not null.
     1. If |frameTimingInfo|'s [=frame timing info/pending script=] is null, then return.
     1. Increment |frameTimingInfo|'s [=frame timing info/pending script=]'s [=script timing info/pause duration=] by the milliseconds value of |duration|.
+</div>
+
+### Style and Layout Monitoring ### {#style-and-layout-monitoring}
+
+The user agent calls [=begin style recalculation=] and [=end style recalculation=] when it starts and finishes recalculating the styles of a {{Document}},
+and [=begin layout=] and [=end layout=] when it starts and finishes updating the layout of a {{Document}}.
+It does so for style recalculation and layout performed as part of [=update the rendering=] after running the animation frame callbacks,
+and for style recalculation and layout performed synchronously while a script is running, e.g. when the script calls {{Window/getComputedStyle()}} or {{Element/getBoundingClientRect()}}.
+When exactly style recalculation and layout are performed, and therefore when these algorithms are called, is [=implementation-defined=].
+
+    Issue: Find a way to make this interoperable/normative. Perhaps mark those functions in WebIDL as requiring synchronous style/layout?
+
+Note: Style recalculation and layout can be nested, e.g. when evaluating [=container size queries=] requires recalculating styles in the middle of layout.
+Elapsed time is always attributed to the innermost style recalculation, layout, or script in progress, so the same time is never counted twice, and time spent running scripts is not counted as style or layout.
+Style recalculation and layout performed while a script is running count towards that script's [=script timing info/forced style duration=] and [=script timing info/forced layout duration=],
+and otherwise towards the frame's [=frame timing info/style duration=] and [=frame timing info/layout duration=].
+
+<div algorithm="Begin style recalculation">
+    To <dfn export>begin style recalculation</dfn> given a {{Document}} |document|, [=begin style or layout work=] given |document| and "`style`".
+</div>
+
+<div algorithm="End style recalculation">
+    To <dfn export>end style recalculation</dfn> given a {{Document}} |document|, [=end style or layout work=] given |document| and "`style`".
+</div>
+
+<div algorithm="Begin layout">
+    To <dfn export>begin layout</dfn> given a {{Document}} |document|, [=begin style or layout work=] given |document| and "`layout`".
+</div>
+
+<div algorithm="End layout">
+    To <dfn export>end layout</dfn> given a {{Document}} |document|, [=end style or layout work=] given |document| and "`layout`".
+</div>
+
+<div algorithm="Begin style or layout work">
+    To <dfn>begin style or layout work</dfn> given a {{Document}} |document| and a string |type|:
+    1. Let |timingInfo| be |document|'s [=relevant frame timing info=].
+    1. If |timingInfo| is null, then return.
+    1. [=Accumulate style and layout time=] given |timingInfo|.
+    1. [=stack/Push=] |type| onto |timingInfo|'s [=frame timing info/style and layout stack=].
+</div>
+
+<div algorithm="End style or layout work">
+    To <dfn>end style or layout work</dfn> given a {{Document}} |document| and a string |type|:
+    1. Let |timingInfo| be |document|'s [=relevant frame timing info=].
+    1. If |timingInfo| is null, then return.
+    1. [=Accumulate style and layout time=] given |timingInfo|.
+    1. [=Assert=]: The result of [=stack/pop|popping=] from |timingInfo|'s [=frame timing info/style and layout stack=] is |type|.
+</div>
+
+<div algorithm="Accumulate style and layout time">
+    To <dfn>accumulate style and layout time</dfn> given a [=frame timing info=] |timingInfo|:
+    1. Let |now| be the [=unsafe shared current time=].
+    1. If |timingInfo|'s [=frame timing info/style and layout stack=] is not [=list/is empty|empty=], then:
+        1. Let |duration| be the [=duration=] between |timingInfo|'s [=frame timing info/style and layout stack change time=] and |now|.
+        1. Let |type| be the result of [=stack/peek|peeking=] into |timingInfo|'s [=frame timing info/style and layout stack=].
+        1. Let |script| be |timingInfo|'s [=frame timing info/pending script=].
+        1. If |type| is "`style`" and |script| is null, then increment |timingInfo|'s [=frame timing info/style duration=] by |duration|.
+        1. If |type| is "`style`" and |script| is not null, then increment |script|'s [=script timing info/forced style duration=] by |duration|.
+        1. If |type| is "`layout`" and |script| is null, then increment |timingInfo|'s [=frame timing info/layout duration=] by |duration|.
+        1. If |type| is "`layout`" and |script| is not null, then increment |script|'s [=script timing info/forced layout duration=] by |duration|.
+
+        Note: If |type| is "`script`", then the elapsed time is spent running a script, and is not counted as style or layout.
+    1. Set |timingInfo|'s [=frame timing info/style and layout stack change time=] to |now|.
 </div>
 
 Additions to existing standards {#other-standards}
