@@ -76,6 +76,7 @@ urlPrefix: https://tc39.es/ecma262/multipage/managing-memory.html
 
 <pre class=link-defaults>
 spec:html; type:dfn; for:/; text:browsing context
+spec:hr-time-3; type:dfn; text:duration
 </pre>
 
 Introduction {#intro}
@@ -164,6 +165,8 @@ Long Animation Frame timing involves the following new interfaces:
 
         readonly attribute DOMHighResTimeStamp renderStart;
         readonly attribute DOMHighResTimeStamp styleAndLayoutStart;
+        readonly attribute DOMHighResTimeStamp styleDuration;
+        readonly attribute DOMHighResTimeStamp layoutDuration;
         readonly attribute DOMHighResTimeStamp blockingDuration;
         readonly attribute DOMHighResTimeStamp firstUIEventTimestamp;
         [SameObject] readonly attribute FrozenArray&lt;PerformanceScriptTiming&gt; scripts;
@@ -186,6 +189,19 @@ The {{PerformanceLongAnimationFrameTiming/duration}} attribute's getter step is 
 The {{PerformanceLongAnimationFrameTiming/renderStart}} attribute's getter step is to return the [=relative high resolution time=] given [=this=]'s [=PerformanceLongAnimationFrameTiming/timing info=]'s [=frame timing info/update the rendering start time=] and [=this=]'s [=relevant global object=].
 
 The {{PerformanceLongAnimationFrameTiming/styleAndLayoutStart}} attribute's getter step is to return the [=relative high resolution time=] given [=this=]'s [=PerformanceLongAnimationFrameTiming/timing info=]'s [=frame timing info/style and layout start time=] and [=this=]'s [=relevant global object=].
+
+The {{PerformanceLongAnimationFrameTiming/styleDuration}} attribute's getter step is to return [=this=]'s [=PerformanceLongAnimationFrameTiming/timing info=]'s [=frame timing info/style duration=].
+
+The {{PerformanceLongAnimationFrameTiming/layoutDuration}} attribute's getter step is to return [=this=]'s [=PerformanceLongAnimationFrameTiming/timing info=]'s [=frame timing info/layout duration=].
+
+For every {{PerformanceLongAnimationFrameTiming}} |entry|, the sum of |entry|'s {{PerformanceLongAnimationFrameTiming/styleDuration}} and {{PerformanceLongAnimationFrameTiming/layoutDuration}}
+MUST be less than or equal to the [=duration=] between |entry|'s {{PerformanceLongAnimationFrameTiming/styleAndLayoutStart}} and |entry|'s {{PaintTimingMixin/paintTime}}.
+If |entry|'s [=PerformanceLongAnimationFrameTiming/timing info=]'s [=frame timing info/update the rendering start time=] is 0, i.e. the frame did not include a rendering update,
+then |entry|'s {{PerformanceLongAnimationFrameTiming/styleDuration}} and {{PerformanceLongAnimationFrameTiming/layoutDuration}} MUST both be 0.
+
+Note: {{PerformanceLongAnimationFrameTiming/styleDuration}} and {{PerformanceLongAnimationFrameTiming/layoutDuration}} represent the time spent recalculating styles and updating layout, respectively, as part of the rendering update.
+Their sum can be less than the duration between {{PerformanceLongAnimationFrameTiming/styleAndLayoutStart}} and {{PaintTimingMixin/paintTime}}, as that period can also include other work that is not included in these durations, such as running {{ResizeObserver}} callbacks or updating intersection observations.
+Style and layout performed synchronously by scripts are not included, and are reported via {{PerformanceScriptTiming/forcedStyleDuration}} and {{PerformanceScriptTiming/forcedLayoutDuration}} instead.
 
 The {{PerformanceLongAnimationFrameTiming/firstUIEventTimestamp}} attribute's getter step is to return the [=relative high resolution time=] given [=this=]'s [=PerformanceLongAnimationFrameTiming/timing info=]'s [=frame timing info/first ui event timestamp=] and [=this=]'s [=relevant global object=].
 
@@ -265,6 +281,8 @@ The {{PerformanceLongAnimationFrameTiming/scripts}} attribute's getter steps are
         readonly attribute long long sourceCharPosition;
         readonly attribute DOMHighResTimeStamp pauseDuration;
         readonly attribute DOMHighResTimeStamp forcedStyleAndLayoutDuration;
+        readonly attribute DOMHighResTimeStamp forcedStyleDuration;
+        readonly attribute DOMHighResTimeStamp forcedLayoutDuration;
         readonly attribute Window? window;
         readonly attribute ScriptWindowAttribution windowAttribution;
         [Default] object toJSON();
@@ -318,9 +336,14 @@ The {{PerformanceScriptTiming/duration}} attribute's getter step is to return th
 
 The {{PerformanceScriptTiming/executionStart}} attribute's getter step is to return 0 if [=this=]'s [=PerformanceScriptTiming/timing info=]'s [=script timing info/execution start time=] is 0; Otherwise the [=relative high resolution time=] given [=this=]'s [=PerformanceScriptTiming/timing info=]'s [=script timing info/execution start time=] and [=this=]'s [=relevant global object=].
 
-The {{PerformanceScriptTiming/forcedStyleAndLayoutDuration}} attribute's getter step is to return an [=implementation-defined=] value that represents time spent performing style and layout synchronously, e.g. by calling {{Window/getComputedStyle()}} or {{Element/getBoundingClientRect()}}.
+The {{PerformanceScriptTiming/forcedStyleAndLayoutDuration}} attribute's getter step is to return the sum of [=this=]'s {{PerformanceScriptTiming/forcedStyleDuration}} and [=this=]'s {{PerformanceScriptTiming/forcedLayoutDuration}}.
 
-    Issue: Find a way to make this interoperable/normative. Perhaps mark those functions in WebIDL as requiring synchronous style/layout? Also move to [=PerformanceScriptTiming/timing info=] once that's resolved.
+The {{PerformanceScriptTiming/forcedStyleDuration}} attribute's getter step is to return [=this=]'s [=PerformanceScriptTiming/timing info=]'s [=script timing info/forced style duration=].
+
+The {{PerformanceScriptTiming/forcedLayoutDuration}} attribute's getter step is to return [=this=]'s [=PerformanceScriptTiming/timing info=]'s [=script timing info/forced layout duration=].
+
+Note: {{PerformanceScriptTiming/forcedStyleDuration}} and {{PerformanceScriptTiming/forcedLayoutDuration}} represent the time spent recalculating styles and updating layout, respectively, synchronously while the script was running,
+e.g. when it called {{Window/getComputedStyle()}} or {{Element/getBoundingClientRect()}}. See [[#style-and-layout-monitoring]].
 
 The {{PerformanceScriptTiming/pauseDuration}} attribute's getter step is to return [=this=]'s [=PerformanceScriptTiming/timing info=]'s [=script timing info/pause duration=].
 
@@ -356,6 +379,19 @@ It has the following [=struct/items=]:
         Note: all the above are [=monotonic clock/unsafe current time|unsafe=],
         and should be [=coarsen time|coarsened=] when exposed via an API.
 
+    : <dfn>style duration</dfn>
+    :: A {{DOMHighResTimeStamp}} representing a number of milliseconds, initially 0.
+
+    : <dfn>layout duration</dfn>
+    :: A {{DOMHighResTimeStamp}} representing a number of milliseconds, initially 0.
+
+    : <dfn>style and layout stack</dfn>
+    :: A [=stack=] of "`style`", "`layout`", and "`script`" strings, initially empty.
+        It represents the style recalculations, layouts, and scripts that are in progress, with the innermost one at the top.
+
+    : <dfn>style and layout stack change time</dfn>
+    :: A {{DOMHighResTimeStamp}}, initially 0, representing the [=coarsen time|coarsened=] time at which the [=frame timing info/style and layout stack=] was last modified.
+
     : <dfn>task durations</dfn>
     :: A [=/list=] of {{DOMHighResTimeStamp}}, initially empty.
 
@@ -381,6 +417,8 @@ It has the following [=struct/items=]:
     :: An unsafe {{DOMHighResTimeStamp}}, initially 0.
 
     : <dfn>pause duration</dfn>
+    : <dfn>forced style duration</dfn>
+    : <dfn>forced layout duration</dfn>
     :: A {{DOMHighResTimeStamp}} representing a number of milliseconds, initially 0.
 
     : <dfn>invoker name</dfn>
@@ -480,6 +518,10 @@ Report Long Animation Frames {#loaf-processing-model}
     1. If |timingInfo| is null, then return.
 
         Note: This can occur if the browser becomes hidden during the sequence.
+
+    1. [=Assert=]: |timingInfo|'s [=frame timing info/style and layout stack=] [=list/is empty=].
+
+        Note: This means that no style recalculation, layout, or script is in progress.
 
     1. Let |frameDuration| be the [=duration=] between the [=relative high resolution time=] given |timingInfo|'s [=frame timing info/start time=] and |global|,
         and the [=current high resolution time=] given |global|.
@@ -597,6 +639,8 @@ Report Long Animation Frames {#loaf-processing-model}
             and whose [=script timing info/invoker type=] is |invokerType|.
         1. Run |steps| given |scriptTimingInfo| and |frameTimingInfo|.
         1. Set |scriptTimingInfo|'s [=script timing info/window=] to |settings|.
+        1. [=Accumulate style and layout time=] given |document|.
+        1. [=stack/Push=] "`script`" onto |frameTimingInfo|'s [=frame timing info/style and layout stack=].
         1. Set |frameTimingInfo|'s [=frame timing info/pending script=] to |scriptTimingInfo|.
 </div>
 
@@ -610,6 +654,10 @@ Report Long Animation Frames {#loaf-processing-model}
     1. Let |frameTimingInfo| be |document|'s [=relevant frame timing info=].
     1. [=Assert=]: |frameTimingInfo| is not null.
     1. Let |scriptTimingInfo| be |frameTimingInfo|'s [=frame timing info/pending script=].
+    1. If |scriptTimingInfo| is not null, then:
+        1. [=Accumulate style and layout time=] given |document|.
+        1. [=Assert=]: The result of [=stack/pop|popping=] from |frameTimingInfo|'s [=frame timing info/style and layout stack=] is "`script`",
+            i.e. any style recalculation or layout forced by the script has ended.
     1. Let |endTime| be the [=unsafe shared current time=].
     1. Set |frameTimingInfo|'s [=frame timing info/pending script=] to null.
     1. If |scriptTimingInfo| is null, then return.
@@ -643,6 +691,74 @@ Report Long Animation Frames {#loaf-processing-model}
     1. Assert: |frameTimingInfo| is not null.
     1. If |frameTimingInfo|'s [=frame timing info/pending script=] is null, then return.
     1. Increment |frameTimingInfo|'s [=frame timing info/pending script=]'s [=script timing info/pause duration=] by the milliseconds value of |duration|.
+</div>
+
+### Style and Layout Monitoring ### {#style-and-layout-monitoring}
+
+The user agent calls [=begin style recalculation=] and [=end style recalculation=] when it starts and finishes recalculating the styles of a {{Document}},
+and [=begin layout=] and [=end layout=] when it starts and finishes updating the layout of a {{Document}}.
+It does so for style recalculation and layout performed as part of [=update the rendering=] after running the animation frame callbacks,
+and for style recalculation and layout performed synchronously while a script is running, e.g. when the script calls {{Window/getComputedStyle()}} or {{Element/getBoundingClientRect()}}.
+When exactly style recalculation and layout are performed, and therefore when these algorithms are called, is [=implementation-defined=].
+
+    Issue: Find a way to make this interoperable/normative. Perhaps mark those functions in WebIDL as requiring synchronous style/layout?
+
+Note: Style recalculation and layout can be nested, e.g. when evaluating [=container size queries=] requires recalculating styles in the middle of layout.
+Elapsed time is always attributed to the innermost style recalculation, layout, or script in progress, so the same time is never counted twice, and time spent running scripts is not counted as style or layout.
+Style recalculation and layout performed while a script is running count towards that script's [=script timing info/forced style duration=] and [=script timing info/forced layout duration=],
+and otherwise towards the frame's [=frame timing info/style duration=] and [=frame timing info/layout duration=].
+
+<div algorithm="Begin style recalculation">
+    To <dfn export>begin style recalculation</dfn> given a {{Document}} |document|, [=begin style or layout work=] given |document| and "`style`".
+</div>
+
+<div algorithm="End style recalculation">
+    To <dfn export>end style recalculation</dfn> given a {{Document}} |document|, [=end style or layout work=] given |document| and "`style`".
+</div>
+
+<div algorithm="Begin layout">
+    To <dfn export>begin layout</dfn> given a {{Document}} |document|, [=begin style or layout work=] given |document| and "`layout`".
+</div>
+
+<div algorithm="End layout">
+    To <dfn export>end layout</dfn> given a {{Document}} |document|, [=end style or layout work=] given |document| and "`layout`".
+</div>
+
+<div algorithm="Begin style or layout work">
+    To <dfn>begin style or layout work</dfn> given a {{Document}} |document| and a string |type|:
+    1. Let |timingInfo| be |document|'s [=relevant frame timing info=].
+    1. If |timingInfo| is null, then return.
+    1. [=Accumulate style and layout time=] given |document|.
+    1. [=stack/Push=] |type| onto |timingInfo|'s [=frame timing info/style and layout stack=].
+</div>
+
+<div algorithm="End style or layout work">
+    To <dfn>end style or layout work</dfn> given a {{Document}} |document| and a string |type|:
+    1. Let |timingInfo| be |document|'s [=relevant frame timing info=].
+    1. If |timingInfo| is null, then return.
+    1. [=Accumulate style and layout time=] given |document|.
+    1. [=Assert=]: The result of [=stack/pop|popping=] from |timingInfo|'s [=frame timing info/style and layout stack=] is |type|.
+</div>
+
+<div algorithm="Accumulate style and layout time">
+    To <dfn>accumulate style and layout time</dfn> given a {{Document}} |document|:
+    1. Let |timingInfo| be |document|'s [=relevant frame timing info=].
+    1. Let |crossOriginIsolatedCapability| be |document|'s [=nearest same-origin root=]'s [=relevant settings object=]'s [=environment settings object/cross-origin isolated capability=].
+    1. Let |now| be the [=coarsened shared current time=] given |crossOriginIsolatedCapability|.
+    1. If |timingInfo|'s [=frame timing info/style and layout stack=] is not [=list/is empty|empty=], then:
+        1. Let |duration| be the [=duration=] between |timingInfo|'s [=frame timing info/style and layout stack change time=] and |now|.
+        1. Let |type| be the result of [=stack/peek|peeking=] into |timingInfo|'s [=frame timing info/style and layout stack=].
+        1. Let |script| be |timingInfo|'s [=frame timing info/pending script=].
+        1. If |type| is "`style`" and |script| is null, then increment |timingInfo|'s [=frame timing info/style duration=] by |duration|.
+        1. If |type| is "`style`" and |script| is not null, then increment |script|'s [=script timing info/forced style duration=] by |duration|.
+        1. If |type| is "`layout`" and |script| is null, then increment |timingInfo|'s [=frame timing info/layout duration=] by |duration|.
+        1. If |type| is "`layout`" and |script| is not null, then increment |script|'s [=script timing info/forced layout duration=] by |duration|.
+
+        Note: If |type| is "`script`", then the elapsed time is spent running a script, and is not counted as style or layout.
+    1. Set |timingInfo|'s [=frame timing info/style and layout stack change time=] to |now|.
+
+    Note: The durations are computed only from [=coarsen time|coarsened=] times, using the [=environment settings object/cross-origin isolated capability=] of the document to which the long animation frame is reported.
+    This ensures that they don't expose timing information at a higher resolution than that document's timestamps, even when summing up many short periods.
 </div>
 
 Additions to existing standards {#other-standards}
