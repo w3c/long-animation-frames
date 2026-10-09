@@ -390,7 +390,7 @@ It has the following [=struct/items=]:
         It represents the style recalculations, layouts, and scripts that are in progress, with the innermost one at the top.
 
     : <dfn>style and layout stack change time</dfn>
-    :: An unsafe {{DOMHighResTimeStamp}}, initially 0, representing the last time the [=frame timing info/style and layout stack=] was modified.
+    :: A {{DOMHighResTimeStamp}}, initially 0, representing the [=coarsen time|coarsened=] time at which the [=frame timing info/style and layout stack=] was last modified.
 
     : <dfn>task durations</dfn>
     :: A [=/list=] of {{DOMHighResTimeStamp}}, initially empty.
@@ -639,7 +639,7 @@ Report Long Animation Frames {#loaf-processing-model}
             and whose [=script timing info/invoker type=] is |invokerType|.
         1. Run |steps| given |scriptTimingInfo| and |frameTimingInfo|.
         1. Set |scriptTimingInfo|'s [=script timing info/window=] to |settings|.
-        1. [=Accumulate style and layout time=] given |frameTimingInfo|.
+        1. [=Accumulate style and layout time=] given |document|.
         1. [=stack/Push=] "`script`" onto |frameTimingInfo|'s [=frame timing info/style and layout stack=].
         1. Set |frameTimingInfo|'s [=frame timing info/pending script=] to |scriptTimingInfo|.
 </div>
@@ -655,7 +655,7 @@ Report Long Animation Frames {#loaf-processing-model}
     1. [=Assert=]: |frameTimingInfo| is not null.
     1. Let |scriptTimingInfo| be |frameTimingInfo|'s [=frame timing info/pending script=].
     1. If |scriptTimingInfo| is not null, then:
-        1. [=Accumulate style and layout time=] given |frameTimingInfo|.
+        1. [=Accumulate style and layout time=] given |document|.
         1. [=Assert=]: The result of [=stack/pop|popping=] from |frameTimingInfo|'s [=frame timing info/style and layout stack=] is "`script`",
             i.e. any style recalculation or layout forced by the script has ended.
     1. Let |endTime| be the [=unsafe shared current time=].
@@ -728,7 +728,7 @@ and otherwise towards the frame's [=frame timing info/style duration=] and [=fra
     To <dfn>begin style or layout work</dfn> given a {{Document}} |document| and a string |type|:
     1. Let |timingInfo| be |document|'s [=relevant frame timing info=].
     1. If |timingInfo| is null, then return.
-    1. [=Accumulate style and layout time=] given |timingInfo|.
+    1. [=Accumulate style and layout time=] given |document|.
     1. [=stack/Push=] |type| onto |timingInfo|'s [=frame timing info/style and layout stack=].
 </div>
 
@@ -736,13 +736,15 @@ and otherwise towards the frame's [=frame timing info/style duration=] and [=fra
     To <dfn>end style or layout work</dfn> given a {{Document}} |document| and a string |type|:
     1. Let |timingInfo| be |document|'s [=relevant frame timing info=].
     1. If |timingInfo| is null, then return.
-    1. [=Accumulate style and layout time=] given |timingInfo|.
+    1. [=Accumulate style and layout time=] given |document|.
     1. [=Assert=]: The result of [=stack/pop|popping=] from |timingInfo|'s [=frame timing info/style and layout stack=] is |type|.
 </div>
 
 <div algorithm="Accumulate style and layout time">
-    To <dfn>accumulate style and layout time</dfn> given a [=frame timing info=] |timingInfo|:
-    1. Let |now| be the [=unsafe shared current time=].
+    To <dfn>accumulate style and layout time</dfn> given a {{Document}} |document|:
+    1. Let |timingInfo| be |document|'s [=relevant frame timing info=].
+    1. Let |crossOriginIsolatedCapability| be |document|'s [=nearest same-origin root=]'s [=relevant settings object=]'s [=environment settings object/cross-origin isolated capability=].
+    1. Let |now| be the [=coarsened shared current time=] given |crossOriginIsolatedCapability|.
     1. If |timingInfo|'s [=frame timing info/style and layout stack=] is not [=list/is empty|empty=], then:
         1. Let |duration| be the [=duration=] between |timingInfo|'s [=frame timing info/style and layout stack change time=] and |now|.
         1. Let |type| be the result of [=stack/peek|peeking=] into |timingInfo|'s [=frame timing info/style and layout stack=].
@@ -754,6 +756,9 @@ and otherwise towards the frame's [=frame timing info/style duration=] and [=fra
 
         Note: If |type| is "`script`", then the elapsed time is spent running a script, and is not counted as style or layout.
     1. Set |timingInfo|'s [=frame timing info/style and layout stack change time=] to |now|.
+
+    Note: The durations are computed only from [=coarsen time|coarsened=] times, using the [=environment settings object/cross-origin isolated capability=] of the document to which the long animation frame is reported.
+    This ensures that they don't expose timing information at a higher resolution than that document's timestamps, even when summing up many short periods.
 </div>
 
 Additions to existing standards {#other-standards}
