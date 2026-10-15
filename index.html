@@ -7,7 +7,7 @@
   <link href="https://www.w3.org/StyleSheets/TR/2021/W3C-ED" rel="stylesheet">
   <meta content="Bikeshed version 49e9fdd4f, updated Tue Oct 13 14:27:53 2026 -0700" name="generator">
   <link href="https://w3c.github.io/long-animation-frames/" rel="canonical">
-  <meta content="14c0dc63b75a673ec95b8be9228abcd181ec86fc" name="revision">
+  <meta content="ae406ea3d1622e9f9294e1b66c80e23501239dc7" name="revision">
   <meta content="dark light" name="color-scheme">
   <link href="https://www.w3.org/StyleSheets/TR/2021/dark.css" media="(prefers-color-scheme: dark)" rel="stylesheet" type="text/css">
 <style>
@@ -906,17 +906,13 @@ var[data-var-color="6"] { --var-vg: #FFBCF2; }
    <p>Some applications (and <a href="https://en.wikipedia.org/wiki/Real_user_monitoring">RUM</a> vendors) are already attempting to identify and track cases where "long tasks" happen. For example, one known pattern is to install a ~short periodic timer and inspect the elapsed time between the successive expirations: if the elapsed time is greater than the timer period, then there is high likelihood that one or more long tasks have delayed execution of the event loop. This approach mostly works but has several bad performance implications: by polling to detect long tasks, the application prevents quiescence and long idle blocks (see requestIdleCallback); it’s bad for battery life; there is no way to know what is causing the delay (e.g. first party or third party code).</p>
    <p>The <a href="https://developers.google.com/web/fundamentals/performance/rail">RAIL</a> performance model suggests that applications should respond to user input in less than 100ms (for touch move and scrolling, the threshold is 16ms). The goal of this API is to surface notifications about tasks that may prevent the application from hitting these targets. This API surfaces tasks that take 50ms or more. A website without these tasks should respond to user input in under 100ms: it will take less than 50ms to finish the task that is being executed when the user input is received and less than 50ms to execute the task to react to such user input.</p>
    <h3 class="heading settled" data-level="1.1" id="example"><span class="secno">1.1. </span><span class="content">Usage Example</span><a class="self-link" href="#example"></a></h3>
-<pre class="example highlight" id="example-620f8bab"><a class="self-link" href="#example-620f8bab"></a><c- a>const</c-> observer <c- o>=</c-> <c- ow>new</c-> PerformanceObserver<c- p>(</c-><c- a>function</c-><c- p>(</c->list<c- p>)</c-> <c- p>{</c->
+<pre class="example highlight" id="example-5f8082e1"><a class="self-link" href="#example-5f8082e1"></a><c- a>const</c-> observer <c- o>=</c-> <c- ow>new</c-> PerformanceObserver<c- p>(</c-><c- a>function</c-><c- p>(</c->list<c- p>)</c-> <c- p>{</c->
     <c- k>for</c-> <c- p>(</c-><c- a>const</c-> entry <c- k>of</c-> list<c- p>.</c->getEntries<c- p>())</c-> <c- p>{</c->
         <c- c1>// Process long task notifications:</c->
         <c- c1>// report back for analytics and monitoring</c->
         <c- c1>// ...</c->
     <c- p>}</c->
 <c- p>});</c->
-<c- c1>// Register observer for previous and future long task notifications.</c->
-observer<c- p>.</c->observe<c- p>({</c->type<c- o>:</c-> <c- u>"long-animation-frame"</c-><c- p>,</c-> buffered<c- o>:</c-> <c- kc>true</c-><c- p>});</c->
-<c- c1>// Long script execution after this will result in queueing</c->
-<c- c1>// and receiving "long-animation-frame" entries in the observer.</c->
 
 <c- c1>// Register observer for previous and future long animation frame notifications.</c->
 <c- c1>// After this, long periods where the main thread is busy will result in queueing</c->
