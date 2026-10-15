@@ -489,16 +489,22 @@ Report Long Animation Frames {#loaf-processing-model}
     It starts recording frame timing info for the duration of the [=fire an event|event firing=] or [=create script entry point|script=], as if it was a task.
     This accounts for script and event durations that are not associated with tasks, which would otherwise require an [=implied document=].
 
-    1. If |settingsObject|'s [=environment settings object/global object=] is not a {{Window}} or its [=relevant frame timing info=] is non-null, then return false.
-    1. [=Record task start time=] given the [=unsafe shared current time=] and |settingsObject|.
-    1. Return true.
+    1. If |settingsObject|'s [=environment settings object/global object=] is not a {{Window}}, then return false.
+    1. Let |document| be |settingsObject|'s [=environment settings object/global object=]'s [=associated Document=].
+    1. If |document|'s [=relevant frame timing info=] is non-null, then return false.
+    1. [=Record task start time=] given the [=unsafe shared current time=] and |document|.
+    1. Return true if |document|'s [=relevant frame timing info=] is non-null; otherwise false.
 </div>
 
 
 <div algorithm="Record task start time">
     To <dfn export>record task start time</dfn> given a {{DOMHighResTimeStamp}} |unsafeTaskStartTime|, and a {{Document}} |document|:
 
+    1. If |document| is not [=fully active=] or |document|'s [=Document/visibility state=] is "`hidden`", then return.
+
     1. Let |root| be |document|'s [=nearest same-origin root=].
+
+    1. If |root| is not [=fully active=] or |root|'s [=Document/visibility state=] is "`hidden`", then return.
 
     1. If |root|'s [=current frame timing info=] is null,
         then set |root|'s [=current frame timing info=] to a new [=frame timing info=] whose [=frame timing info/start time=] is |unsafeTaskStartTime|,
@@ -506,7 +512,12 @@ Report Long Animation Frames {#loaf-processing-model}
 
     1. Set |root|'s [=current frame timing info=]'s [=frame timing info/current task start time=] to |unsafeTaskStartTime|.
 
-    1. If |root|'s [=current frame timing info=]'s 's [=frame timing info/start time=] is 0, then set |root|'s [=current frame timing info=]'s [=frame timing info/start time=] to |unsafeTaskStartTime|.
+    1. If |root|'s [=current frame timing info=]'s [=frame timing info/start time=] is 0, then set |root|'s [=current frame timing info=]'s [=frame timing info/start time=] to |unsafeTaskStartTime|.
+</div>
+
+<div algorithm="Visibility change">
+    Whenever a {{Document}} |document|'s [=Document/visibility state=] becomes "`hidden`" or |document| ceases to be [=fully active=],
+    set |document|'s [=current frame timing info=] to null.
 </div>
 
 <div algorithm="Report task end time">
@@ -645,8 +656,7 @@ Report Long Animation Frames {#loaf-processing-model}
         1. If |settings| is not a {{Window}}, then return.
         1. Let |document| be |settings|'s {{Window/document}}.
         1. Let |frameTimingInfo| be |document|'s [=relevant frame timing info=].
-        1. [=Assert=]: |frameTimingInfo| is non-null.
-        1. If |frameTimingInfo|'s [=frame timing info/pending script=] is null, then return.
+        1. If |frameTimingInfo| is null or |frameTimingInfo|'s [=frame timing info/pending script=] is null, then return.
         1. Set |frameTimingInfo|'s [=frame timing info/pending script=]'s [=script timing info/execution start time=] to the [=unsafe shared current time=].
 </div>
 
@@ -665,10 +675,9 @@ Report Long Animation Frames {#loaf-processing-model}
 
         1. If |settings| is not a {{Window}}, then return.
         1. Let |document| be |settings|'s {{Window/document}}.
-        1. If |document| is not [=fully active=] or	{{Document/hidden}}, then return.
-        1. Let |didStartRecording| be the result of calling [=start recording task time if needed=] given |document|.
+        1. Let |didStartRecording| be the result of calling [=start recording task time if needed=] given |settings|.
         1. Let |frameTimingInfo| be |document|'s [=relevant frame timing info=].
-        1. [=Assert=]: |frameTimingInfo| is non-null.
+        1. If |frameTimingInfo| is null, then return.
         1. Set |frameTimingInfo|'s [=script initiated=] to |didStartRecording|.
         1. If |frameTimingInfo|'s [=frame timing info/pending script=] is not null, then return.
         1. Let |scriptTimingInfo| be a new [=script timing info=]
@@ -702,7 +711,6 @@ Report Long Animation Frames {#loaf-processing-model}
     1. [=Assert=]: |popped| is "`script`", i.e. any style recalculation or layout forced by the script has ended.
     1. Let |endTime| be the [=unsafe shared current time=].
     1. Set |frameTimingInfo|'s [=frame timing info/pending script=] to null.
-    1. If |root| is not [=fully active=] or {{Document/hidden}}, then return.
     1. Set |scriptTimingInfo|'s [=script timing info/end time=] to |endTime|.
     1. If the [=duration=] between |scriptTimingInfo|'s [=script timing info/start time=] and |scriptTimingInfo|'s [=script timing info/end time=] is greater than 5 milliseconds, then
         [=list/append=] |scriptTimingInfo| to |frameTimingInfo|'s [=frame timing info/scripts=].
@@ -724,13 +732,12 @@ Report Long Animation Frames {#loaf-processing-model}
 <div algorithm="Report pause duration">
     To <dfn export>record pause duration</dfn> given a [=duration=] |duration|:
     1. Let |script| be the [=running script=].
+    1. If |script| is null, then return.
     1. Let |settings| be |script|'s [=script/settings object=].
     1. If |settings|'s [=environment settings object/global object=] is not a {{Window}}, then return.
     1. Let |document| be |settings|'s {{Window/document}}.
-    1. If |document| is not [=fully active=] or	{{Document/hidden}}, then return.
     1. Let |frameTimingInfo| be the [=relevant frame timing info=] given |document|.
-    1. Assert: |frameTimingInfo| is not null.
-    1. If |frameTimingInfo|'s [=frame timing info/pending script=] is null, then return.
+    1. If |frameTimingInfo| is null or |frameTimingInfo|'s [=frame timing info/pending script=] is null, then return.
     1. Increment |frameTimingInfo|'s [=frame timing info/pending script=]'s [=script timing info/pause duration=] by the milliseconds value of |duration|.
 </div>
 
