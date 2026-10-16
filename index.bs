@@ -462,6 +462,10 @@ A <dfn>style and layout period</dfn> is a [=struct=]. It has the following [=str
 
 A {{Document}} has a null or [=frame timing info=] <dfn export>current frame timing info</dfn>, initially null.
 
+A [=classic script=] has a [=/URL=]-or-null <dfn for="classic script">original source URL</dfn>, initially null.
+
+A [=/script=] |script|'s <dfn for="script">exposed source URL</dfn> is |script|'s [=classic script/original source URL=] if |script| is a [=classic script=] whose [=classic script/original source URL=] is not null; otherwise |script|'s [=script/base URL=].
+
 
 Report Long Animation Frames {#loaf-processing-model}
 ------------------------------------------
@@ -637,35 +641,43 @@ Report Long Animation Frames {#loaf-processing-model}
 
 <div algorithm="Set source URL for script block">
     To <dfn>set source url for script block</dfn> given a [=script timing info=] |scriptTimingInfo|, a [=/script=] |script|, and a [=/URL=]-or-null |url|:
-        1. If |url| is null, or |script| is a [=classic script=] whose [=classic script/muted errors=] is true, then return.
-        1. If |url|'s [=url/scheme=] is "`http`" or "`https`", then set |scriptTimingInfo|'s [=script timing info/source url=] to |script|'s [=script/base URL=].
-        1. Otherwise, if |url|'s [=url/scheme=] is "`blob`" or "`data`" then set |scriptTimingInfo|'s [=script timing info/source url=] to the [=concatenate|concatenation=] of  « |url|'s [=url/scheme=], ":"" ».
+        1. Set |scriptTimingInfo|'s [=script timing info/source character position=] to 0.
+        1. If |url| is null, then return.
+        1. If |url|'s [=url/scheme=] is "`http`", "`https`", or "`blob`", then set |scriptTimingInfo|'s [=script timing info/source url=] to the [=url/serializer|serialization=] of |url|.
+        1. Otherwise, if |url|'s [=url/scheme=] is "`data`", then set |scriptTimingInfo|'s [=script timing info/source url=] to "`data:`".
+        1. If |script| is not a [=classic script=] whose [=classic script/muted errors=] is true, then:
+            1. Set |scriptTimingInfo|'s [=script timing info/source line number=] to 1.
+            1. Set |scriptTimingInfo|'s [=script timing info/source column number=] to 1.
 </div>
 
 <div algorithm="Report classic script execution">
-    To <dfn export>record classic script creation time</dfn> given a [=/script=] |script| and a [=/URL=]-or-null |originalSourceURL|:
-        1. [=Create script entry point=] with |script|'s [=script/settings object=], "`classic-script`",
+    To <dfn export>record classic script creation time</dfn> given a [=classic script=] |script| and a [=/URL=]-or-null |originalSourceURL|:
+        1. Set |script|'s [=classic script/original source URL=] to |originalSourceURL|.
+        1. [=Create script entry point=] given |script|'s [=script/settings object=], "`classic-script`",
             and the following step given a [=script timing info=] |scriptTimingInfo|:
-            [=Set source url for script block=] given |scriptTimingInfo|, |script|, and |originalSourceURL|.
+            [=Set source url for script block=] given |scriptTimingInfo|, |script|, and |script|'s [=script/exposed source URL=].
 </div>
 
 <div algorithm="Report classic script execution start">
     To <dfn export>record classic script execution start time</dfn> given a [=classic script=] |script|:
         1. Let |settings| be |script|'s [=script/settings object=].
-        1. If |script|'s [=classic script/muted errors=] is true, then return.
         1. If |settings| is not a {{Window}}, then return.
         1. Let |document| be |settings|'s {{Window/document}}.
         1. Let |frameTimingInfo| be |document|'s [=relevant frame timing info=].
-        1. If |frameTimingInfo| is null or |frameTimingInfo|'s [=frame timing info/pending script=] is null, then return.
-        1. Set |frameTimingInfo|'s [=frame timing info/pending script=]'s [=script timing info/execution start time=] to the [=unsafe shared current time=].
+        1. If |frameTimingInfo| is null or |frameTimingInfo|'s [=frame timing info/pending script=] is null:
+            1. [=Create script entry point=] given |settings|, "`classic-script`",
+                and the following step given a [=script timing info=] |scriptTimingInfo|:
+                [=Set source url for script block=] given |scriptTimingInfo|, |script|, and |script|'s [=script/exposed source URL=].
+            1. Return.
+        1. If |script|'s [=classic script/muted errors=] is false and the [=running script=] is null,
+            then set |frameTimingInfo|'s [=frame timing info/pending script=]'s [=script timing info/execution start time=] to the [=unsafe shared current time=].
 </div>
 
 <div algorithm="Report module script execution start">
     To <dfn export>record module script execution start time</dfn> given a [=module script=] |script|:
-        [=Create script entry point=] with |script|'s [=script/settings object=], "`module-script`",
-            and the following step given a [=script timing info=] |scriptTimingInfo|:
-            1. Set |scriptTimingInfo|'s [=script timing info/execution start time=] to |script|'s |scriptTimingInfo|'s [=script timing info/start time=].
-            1. [=Set source url for script block=] given |scriptTimingInfo|, |script|, and |script|'s [=script/base URL=].
+        [=Create script entry point=] given |script|'s [=script/settings object=], "`module-script`",
+            and the following steps given a [=script timing info=] |scriptTimingInfo|:
+            [=Set source url for script block=] given |scriptTimingInfo|, |script|, and |script|'s [=script/base URL=].
 </div>
 
 <div algorithm="Create script entry point">
@@ -680,8 +692,10 @@ Report Long Animation Frames {#loaf-processing-model}
         1. If |frameTimingInfo| is null, then return.
         1. Set |frameTimingInfo|'s [=script initiated=] to |didStartRecording|.
         1. If |frameTimingInfo|'s [=frame timing info/pending script=] is not null, then return.
+        1. Let |now| be the [=unsafe shared current time=].
         1. Let |scriptTimingInfo| be a new [=script timing info=]
-            whose [=script timing info/start time=] is the [=unsafe shared current time=],
+            whose [=script timing info/start time=] is |now|,
+            whose [=script timing info/execution start time=] is |now|,
             and whose [=script timing info/invoker type=] is |invokerType|.
         1. Run |steps| given |scriptTimingInfo| and |frameTimingInfo|.
         1. Set |scriptTimingInfo|'s [=script timing info/window=] to |settings|.
@@ -721,8 +735,13 @@ Report Long Animation Frames {#loaf-processing-model}
 
 <div algorithm="Applying source location">
     To <dfn>apply source location</dfn> to a [=script timing info=] |scriptTimingInfo| given a [=callback function=] or {{Function}} |callback|:
-    1. If |callback| was defined in a [=classic script=] whose [=classic script/muted errors=] is true, then return.
-    1. The user agent may set |scriptTimingInfo|'s [=script timing info/source url=] to the source URL of the script where |callback| was defined.
+    1. If |callback| was not defined in a [=/script=], then return.
+    1. Let |script| be the [=/script=] where |callback| was defined.
+    1. Let |url| be |script|'s [=script/exposed source URL=].
+    1. If |url| is not null:
+        1. If |url|'s [=url/scheme=] is "`http`", "`https`", or "`blob`", then the user agent may set |scriptTimingInfo|'s [=script timing info/source url=] to the [=url/serializer|serialization=] of |url|.
+        1. Otherwise, if |url|'s [=url/scheme=] is "`data`", then the user agent may set |scriptTimingInfo|'s [=script timing info/source url=] to "`data:`".
+    1. If |script| is a [=classic script=] whose [=classic script/muted errors=] is true, then return.
     1. The user agent may set |scriptTimingInfo|'s [=script timing info/source function name=] to the function name of |callback|.
     1. The user agent may set |scriptTimingInfo|'s [=script timing info/source character position=] to the character position where |callback| was defined.
     1. The user agent may set |scriptTimingInfo|'s [=script timing info/source line number=] to the line number where |callback| was defined.
@@ -924,5 +943,8 @@ beyond what the overall rendering timings described above already expose.
 -----------------------------------------------
 Since {{PerformanceScriptTiming}} exposes information about script execution, we need to make sure it
 doesn't expose too much information about [=CORS cross-origin=] scripts that cannot be easily deduced otherwise.
-To do that, we use the existing [=classic script/muted errors=] boolean, and report an empty {{PerformanceScriptTiming/sourceURL}}
-in such cases.
+To do that, we use the existing [=classic script/muted errors=] boolean: for [=classic scripts=] whose [=classic script/muted errors=] is true (as well as callbacks or promises defined inside them),
+{{PerformanceScriptTiming/sourceURL}} exposes only the pre-redirect request URL (the `script` element's initial URL) rather than the post-redirect response URL,
+{{PerformanceScriptTiming/executionStart}} is set equal to {{PerformanceScriptTiming/startTime}} so compilation duration is not exposed,
+and for callbacks or promises defined inside such scripts, {{PerformanceScriptTiming/sourceFunctionName}},
+{{PerformanceScriptTiming/sourceCharPosition}}, {{PerformanceScriptTiming/sourceLine}}, and {{PerformanceScriptTiming/sourceColumn}} are omitted.
