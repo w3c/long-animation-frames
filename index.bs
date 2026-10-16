@@ -14,6 +14,7 @@ Default Highlight: js
 </pre>
 
 <pre class=link-defaults>
+spec:html; type:dfn; for:/; text:browsing context
 spec:hr-time; type:dfn; text:duration
 </pre>
 
@@ -35,6 +36,9 @@ urlPrefix: https://w3c.github.io/performance-timeline/; spec: PERFORMANCE-TIMELI
     type: dfn; url: #dfn-register-a-performance-entry-type; text: register a performance entry type
     type: attribute; for: PerformanceObserver;
         text: supportedEntryTypes; url: #supportedentrytypes-attribute;
+    type: dfn; url: #dfn-maxbuffersize; text: maxBufferSize;
+    type: dfn; url: #dfn-availablefromtimeline; text: availableFromTimeline;
+    type: dfn; url: #dfn-should-add-entry; text: should add entry;
 urlPrefix: https://w3c.github.io/hr-time/; spec: HR-TIME-2;
     type: typedef; url: #idl-def-domhighrestimestamp; text: DOMHighResTimeStamp;
     type: interface; url: #dfn-performance; text: Performance;
@@ -61,7 +65,6 @@ urlPrefix: https://html.spec.whatwg.org/multipage/; spec: HTML;
     type: dfn; url: #muted-errors; for: classic script; text: muted errors;
     type: dfn; url: #cors-cross-origin; text: CORS cross-origin;
     type: dfn; url: #implied-document; text: implied document;
-    type: dfn: url: #concept-task-document; text: document; for: task;
 urlPrefix: https://tc39.github.io/ecma262/; spec: ECMASCRIPT;
     type: dfn; url: #sec-code-realms; text: JavaScript Realms;
 urlPrefix: https://dom.spec.whatwg.org/; spec: DOM;
@@ -73,13 +76,9 @@ urlPrefix: https://webidl.spec.whatwg.org/; spec: WEBIDL;
     type: dfn; text: regular operation; url: #dfn-regular-operation;
     type: dfn; text: static operation; url: #dfn-static-operation;
     type: dfn; text: interface; url: #dfn-interface;
-urlPrefix: https://tc39.es/ecma262/multipage/managing-memory.html
+    type: dfn; text: create a frozen array; url: #dfn-create-frozen-array;
+urlPrefix: https://tc39.es/ecma262/multipage/managing-memory.html; spec: ECMASCRIPT;
     type: dfn; text: weakrefderef; url: #sec-weakrefderef;
-</pre>
-
-<pre class=link-defaults>
-spec:html; type:dfn; for:/; text:browsing context
-spec:hr-time-3; type:dfn; text:duration
 </pre>
 
 Introduction {#intro}
@@ -177,9 +176,11 @@ Long Animation Frame timing involves the following new interfaces:
 
 A {{PerformanceLongAnimationFrameTiming}} has a [=frame timing info=] <dfn for=PerformanceLongAnimationFrameTiming>timing info</dfn>.
 
-The {{PerformanceLongAnimationFrameTiming/entryType}} attribute's getter step is to return <code>"long-animation-frame"</code>.
+A {{PerformanceLongAnimationFrameTiming}} has a {{FrozenArray}}<{{PerformanceScriptTiming}}> <dfn for=PerformanceLongAnimationFrameTiming>script entries</dfn>.
 
-The {{PerformanceLongAnimationFrameTiming/name}} attribute's getter step is to return <code>"long-animation-frame"</code>.
+The {{PerformanceLongAnimationFrameTiming/entryType}} attribute's getter step is to return "`long-animation-frame`".
+
+The {{PerformanceLongAnimationFrameTiming/name}} attribute's getter step is to return "`long-animation-frame`".
 
 The {{PerformanceLongAnimationFrameTiming/startTime}} attribute's getter step is to return the [=relative high resolution time=] given [=this=]'s [=PerformanceLongAnimationFrameTiming/timing info=]'s [=frame timing info/start time=] and [=this=]'s [=relevant global object=].
 
@@ -225,34 +226,7 @@ The {{PerformanceLongAnimationFrameTiming/blockingDuration}} attribute's getter 
     1. [=list/iterate|For each=] |duration| in |sortedTaskDurations|, if |duration| is greater than 50 then increment |totalBlockingDuration| by |duration| - 50.
     1. Return |totalBlockingDuration|.
 
-The {{PerformanceLongAnimationFrameTiming/scripts}} attribute's getter steps are:
-    1. Let |scripts| be a [=/list=] « ».
-    1. Let |entryWindow| be |this|'s [=relevant global object=].
-    1. [=list/For each=] |scriptInfo| in [=this=]'s [=frame timing info=]'s [=frame timing info/scripts=]:
-        1. Let |scriptWindow| be |scriptInfo|'s [=script timing info/window=].
-        1. Let |scriptEntry| be a new {{PerformanceScriptTiming}} in [=this=]'s [=relevant realm=],
-            whose [=PerformanceScriptTiming/timing info=] is |scriptInfo| and whose [=PerformanceScriptTiming/window attribution=] is the value corresponding to the first matching statement:
-
-            : |scriptWindow| is undefined or |scriptWindow|'s [=associated Document=] is not [=fully active=]
-            :: {{ScriptWindowAttribution/other}}
-
-            :  |scriptWindow| is |entryWindow|
-            :: {{ScriptWindowAttribution/self}}
-
-            : |entryWindow|'s associated {{Document}}'s [=node navigable=]'s [=ancestor navigables=] [=list/contains=] |scriptWindow|'s associated {{Document}}'s [=node navigable=]
-            :: {{ScriptWindowAttribution/ancestor}}
-
-            : |scriptWindow|'s associated {{Document}}'s [=node navigable=]'s [=ancestor navigables=] [=list/contains=] |entryWindow|'s associated {{Document}}'s [=node navigable=]
-            :: {{ScriptWindowAttribution/descendant}}
-
-            : |entryWindow|'s associated {{Document}}'s [=node navigable=]'s [=navigable/top-level traversable=] is |scriptWindow|'s associated {{Document}}'s [=node navigable=]'s [=navigable/top-level traversable=]
-            :: {{ScriptWindowAttribution/same-page}}
-
-            : Otherwise
-            :: {{ScriptWindowAttribution/other}}.
-
-        1. [=list/Append=] |scriptEntry| to |scripts|.
-    1. Return |scripts|.
+The {{PerformanceLongAnimationFrameTiming/scripts}} attribute's getter step is to return [=this=]'s [=PerformanceLongAnimationFrameTiming/script entries=].
 
 {{PerformanceScriptTiming}} interface {#sec-PerformanceScriptTiming}
 ------------------------------------------------------------------------
@@ -301,24 +275,24 @@ A {{PerformanceScriptTiming}} has an associated [=script timing info=] <dfn for=
 
 A {{PerformanceScriptTiming}} has an associated {{ScriptWindowAttribution}} <dfn for=PerformanceScriptTiming>window attribution</dfn>.
 
-The {{PerformanceScriptTiming/entryType}} attribute's getter step is to return <code>"script"</code>.
+The {{PerformanceScriptTiming/entryType}} attribute's getter step is to return "`script`".
 
-The {{PerformanceScriptTiming/name}} attribute's getter step is to return <code>"script"</code>.
+The {{PerformanceScriptTiming/name}} attribute's getter step is to return "`script`".
 
 The {{PerformanceScriptTiming/invokerType}} attribute's getter step is to return [=this=]'s [=PerformanceScriptTiming/timing info=]'s [=script timing info/invoker type=].
 
 The {{PerformanceScriptTiming/invoker}} attribute's getter steps are:
-    1.  Switch on |this|'s {{PerformanceScriptTiming/invokerType}}:
+    1. Switch on [=this=]'s {{PerformanceScriptTiming/invokerType}}:
 
         : "`classic-script`"
         : "`module-script`"
-        :: Return |this|'s [=PerformanceScriptTiming/timing info=]'s [=script timing info/source url=].
+        :: Return [=this=]'s [=PerformanceScriptTiming/timing info=]'s [=script timing info/source url=].
 
         : "`event-listener`"
         ::
-            1. Let |targetName| be |this|'s [=PerformanceScriptTiming/timing info=]'s [=script timing info/invoker name=].
-            1. If |this|'s [=PerformanceScriptTiming/timing info=]'s [=script timing info/event target element id=] is not the empty string, then:
-                Set |targetName| to the [=concatenate|concatenation=] of « |targetName|, "#", |this|'s [=PerformanceScriptTiming/timing info=]'s [=script timing info/event target element id=] ».
+            1. Let |targetName| be [=this=]'s [=PerformanceScriptTiming/timing info=]'s [=script timing info/invoker name=].
+            1. If [=this=]'s [=PerformanceScriptTiming/timing info=]'s [=script timing info/event target element id=] is not the empty string, then:
+                Set |targetName| to the [=concatenate|concatenation=] of « |targetName|, "#", [=this=]'s [=PerformanceScriptTiming/timing info=]'s [=script timing info/event target element id=] ».
             1. Otherwise, if [=this=]'s [=PerformanceScriptTiming/timing info=]'s [=script timing info/event target element src attribute=] is not the empty string, then:
                 Set |targetName| to the [=concatenate|concatenation=] of « |targetName|, "[src=\"", [=this=]'s [=PerformanceScriptTiming/timing info=]'s [=script timing info/event target element src attribute=], "\"]" ».
             1. Return the [=concatenate|concatenation=] of « |targetName|, ".on", [=this=]'s [=PerformanceScriptTiming/timing info=]'s [=script timing info/event type=] ».
@@ -326,14 +300,14 @@ The {{PerformanceScriptTiming/invoker}} attribute's getter steps are:
             Issue: this feels a bit custom, need to discuss name generation.
 
         : "`user-callback`"
-        :: Return |this|'s [=PerformanceScriptTiming/timing info=]'s [=script timing info/invoker name=].
+        :: Return [=this=]'s [=PerformanceScriptTiming/timing info=]'s [=script timing info/invoker name=].
 
         : "`resolve-promise`"
         : "`reject-promise`"
         ::
-            1. If |this|'s [=PerformanceScriptTiming/timing info=]'s [=script timing info/invoker name=] is the empty string,
+            1. If [=this=]'s [=PerformanceScriptTiming/timing info=]'s [=script timing info/invoker name=] is the empty string,
                 then:
-                    1. If |this|'s {{PerformanceScriptTiming/invokerType}} is "`resolve-promise`", then return "`Promise.resolve`".
+                    1. If [=this=]'s {{PerformanceScriptTiming/invokerType}} is "`resolve-promise`", then return "`Promise.resolve`".
                     1. Otherwise, return "`Promise.reject`".
             1. Let |thenOrCatch| be "`then`" if [=this=]'s {{PerformanceScriptTiming/invokerType}} is "`resolve-promise`"; otherwise "`catch`".
             1. Return the [=concatenate|concatenation=] of « [=this=]'s [=PerformanceScriptTiming/timing info=]'s [=script timing info/invoker name=], ".", |thenOrCatch| ».
@@ -370,8 +344,12 @@ The {{PerformanceScriptTiming/windowAttribution}} attribute's getter step is to 
 Processing model {#sec-processing-model}
 ========================================
 
-Note: A user agent implementing the Long Animation Frame API would need to include <code>"long-animation-frame"</code>
-    in {{PerformanceObserver/supportedEntryTypes}} for {{Window}} contexts, respectively.
+A user agent implementing the Long Animation Frames API must include `"long-animation-frame"` in {{PerformanceObserver/supportedEntryTypes}} for {{Window}} contexts.
+
+This specification extends the <a href="https://w3c.github.io/timing-entrytypes-registry/#registry">Timing Entry Names Registry</a> with the `"long-animation-frame"` {{PerformanceEntry/entryType}}:
+* [=maxBufferSize=]: 200.
+* [=availableFromTimeline=]: true.
+* To [=should add entry=] given a {{PerformanceLongAnimationFrameTiming}} |entry|: return true.
 
 Frame Timing Info {#sec-frame-timing-info}
 ------------------------------------------
@@ -507,9 +485,9 @@ Report Long Animation Frames {#loaf-processing-model}
 
     1. If |settingsObject|'s [=environment settings object/global object=] is not a {{Window}}, then return false.
     1. Let |document| be |settingsObject|'s [=environment settings object/global object=]'s [=associated Document=].
-    1. If |document|'s [=relevant frame timing info=] is non-null, then return false.
+    1. If |document|'s [=relevant frame timing info=] is non-null and |document|'s [=relevant frame timing info=]'s [=frame timing info/current task start time=] is not 0, then return false.
     1. [=Record task start time=] given the [=unsafe shared current time=] and |document|.
-    1. Return true if |document|'s [=relevant frame timing info=] is non-null; otherwise false.
+    1. Return true if |document|'s [=relevant frame timing info=] is non-null and |document|'s [=relevant frame timing info=]'s [=frame timing info/current task start time=] is not 0; otherwise false.
 </div>
 
 
@@ -527,8 +505,6 @@ Report Long Animation Frames {#loaf-processing-model}
         and whose [=frame timing info/cross-origin isolated capability=] is |root|'s [=relevant settings object=]'s [=environment settings object/cross-origin isolated capability=].
 
     1. Set |root|'s [=current frame timing info=]'s [=frame timing info/current task start time=] to |unsafeTaskStartTime|.
-
-    1. If |root|'s [=current frame timing info=]'s [=frame timing info/start time=] is 0, then set |root|'s [=current frame timing info=]'s [=frame timing info/start time=] to |unsafeTaskStartTime|.
 </div>
 
 <div algorithm="Visibility change">
@@ -537,19 +513,25 @@ Report Long Animation Frames {#loaf-processing-model}
 </div>
 
 <div algorithm="Report task end time">
-    To <dfn export>record task end time</dfn> given an {{DOMHighResTimeStamp}} |unsafeTaskEndTime|, and a {{Document}} |document|:
+    To <dfn export>record task end time</dfn> given a {{DOMHighResTimeStamp}} |unsafeTaskEndTime|, and a {{Document}} |document|:
 
     1. Let |timingInfo| be |document|'s [=relevant frame timing info=].
 
-    1. If |timingInfo| is null, then return.
+    1. If |timingInfo| is null or |timingInfo|'s [=frame timing info/current task start time=] is 0, then return.
 
         Note: This can occur if the browser becomes hidden during the sequence.
 
-    1. Let |safeTaskEndTime| be the [=relative high resolution time=] given |unsafeTaskEndTime| and |document|'s [=relevant global object=].
+    1. Let |global| be |document|'s [=relevant global object=].
 
-    1. Let |safeTaskStartTime| be the [=relative high resolution time=] given |timingInfo|'s [=frame timing info/current task start time=] and |document|'s [=relevant global object=].
+    1. Let |safeTaskEndTime| be the [=relative high resolution time=] given |unsafeTaskEndTime| and |global|.
+
+    1. Let |safeTaskStartTime| be the [=relative high resolution time=] given |timingInfo|'s [=frame timing info/current task start time=] and |global|.
 
     1. [=list/Append=] the [=duration=] between |safeTaskStartTime| and |safeTaskEndTime| to |timingInfo|'s [=task durations=].
+
+    1. Set |timingInfo|'s [=frame timing info/current task start time=] to 0.
+
+    1. Set |timingInfo|'s [=frame timing info/script initiated=] to false.
 
     1. If the user agent believes that updating the rendering of |document|'s [=node navigable=] would have no visible effect, then:
         1. Set |document|'s [=nearest same-origin root=]'s [=current frame timing info=] to null.
@@ -557,9 +539,9 @@ Report Long Animation Frames {#loaf-processing-model}
         1. Set |timingInfo|'s [=frame timing info/end time=] to |unsafeTaskEndTime|.
 
         1. Let |frameDuration| be the [=duration=] between the [=relative high resolution time=] given |timingInfo|'s [=frame timing info/start time=] and |global|,
-            and the [=relative high resolution time=] given |unsafeTaskEndTime| and |global|.
+            and |safeTaskEndTime|.
 
-        1. If |frameDuration| is equal or greater than 50 milliseconds, then [=queue a long animation frame entry=] given |document|, |timingInfo|, and a new [/=paint timing info=].
+        1. If |frameDuration| is equal or greater than 50 milliseconds, then [=queue a long animation frame entry=] given |document|, |timingInfo|, and a new [=/paint timing info=].
 
         Note: even though there was no actual visual update, we mark a [=long animation frame=] here because it would be blocking in a scenario where it coincided with an unrelated visual update.
 </div>
@@ -576,6 +558,8 @@ Report Long Animation Frames {#loaf-processing-model}
     1. [=Assert=]: |timingInfo|'s [=frame timing info/style and layout stack=] [=list/is empty=].
 
         Note: This means that no style recalculation, layout, or script is in progress.
+
+    1. Let |global| be |document|'s [=relevant global object=].
 
     1. Let |frameDuration| be the [=duration=] between the [=relative high resolution time=] given |timingInfo|'s [=frame timing info/start time=] and |global|,
         and the [=current high resolution time=] given |global|.
@@ -601,8 +585,37 @@ Report Long Animation Frames {#loaf-processing-model}
 <div algorithm="Queue frame timing">
     To <dfn export>queue a long animation frame entry</dfn> given a {{Document}} |document|, a [=frame timing info=] |timingInfo|, and a [=/paint timing info=] |paintTimingInfo|:
     1. [=Assert=]: |timingInfo|'s [=frame timing info/style and layout stack=] [=list/is empty=].
-    1. [=queue a PerformanceEntry|Queue=] a new {{PerformanceLongAnimationFrameTiming}} in |document|'s [=relevant realm=],
-        whose [=PerformanceLongAnimationFrameTiming/timing info=] is |timingInfo| and whose [=PaintTimingMixin/paint timing info=] is |paintTimingInfo|.
+    1. Let |root| be |document|'s [=nearest same-origin root=].
+    1. Let |entryWindow| be |root|'s [=relevant global object=].
+    1. Let |scripts| be a new [=/list=].
+    1. [=list/For each=] |scriptInfo| in |timingInfo|'s [=frame timing info/scripts=]:
+        1. Let |scriptWindow| be the result of calling [=weakrefderef|deref=] on |scriptInfo|'s [=script timing info/window=].
+        1. Let |scriptEntry| be a new {{PerformanceScriptTiming}} in |root|'s [=relevant realm=],
+            whose [=PerformanceScriptTiming/timing info=] is |scriptInfo| and whose [=PerformanceScriptTiming/window attribution=] is the value corresponding to the first matching statement:
+
+            : |scriptWindow| is undefined or |scriptWindow|'s [=associated Document=] is not [=fully active=]
+            :: {{ScriptWindowAttribution/other}}
+
+            : |scriptWindow| is |entryWindow|
+            :: {{ScriptWindowAttribution/self}}
+
+            : |entryWindow|'s [=associated Document=]'s [=node navigable=]'s [=ancestor navigables=] [=list/contains=] |scriptWindow|'s [=associated Document=]'s [=node navigable=]
+            :: {{ScriptWindowAttribution/ancestor}}
+
+            : |scriptWindow|'s [=associated Document=]'s [=node navigable=]'s [=ancestor navigables=] [=list/contains=] |entryWindow|'s [=associated Document=]'s [=node navigable=]
+            :: {{ScriptWindowAttribution/descendant}}
+
+            : |entryWindow|'s [=associated Document=]'s [=node navigable=]'s [=navigable/top-level traversable=] is |scriptWindow|'s [=associated Document=]'s [=node navigable=]'s [=navigable/top-level traversable=]
+            :: {{ScriptWindowAttribution/same-page}}
+
+            : Otherwise
+            :: {{ScriptWindowAttribution/other}}.
+
+        1. [=list/Append=] |scriptEntry| to |scripts|.
+    1. [=queue a PerformanceEntry|Queue=] a new {{PerformanceLongAnimationFrameTiming}} in |root|'s [=relevant realm=],
+        whose [=PerformanceLongAnimationFrameTiming/timing info=] is |timingInfo|,
+        whose [=PerformanceLongAnimationFrameTiming/script entries=] is the result of [=create a frozen array|creating a frozen array=] from |scripts|,
+        and whose [=PaintTimingMixin/paint timing info=] is |paintTimingInfo|.
 </div>
 
 ### Long Script Monitoring ### {#long-script-monitoring}
@@ -612,7 +625,7 @@ Report Long Animation Frames {#loaf-processing-model}
     [=Create script entry point=] given |settings|, "`user-callback`", and the following steps given a [=script timing info=] |scriptTimingInfo|:
 
         1. Set |scriptTimingInfo|'s [=script timing info/invoker name=] to |callback|'s [=identifier=].
-        1. [=Apply source location=] for |scriptTimingInfo| given |callback|.
+        1. [=Apply source location=] to |scriptTimingInfo| given |callback|.
 </div>
 
 <div algorithm="Report pending timer">
@@ -620,10 +633,10 @@ Report Long Animation Frames {#loaf-processing-model}
         [=Create script entry point=] given |settings|, "`user-callback`",
             and the following steps given a [=script timing info=] |scriptTimingInfo|:
 
-            1. Let |setTimeoutOrInterval| be "setInterval" if |repeat| is true, "setTimeout" otherwise.
-            1. Set |scriptTimingInfo|'s [=script timing info/invoker name=] to [=concatenate|concatenation=] of
-                « TimerHandler:", |setTimeoutOrInterval| ».
-            1. If |handler| is a {{Function}}, then [=apply source location=] for |scriptTimingInfo| given |handler|.
+            1. Let |setTimeoutOrInterval| be "`setInterval`" if |repeat| is true; otherwise "`setTimeout`".
+            1. Set |scriptTimingInfo|'s [=script timing info/invoker name=] to the [=concatenate|concatenation=] of
+                « "`TimerHandler:`", |setTimeoutOrInterval| ».
+            1. If |handler| is a {{Function}}, then [=apply source location=] to |scriptTimingInfo| given |handler|.
 </div>
 
 <div algorithm="Report event listener">
@@ -637,9 +650,10 @@ Report Long Animation Frames {#loaf-processing-model}
             1. Set |scriptTimingInfo|'s [=script timing info/invoker name=] to |target|'s {{Node/nodeName}}.
             1. If |target| is an {{Element}}, then:
                 1. Set |scriptTimingInfo|'s [=script timing info/event target element id=] to |target|'s [=Element/id=].
-                1. Set |scriptTimingInfo|'s [=script timing info/event target element src attribute=] to the result of [=get an attribute by name|getting an attribute value by name=] "`src`" and |target|.
-        1. Else, set |scriptTimingInfo|'s [=script timing info/invoker name=] to |target|'s interface name.
-        1. [=Apply source location=] for |scriptTimingInfo| given |listener|'s [=event listener/callback=].
+                1. Let |srcAttr| be the result of [=get an attribute by name|getting an attribute value by name=] "`src`" and |target|.
+                1. If |srcAttr| is not null, then set |scriptTimingInfo|'s [=script timing info/event target element src attribute=] to |srcAttr|.
+        1. Else, set |scriptTimingInfo|'s [=script timing info/invoker name=] to |target|'s [=interface=]'s [=identifier=].
+        1. [=Apply source location=] to |scriptTimingInfo| given |listener|'s [=event listener/callback=].
         1. If |event| is a {{UIEvent}}, and |frameTimingInfo|'s [=frame timing info/first ui event timestamp=] is null,
             then set |frameTimingInfo|'s [=frame timing info/first ui event timestamp=] to |event|'s [=relevant settings object=]'s [=environment settings object/time origin=] + a [=duration=] of |event|'s {{Event/timeStamp}} milliseconds.
 </div>
@@ -678,8 +692,8 @@ Report Long Animation Frames {#loaf-processing-model}
 <div algorithm="Report classic script execution start">
     To <dfn export>record classic script execution start time</dfn> given a [=classic script=] |script|:
         1. Let |settings| be |script|'s [=script/settings object=].
-        1. If |settings| is not a {{Window}}, then return.
-        1. Let |document| be |settings|'s {{Window/document}}.
+        1. If |settings|'s [=environment settings object/global object=] is not a {{Window}}, then return.
+        1. Let |document| be |settings|'s [=environment settings object/global object=]'s [=associated Document=].
         1. Let |frameTimingInfo| be |document|'s [=relevant frame timing info=].
         1. If |frameTimingInfo| is null or |frameTimingInfo|'s [=frame timing info/pending script=] is null:
             1. [=Create script entry point=] given |settings|, "`classic-script`",
@@ -702,12 +716,12 @@ Report Long Animation Frames {#loaf-processing-model}
         a {{ScriptInvokerType}} |invokerType|, and |steps|,
         which is an algorithm that takes a [=script timing info=] and an optional [=frame timing info=]:
 
-        1. If |settings| is not a {{Window}}, then return.
-        1. Let |document| be |settings|'s {{Window/document}}.
+        1. If |settings|'s [=environment settings object/global object=] is not a {{Window}}, then return.
+        1. Let |document| be |settings|'s [=environment settings object/global object=]'s [=associated Document=].
         1. Let |didStartRecording| be the result of calling [=start recording task time if needed=] given |settings|.
         1. Let |frameTimingInfo| be |document|'s [=relevant frame timing info=].
-        1. If |frameTimingInfo| is null, then return.
-        1. Set |frameTimingInfo|'s [=script initiated=] to |didStartRecording|.
+        1. If |frameTimingInfo| is null or |frameTimingInfo|'s [=frame timing info/current task start time=] is 0, then return.
+        1. If |didStartRecording| is true, then set |frameTimingInfo|'s [=frame timing info/script initiated=] to true.
         1. If |frameTimingInfo|'s [=frame timing info/pending script=] is not null, then return.
         1. Let |now| be the [=unsafe shared current time=].
         1. Let |scriptTimingInfo| be a new [=script timing info=]
@@ -715,7 +729,7 @@ Report Long Animation Frames {#loaf-processing-model}
             whose [=script timing info/execution start time=] is |now|,
             and whose [=script timing info/invoker type=] is |invokerType|.
         1. Run |steps| given |scriptTimingInfo| and |frameTimingInfo|.
-        1. Set |scriptTimingInfo|'s [=script timing info/window=] to |settings|.
+        1. Set |scriptTimingInfo|'s [=script timing info/window=] to a {{WeakRef}} to |settings|'s [=environment settings object/global object=].
         1. [=Accumulate style and layout time=] given |frameTimingInfo|.
         1. [=stack/Push=] "`script`" onto |frameTimingInfo|'s [=frame timing info/style and layout stack=].
         1. Set |frameTimingInfo|'s [=frame timing info/pending script=] to |scriptTimingInfo|.
@@ -745,7 +759,7 @@ Report Long Animation Frames {#loaf-processing-model}
     1. Set |scriptTimingInfo|'s [=script timing info/end time=] to |endTime|.
     1. If the [=duration=] between |scriptTimingInfo|'s [=script timing info/start time=] and |scriptTimingInfo|'s [=script timing info/end time=] is greater than 5 milliseconds, then
         [=list/append=] |scriptTimingInfo| to |frameTimingInfo|'s [=frame timing info/scripts=].
-    1. If |frameTimingInfo| is [=frame timing info/script initiated=], then [=record task end time=] given |endTime| and |root|.
+    1. If |frameTimingInfo|'s [=frame timing info/script initiated=] is true, then [=record task end time=] given |endTime| and |root|.
 
         Note: For event listeners, the task lifetime is managed by the [=fire an event=] algorithm, which may invoke multiple listeners to the same event, rather than at the end of a single listener's execution.
 </div>
@@ -760,9 +774,9 @@ Report Long Animation Frames {#loaf-processing-model}
         1. Otherwise, if |url|'s [=url/scheme=] is "`data`", then the user agent may set |scriptTimingInfo|'s [=script timing info/source url=] to "`data:`".
     1. If |script| is a [=classic script=] whose [=classic script/muted errors=] is true, then return.
     1. The user agent may set |scriptTimingInfo|'s [=script timing info/source function name=] to the function name of |callback|.
-    1. The user agent may set |scriptTimingInfo|'s [=script timing info/source character position=] to the character position where |callback| was defined.
-    1. The user agent may set |scriptTimingInfo|'s [=script timing info/source line number=] to the line number where |callback| was defined.
-    1. The user agent may set |scriptTimingInfo|'s [=script timing info/source column number=] to the column number where |callback| was defined
+    1. The user agent may set |scriptTimingInfo|'s [=script timing info/source character position=] to the zero-based character position where |callback| was defined.
+    1. The user agent may set |scriptTimingInfo|'s [=script timing info/source line number=] to the one-based line number where |callback| was defined.
+    1. The user agent may set |scriptTimingInfo|'s [=script timing info/source column number=] to the one-based column number where |callback| was defined.
 </div>
 
 <div algorithm="Report pause duration">
@@ -771,8 +785,8 @@ Report Long Animation Frames {#loaf-processing-model}
     1. If |script| is null, then return.
     1. Let |settings| be |script|'s [=script/settings object=].
     1. If |settings|'s [=environment settings object/global object=] is not a {{Window}}, then return.
-    1. Let |document| be |settings|'s {{Window/document}}.
-    1. Let |frameTimingInfo| be the [=relevant frame timing info=] given |document|.
+    1. Let |document| be |settings|'s [=environment settings object/global object=]'s [=associated Document=].
+    1. Let |frameTimingInfo| be |document|'s [=relevant frame timing info=].
     1. If |frameTimingInfo| is null or |frameTimingInfo|'s [=frame timing info/pending script=] is null, then return.
     1. Increment |frameTimingInfo|'s [=frame timing info/pending script=]'s [=script timing info/pause duration=] by the milliseconds value of |duration|.
 </div>
@@ -954,10 +968,10 @@ the same frame sequence and influence each other's rendering time. This makes it
 are already somewhat observable cross-origin, e.g. by requesting an animation frame and observing if it is delayed,
 though long animation frames exposes them at a higher fidelity.
 
-To mitigate this, long animation frames are only reported to "participating local roots": only documents
+To mitigate this, long animation frames are only reported to the [=nearest same-origin root=]: only documents
 that are associated with a work task that contributed to the sequence, or that were rendered as part of the frame,
-are eligible to observe the long animation frame, and that long animation frame would be available only in
-their nearest ancestor that is either topmost or has a cross-origin parent.
+are eligible to observe the long animation frame, and that long animation frame is available only in
+their [=nearest same-origin root=].
 
 {{PerformanceLongAnimationFrameTiming/styleDuration}}, {{PerformanceLongAnimationFrameTiming/layoutDuration}},
 {{PerformanceScriptTiming/forcedStyleDuration}}, and {{PerformanceScriptTiming/forcedLayoutDuration}}
