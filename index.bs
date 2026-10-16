@@ -183,11 +183,13 @@ The {{PerformanceLongAnimationFrameTiming/name}} attribute's getter step is to r
 
 The {{PerformanceLongAnimationFrameTiming/startTime}} attribute's getter step is to return the [=relative high resolution time=] given [=this=]'s [=PerformanceLongAnimationFrameTiming/timing info=]'s [=frame timing info/start time=] and [=this=]'s [=relevant global object=].
 
-The {{PerformanceLongAnimationFrameTiming/duration}} attribute's getter step is to return the [=duration=] between [=this=]'s {{PerformanceEntry/startTime}} and the [=relative high resolution time=] given [=this=]'s [=PerformanceLongAnimationFrameTiming/timing info=]'s [=frame timing info/end time=] and [=this=]'s [=relevant global object=].
+The {{PerformanceLongAnimationFrameTiming/duration}} attribute's getter steps are:
+    1. If [=this=]'s {{PaintTimingMixin/paintTime}} is not 0, then return the [=duration=] between [=this=]'s {{PerformanceEntry/startTime}} and [=this=]'s {{PaintTimingMixin/paintTime}}.
+    1. Return the [=duration=] between [=this=]'s {{PerformanceEntry/startTime}} and the [=relative high resolution time=] given [=this=]'s [=PerformanceLongAnimationFrameTiming/timing info=]'s [=frame timing info/end time=] and [=this=]'s [=relevant global object=].
 
-The {{PerformanceLongAnimationFrameTiming/renderStart}} attribute's getter step is to return the [=relative high resolution time=] given [=this=]'s [=PerformanceLongAnimationFrameTiming/timing info=]'s [=frame timing info/update the rendering start time=] and [=this=]'s [=relevant global object=].
+The {{PerformanceLongAnimationFrameTiming/renderStart}} attribute's getter step is to return 0 if [=this=]'s [=PerformanceLongAnimationFrameTiming/timing info=]'s [=frame timing info/update the rendering start time=] is 0; otherwise the [=relative high resolution time=] given [=this=]'s [=PerformanceLongAnimationFrameTiming/timing info=]'s [=frame timing info/update the rendering start time=] and [=this=]'s [=relevant global object=].
 
-The {{PerformanceLongAnimationFrameTiming/styleAndLayoutStart}} attribute's getter step is to return the [=relative high resolution time=] given [=this=]'s [=PerformanceLongAnimationFrameTiming/timing info=]'s [=frame timing info/style and layout start time=] and [=this=]'s [=relevant global object=].
+The {{PerformanceLongAnimationFrameTiming/styleAndLayoutStart}} attribute's getter step is to return 0 if [=this=]'s [=PerformanceLongAnimationFrameTiming/timing info=]'s [=frame timing info/style and layout start time=] is 0; otherwise the [=relative high resolution time=] given [=this=]'s [=PerformanceLongAnimationFrameTiming/timing info=]'s [=frame timing info/style and layout start time=] and [=this=]'s [=relevant global object=].
 
 The {{PerformanceLongAnimationFrameTiming/styleDuration}} attribute's getter step is to return [=this=]'s [=PerformanceLongAnimationFrameTiming/timing info=]'s [=frame timing info/style duration=].
 
@@ -202,14 +204,19 @@ Note: {{PerformanceLongAnimationFrameTiming/styleDuration}} and {{PerformanceLon
 Their sum can be less than the duration between {{PerformanceLongAnimationFrameTiming/styleAndLayoutStart}} and {{PaintTimingMixin/paintTime}}, as that period can also include other work that is not included in these durations, such as running {{ResizeObserver}} callbacks or updating intersection observations.
 Style and layout performed synchronously by scripts are not included, and are reported via {{PerformanceScriptTiming/forcedStyleDuration}} and {{PerformanceScriptTiming/forcedLayoutDuration}} instead.
 
-The {{PerformanceLongAnimationFrameTiming/firstUIEventTimestamp}} attribute's getter step is to return the [=relative high resolution time=] given [=this=]'s [=PerformanceLongAnimationFrameTiming/timing info=]'s [=frame timing info/first ui event timestamp=] and [=this=]'s [=relevant global object=].
+The {{PerformanceLongAnimationFrameTiming/firstUIEventTimestamp}} attribute's getter steps are:
+    1. Let |timestamp| be [=this=]'s [=PerformanceLongAnimationFrameTiming/timing info=]'s [=frame timing info/first ui event timestamp=].
+    1. If |timestamp| is null, then return 0.
+    1. Return the [=relative high resolution coarse time=] given |timestamp| and [=this=]'s [=relevant global object=].
 
 The {{PerformanceLongAnimationFrameTiming/blockingDuration}} attribute's getter steps are:
-    1. Let |sortedTaskDurations| be [=PerformanceLongAnimationFrameTiming/timing info=]'s [=frame timing info/task durations=], [=list/sort in descending order|sorted in descending order=].
-    1. If [=this=]'s [=PerformanceLongAnimationFrameTiming/timing info=]'s [=frame timing info/update the rendering  start time=] is not zero, then:
-        1. Let |renderDuration| be the [=duration=] between [=this=]'s {{PerformanceLongAnimationFrameTiming/renderStart}} and
-            the [=relative high resolution time=] given [=this=]'s [=PerformanceLongAnimationFrameTiming/timing info=]'s [=frame timing info/end time=].
-        1. Increment |sortedTaskDurations|[0] by |renderDuration|.
+    1. Let |sortedTaskDurations| be [=this=]'s [=PerformanceLongAnimationFrameTiming/timing info=]'s [=frame timing info/task durations=], [=list/sort in descending order|sorted in descending order=].
+    1. If [=this=]'s [=PerformanceLongAnimationFrameTiming/timing info=]'s [=frame timing info/update the rendering start time=] is not zero, then:
+        1. Let |renderEndTime| be [=this=]'s {{PaintTimingMixin/paintTime}} if [=this=]'s {{PaintTimingMixin/paintTime}} is not 0;
+            otherwise the [=relative high resolution time=] given [=this=]'s [=PerformanceLongAnimationFrameTiming/timing info=]'s [=frame timing info/end time=] and [=this=]'s [=relevant global object=].
+        1. Let |renderDuration| be the [=duration=] between [=this=]'s {{PerformanceLongAnimationFrameTiming/renderStart}} and |renderEndTime|.
+        1. If |sortedTaskDurations| [=list/is empty=], then [=list/append=] |renderDuration| to |sortedTaskDurations|.
+        1. Otherwise, increment |sortedTaskDurations|[0] by |renderDuration|.
 
             Note: This makes it so that the longest task duration + render duration would be considered blocking if their total
             duration is >50ms.
@@ -226,7 +233,7 @@ The {{PerformanceLongAnimationFrameTiming/scripts}} attribute's getter steps are
         1. Let |scriptEntry| be a new {{PerformanceScriptTiming}} in [=this=]'s [=relevant realm=],
             whose [=PerformanceScriptTiming/timing info=] is |scriptInfo| and whose [=PerformanceScriptTiming/window attribution=] is the value corresponding to the first matching statement:
 
-            :  |scriptWindow| is undefined
+            : |scriptWindow| is undefined or |scriptWindow|'s [=associated Document=] is not [=fully active=]
             :: {{ScriptWindowAttribution/other}}
 
             :  |scriptWindow| is |entryWindow|
@@ -312,8 +319,8 @@ The {{PerformanceScriptTiming/invoker}} attribute's getter steps are:
             1. Let |targetName| be |this|'s [=PerformanceScriptTiming/timing info=]'s [=script timing info/invoker name=].
             1. If |this|'s [=PerformanceScriptTiming/timing info=]'s [=script timing info/event target element id=] is not the empty string, then:
                 Set |targetName| to the [=concatenate|concatenation=] of « |targetName|, "#", |this|'s [=PerformanceScriptTiming/timing info=]'s [=script timing info/event target element id=] ».
-            1. Otherwise, If |this|'s [=PerformanceScriptTiming/timing info=]'s [=script timing info/event target element src attribute=] is not the empty string, then:
-                Set |targetName| to the [=concatenate|concatenation=] of « |targetName|, "[src=", |this|'s [=PerformanceScriptTiming/timing info=]'s [=script timing info/event target element src attribute=], "]" ».
+            1. Otherwise, if [=this=]'s [=PerformanceScriptTiming/timing info=]'s [=script timing info/event target element src attribute=] is not the empty string, then:
+                Set |targetName| to the [=concatenate|concatenation=] of « |targetName|, "[src=\"", [=this=]'s [=PerformanceScriptTiming/timing info=]'s [=script timing info/event target element src attribute=], "\"]" ».
             1. Return the [=concatenate|concatenation=] of « |targetName|, ".on", [=this=]'s [=PerformanceScriptTiming/timing info=]'s [=script timing info/event type=] ».
 
             Issue: this feels a bit custom, need to discuss name generation.
@@ -356,7 +363,7 @@ The {{PerformanceScriptTiming/sourceColumn}} attribute's getter step is to retur
 
 The {{PerformanceScriptTiming/window}} attribute's getter steps are:
     1. Let |window| be the result of calling [=weakrefderef|deref=] on [=this=]'s [=PerformanceScriptTiming/timing info=]'s [=script timing info/window=].
-    1. If |window| is undefined, then return null; Otherwise return |window|.
+    1. If |window| is undefined or |window|'s [=associated Document=] is not [=fully active=], then return null; otherwise return |window|.
 
 The {{PerformanceScriptTiming/windowAttribution}} attribute's getter step is to return [=this=]'s [=PerformanceScriptTiming/window attribution=].
 
@@ -376,11 +383,13 @@ It has the following [=struct/items=]:
     : <dfn>current task start time</dfn>
     : <dfn>update the rendering start time</dfn>
     : <dfn>style and layout start time</dfn>
-    : <dfn>first ui event timestamp</dfn>
     : <dfn>end time</dfn>
     :: A {{DOMHighResTimeStamp}}, initially 0.
         Note: these timestamps are [=monotonic clock/unsafe current time|unsafe=],
         and should be [=coarsen time|coarsened=] when exposed via an API.
+
+    : <dfn>first ui event timestamp</dfn>
+    :: Null or a [=coarsen time|coarsened=] [=moment=] on the [=monotonic clock=], initially null.
 
     : <dfn>style duration</dfn>
     :: A {{DOMHighResTimeStamp}} representing a number of milliseconds, initially 0.
@@ -543,7 +552,9 @@ Report Long Animation Frames {#loaf-processing-model}
     1. [=list/Append=] the [=duration=] between |safeTaskStartTime| and |safeTaskEndTime| to |timingInfo|'s [=task durations=].
 
     1. If the user agent believes that updating the rendering of |document|'s [=node navigable=] would have no visible effect, then:
-        1. set |document|'s [=nearest same-origin root=]'s [=current frame timing info=] to null.
+        1. Set |document|'s [=nearest same-origin root=]'s [=current frame timing info=] to null.
+
+        1. Set |timingInfo|'s [=frame timing info/end time=] to |unsafeTaskEndTime|.
 
         1. Let |frameDuration| be the [=duration=] between the [=relative high resolution time=] given |timingInfo|'s [=frame timing info/start time=] and |global|,
             and the [=relative high resolution time=] given |unsafeTaskEndTime| and |global|.
@@ -629,8 +640,8 @@ Report Long Animation Frames {#loaf-processing-model}
                 1. Set |scriptTimingInfo|'s [=script timing info/event target element src attribute=] to the result of [=get an attribute by name|getting an attribute value by name=] "`src`" and |target|.
         1. Else, set |scriptTimingInfo|'s [=script timing info/invoker name=] to |target|'s interface name.
         1. [=Apply source location=] for |scriptTimingInfo| given |listener|'s [=event listener/callback=].
-        1. If |event| is a {{UIEvent}}, and |frameTimingInfo|'s [=frame timing info/first ui event timestamp=] is 0,
-            then set |frameTimingInfo|'s [=frame timing info/first ui event timestamp=] to |event|'s {{Event/timeStamp}}.
+        1. If |event| is a {{UIEvent}}, and |frameTimingInfo|'s [=frame timing info/first ui event timestamp=] is null,
+            then set |frameTimingInfo|'s [=frame timing info/first ui event timestamp=] to |event|'s [=relevant settings object=]'s [=environment settings object/time origin=] + a [=duration=] of |event|'s {{Event/timeStamp}} milliseconds.
 </div>
 
 <div algorithm="Report promise resolver">
