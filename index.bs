@@ -484,11 +484,15 @@ Report Long Animation Frames {#loaf-processing-model}
     It starts recording frame timing info for the duration of the [=fire an event|event firing=] or [=create script entry point|script=], as if it was a task.
     This accounts for script and event durations that are not associated with tasks, which would otherwise require an [=implied document=].
 
-    1. If |settingsObject|'s [=environment settings object/global object=] is not a {{Window}}, then return false.
+    1. If |settingsObject|'s [=environment settings object/global object=] is not a {{Window}}, then return null.
     1. Let |document| be |settingsObject|'s [=environment settings object/global object=]'s [=associated Document=].
-    1. If |document|'s [=relevant frame timing info=] is non-null, then return false.
+    1. Let |timingInfo| be |document|'s [=relevant frame timing info=].
+    1. If |timingInfo| is not null and |timingInfo|'s [=frame timing info/current task start time=] is not 0, then return null.
     1. [=Record task start time=] given the [=unsafe shared current time=] and |document|.
-    1. Return true if |document|'s [=relevant frame timing info=] is non-null; otherwise false.
+    1. Let |root| be |document|'s [=nearest same-origin root=].
+    1. If |root|'s [=current frame timing info=] is null, then return null.
+    1. Return the following steps:
+        1. [=Record task end time=] given the [=unsafe shared current time=] and |root|.
 </div>
 
 
@@ -529,6 +533,8 @@ Report Long Animation Frames {#loaf-processing-model}
     1. Let |safeTaskStartTime| be the [=relative high resolution time=] given |timingInfo|'s [=frame timing info/current task start time=] and |global|.
 
     1. [=list/Append=] the [=duration=] between |safeTaskStartTime| and |safeTaskEndTime| to |timingInfo|'s [=task durations=].
+
+    1. Set |timingInfo|'s [=frame timing info/current task start time=] to 0.
 
     1. Set |timingInfo|'s [=frame timing info/script initiated=] to false.
 
@@ -725,10 +731,10 @@ Report Long Animation Frames {#loaf-processing-model}
 
         1. If |settings|'s [=environment settings object/global object=] is not a {{Window}}, then return.
         1. Let |document| be |settings|'s [=environment settings object/global object=]'s [=associated Document=].
-        1. Let |didStartRecording| be the result of calling [=start recording task time if needed=] given |settings|.
+        1. Let |endTaskTime| be the result of calling [=start recording task time if needed=] given |settings|.
         1. Let |frameTimingInfo| be |document|'s [=relevant frame timing info=].
         1. If |frameTimingInfo| is null, then return.
-        1. If |didStartRecording| is true, then set |frameTimingInfo|'s [=frame timing info/script initiated=] to true.
+        1. If |endTaskTime| is not null, then set |frameTimingInfo|'s [=frame timing info/script initiated=] to true.
         1. If |frameTimingInfo|'s [=frame timing info/pending script=] is not null, then return.
         1. Let |now| be the [=unsafe shared current time=].
         1. Let |scriptTimingInfo| be a new [=script timing info=]
